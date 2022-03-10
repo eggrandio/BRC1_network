@@ -1,1 +1,1 @@
-This folder contains bash shell scripts used to analyze paired end sequencing data
+Scripts used to analyze paired-end sequencing data (HBind and ABA experiments)
