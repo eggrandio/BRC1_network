@@ -1,0 +1,1052 @@
+---
+title: "BRC1 network"
+output: html_notebook
+---
+
+```{r, include=FALSE}
+# Data manipulation
+library(tidyverse)
+library(data.table)
+library(GenomicRanges)
+library(GenomicFeatures)
+#library(readxl)
+
+# Sequence analysis
+library(biomaRt)
+library(Biostrings)
+library(plyranges)
+library(edgeR)
+#library(ChIPpeakAnno)
+#library(JASPAR2022)
+#library(JASPAR2020)
+#library(TFBSTools)
+#library(memes)
+#Sys.setenv(MEME_BIN="//wsl$/Ubuntu/home/edu/meme/bin")
+#library(rGADEM)
+#library(rentrez)
+#library(genbankr)
+#library(TxDb.Athaliana.BioMart.plantsmart51)
+#library(AnnotationHub)
+library(AnnotationDbi)
+library(org.At.tair.db)
+#library(rBLAST)
+library(BSgenome.Athaliana.TAIR.TAIR9)
+library(csaw)
+
+
+ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
+ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
+
+#View(listAttributes(ensembl))
+
+# ath_txdb = makeTxDbFromGFF("./input/Arabidopsis_thaliana.TAIR10.52.gff3",
+#                            dataSource="Ensembl Plants release 52 - Dec 2021",
+#                            organism="Arabidopsis thaliana") %>% `seqinfo<-`(seqinfo(BSgenome.Athaliana.TAIR.TAIR9))
+
+#ensembl = useMart("plants_mart",host="plants.ensembl.org")
+#ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
+
+dss2df = function(dss) data.frame(PeakID=names(dss), seq=as.character(dss), width=width(dss))
+source("./R/add_gene_annotation.R")
+
+# Data visualization
+library(ggplot2)
+library(RColorBrewer)
+#library(Gviz)
+library(ComplexHeatmap)
+library(ggsci)
+library(ggrepel)
+library(directlabels)
+
+
+# ggplot theme parameters
+theme_update(axis.text.x = element_text(color="black"), 
+             axis.text.y = element_text(color="black"),
+             axis.ticks = element_line(color="black"),
+             panel.border = element_rect(color="black", fill = NA),
+             panel.grid.minor = element_blank(),
+             panel.background = element_blank(),
+             plot.background = element_rect(fill = "transparent", color = NA))
+```
+
+BRC1:GFP RNAseq
+```{r}
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_GFPBRC1ind_")
+
+# Read featureCounts file
+feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
+feature_counts = feature_counts[,c(1:6,10:12,7:9)] # Rearrange columns to have controls as first columns
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("brc1_1","brc1_2","brc1_3",
+                 "GFP_BRC1ind_1","GFP_BRC1ind_2","GFP_BRC1ind_3")
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+# Build design and contrasts for statistical tests
+design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1=GFP_BRC1ind-brc1,
+                             levels=design)
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+                      genes = gene_info,
+                      group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object and write table
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+write.table(RPKM_object, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
+
+# Remove genes with low RPKM counts
+RPKM_cutoff = 1
+
+drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
+mds = plotMDS(DGEL_object_filtered, plot=FALSE)
+dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
+dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
+
+MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
+  mutate(treatment = recode(Group,
+                            "brc1" = "brc1",
+                            "GFP_BRC1ind" = "GFP:BRC1ind"))
+
+custom_jco = pal_jco("default")(4)[c(3,1)]
+
+ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
+  geom_point() +
+  scale_color_manual(values = custom_jco) +
+  labs(x = dim1_label,
+       y = dim2_label) +
+  geom_dl(aes(label = treatment),
+          method = "smart.grid") +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Perform statistical test using my_contrasts
+DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
+
+test_list = list()
+
+for(contrast in colnames(my_contrasts)) {
+  print(contrast)
+  test_list[[contrast]] = glmQLFTest(fit, contrast=my_contrasts[,contrast]) %>% topTags(n = Inf) %>% as.data.frame() %>% 
+    rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
+}
+
+merged_tests = test_list %>% purrr::reduce(left_join, by = c("Geneid","Chr","Start","End","Strand","Length"))
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+fdr_colnames = colnames(merged_tests)[grepl("^FDR",colnames(merged_tests))]
+contrast_colnames = colnames(merged_tests)[grepl("^logFC",colnames(merged_tests))]
+
+filtered_tests = merged_tests %>% 
+  filter(if_any(all_of(fdr_colnames), ~ (.) < FDRts)) %>% 
+  filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file and remove extra columns
+extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
+filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+```
+
+HBind RNAseq
+```{r}
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_HBind_")
+
+# Read featureCounts output
+feature_counts = fread("./input/2022_03_05_feature_counts_experiment_2_gene_hisat2.txt")
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("gus_1","gus_2","gus_3",
+                 "hb21i_1","hb21i_2","hb21i_3",
+                 "hb40i_1","hb40i_2","hb40i_3",
+                 "hb53i_1","hb53i_2","hb53i_3")
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+# Build design and contrasts for statistical tests
+design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+my_contrasts = makeContrasts(hb21i_vs_gus=hb21i-gus,
+                             hb40i_vs_gus=hb40i-gus,
+                             hb53i_vs_gus=hb53i-gus,
+                             levels=design)
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+             genes = gene_info,
+             group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+write.table(RPKM_object, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
+
+# Remove genes with low RPKM counts
+RPKM_cutoff = 1
+
+drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
+mds = plotMDS(DGEL_object_filtered, plot=FALSE)
+dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
+dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
+
+MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
+  mutate(treatment = recode(Group, 
+                            "gus" = "GUSind",
+                            "hb21i" = "HB21ind",
+                            "hb40i" = "HB40ind",
+                            "hb53i" = "HB53ind"))
+
+custom_jco = pal_jco("default")(4)[c(3,1,2,4)]
+
+ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
+  geom_point() +
+  scale_color_manual(values = custom_jco) +
+  labs(x = dim1_label,
+       y = dim2_label) +
+  geom_dl(aes(label = treatment),
+          method = "smart.grid") +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Perform statistical test using my_contrasts
+DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
+
+test_list = list()
+
+for(contrast in colnames(my_contrasts)) {
+  print(contrast)
+  test_list[[contrast]] = glmQLFTest(fit, contrast=my_contrasts[,contrast]) %>% topTags(n = Inf) %>% as.data.frame() %>% 
+    rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
+}
+
+merged_tests = test_list %>% purrr::reduce(left_join, by = c("Geneid","Chr","Start","End","Strand","Length"))
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+fdr_colnames = colnames(merged_tests)[grepl("^FDR",colnames(merged_tests))]
+contrast_colnames = colnames(merged_tests)[grepl("^logFC",colnames(merged_tests))]
+
+filtered_tests = merged_tests %>% 
+  filter(if_any(all_of(fdr_colnames), ~ (.) < FDRts)) %>% 
+  filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file and remove extra columns
+extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
+filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+
+
+###
+# Upset plot to see overlap
+# filtered_data = filtered_tests_output %>% 
+#   dplyr::select(logFC_gus_vs_hb21i,logFC_gus_vs_hb40i,logFC_gus_vs_hb53i) %>% 
+#   `colnames<-`(c("HB21ind","HB40ind","HB53ind"))
+# 
+# HB21up = filtered_data %>% filter(HB21ind > 1) %>% rownames %>% list %>% `names<-`(paste0("HB21ind up (",length(unlist(.)),")"))
+# HB21dn = filtered_data %>% filter(HB21ind < -1) %>% rownames %>% list %>% `names<-`(paste0("HB21ind down   (",length(unlist(.)),")"))
+# HB40up = filtered_data %>% filter(HB40ind > 1) %>% rownames %>% list %>% `names<-`(paste0("HB40ind up   (",length(unlist(.)),")"))
+# HB40dn = filtered_data %>% filter(HB40ind < -1) %>% rownames %>% list %>% `names<-`(paste0("HB40ind down   (",length(unlist(.)),")"))
+# HB53up = filtered_data %>% filter(HB53ind > 1) %>% rownames %>% list %>% `names<-`(paste0("HB53ind up   (",length(unlist(.)),")"))
+# HB53dn = filtered_data %>% filter(HB53ind < -1) %>% rownames %>% list %>% `names<-`(paste0("HB53ind down   (",length(unlist(.)),")"))
+# 
+# listInput = c(HB21up,HB40up,HB53up,HB21dn,HB40dn,HB53dn)
+# 
+# ggupset_input = list_to_matrix(listInput) %>% as.data.frame %>%
+#   rownames_to_column("GeneID") %>%
+#   gather(-GeneID, key = "sample", value = "value") %>% 
+#   filter(value == 1) %>% 
+#   dplyr::select(-value) %>% 
+#   group_by(GeneID) %>%
+#   summarize(sample = list(sample), .groups = "drop_last")
+# 
+# ###UpSet plot:
+# UPSET_plot = ggplot(ggupset_input, aes(x=sample)) +
+#   geom_bar() +
+#   scale_y_continuous("Number of\nGenes", expand = expansion(mult = c(0, .25))) +
+#   geom_text(stat = "count",
+#             aes(label=..count..),
+#             hjust = -.1, 
+#             size = 2,
+#             angle = 90) +
+#   scale_x_upset(name = "", order_by = "freq", 
+#                 sets = c(names(listInput)),
+#                 n_intersections = 14) +
+#   theme_classic() +
+#   theme(axis.text.x = element_text(color="black"), 
+#         axis.text.y = element_text(color="black"),
+#         axis.ticks = element_line(color="black"),
+#         plot.margin = unit(c(5.5,5.5,5.5,53), "pt"))
+# # Heatmap with significant genes:
+# 
+# 
+# mat = all_vs_ctr[,7:9]
+# 
+# Heatmap(mat)
+
+
+
+```
+
+ABA treatment RNAseq: wt, brc1, hb21hb40hb53; control/+ABA
+```{r}
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ABA_")
+
+# Read featureCounts output
+feature_counts = fread("./input/2022_03_05_feature_counts_experiment_1_gene_hisat2.txt")
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("wt_ctr_1","wt_ctr_2","wt_ctr_3",
+                 "wt_aba_1","wt_aba_2","wt_aba_3",
+                 "tri_ctr_1","tri_ctr_2","tri_ctr_3",
+                 "tri_aba_1","tri_aba_2","tri_aba_3",
+                 "brc1_ctr_1","brc1_ctr_2","brc1_ctr_3",
+                 "brc1_aba_1","brc1_aba_2","brc1_aba_3")
+
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+# Build design and contrasts for statistical tests
+design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+my_contrasts = makeContrasts(brc1_ctr_vs_wt_ctr=brc1_ctr-wt_ctr,
+                             tri_ctr_vs_wt_ctr=tri_ctr-wt_ctr,
+                             wt_aba_vs_wt_ctr=wt_aba-wt_ctr,
+                             brc1_aba_vs_brc1_ctr=brc1_aba-brc1_ctr,
+                             tri_aba_vs_tri_ctr=tri_ctr-tri_aba,
+                             levels=design)
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+                      genes = gene_info,
+                      group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+write.table(RPKM_object, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
+
+# Remove genes with low RPKM counts
+RPKM_cutoff = 1
+
+drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
+mds = plotMDS(DGEL_object_filtered, plot=FALSE)
+dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
+dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
+
+MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
+    mutate(treatment = recode(Group, 
+                           "wt_ctr" = "wt",
+                           "wt_aba" = "wt + ABA",
+                           "tri_ctr" = "hb21hb40hb53",
+                           "tri_aba" = "hb21hb40hb53 + ABA",
+                           "brc1_ctr" = "brc1",
+                           "brc1_aba" = "brc1 + ABA"))
+
+custom_jco = c("#868686FF","#565656","#0073C2FF", "#005693","#EFC000FF", "#BE9800")
+
+ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
+  geom_point() +
+  scale_color_manual(values = custom_jco) +
+  labs(x = dim1_label,
+       y = dim2_label) +
+  geom_dl(aes(label = treatment),
+          method = "smart.grid") +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Perform statistical test using my_contrasts
+DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
+
+test_list = list()
+
+for(contrast in colnames(my_contrasts)) {
+  print(contrast)
+  test_list[[contrast]] = glmQLFTest(fit, contrast=my_contrasts[,contrast]) %>% topTags(n = Inf) %>% as.data.frame() %>% 
+    rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
+}
+
+merged_tests = test_list %>% purrr::reduce(left_join, by = c("Geneid","Chr","Start","End","Strand","Length"))
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+fdr_colnames = colnames(merged_tests)[grepl("^FDR",colnames(merged_tests))]
+contrast_colnames = colnames(merged_tests)[grepl("^logFC",colnames(merged_tests))]
+
+filtered_tests = merged_tests %>% 
+  filter(if_any(all_of(fdr_colnames), ~ (.) < FDRts)) %>% 
+  filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file and remove extra columns
+extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
+filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+```
+
+GFP:BRC1 ChIP
+```{r}
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
+
+#feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf")
+ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
+
+# Retrieve 3kb upstream and 1kb downstream of TSS 
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) %>% 
+  anchor_5p %>% stretch(-2000) %>% 
+  `mcols<-`(value = list("name" = .$gene_id))
+
+# Export 3kb up and 1kb down to bed file
+write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
+
+###### Use edgeR with macs2 consensus peaks for quantification
+# Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
+# Import MACS2 output. Select the least restrictive MACS2 peaks (no qvalue filter, q1)
+peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q1.*\\.narrowPeak$", full.names=TRUE)
+
+peak_grangeslist = sapply(peak_file_list, read_narrowpeaks) %>% `names<-`(peak_file_list %>% str_extract("BRC1_ChIP*.")) %>% GRangesList
+
+peak_coverage = coverage(peak_grangeslist)
+peak_coverage
+
+# Make GRanges and add column names to parse to GFF
+covered_ranges = IRanges::slice(peak_coverage, lower=2, rangesOnly=T) %>% GRanges %>% 
+  mutate(gene_id = paste0("peak_",rep(1:length(.)))) %>% 
+  mutate(name = gene_id) %>% 
+  mutate(type = rep("gene",length(.)))
+
+write_bed(covered_ranges, file = "./output/macs2_consensus.bed")
+write_gff3(covered_ranges, file = "./output/macs2_consensus.gff")
+
+
+###### Use edgeR with macs2 consensus peaks for quantification
+## To do peak calling with MACS with high qvalue threshold to obtain peaks that are not enriched for edgeR
+
+
+# Use edgeR with macs2 consensus peaks for quantification
+feature_counts = fread("./input/2022_03_10_feature_counts_macs2_consensus.txt")
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("ChIP2","ChIP3","ChIP7",
+                 "Input2","Input3","Input7")
+
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{1}$', '', sample_names) %>% factor(levels=unique(gsub('.{1}$', '', sample_names)))
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+                      genes = gene_info,
+                      group = sample_groups) %>% calcNormFactors()
+
+##
+# DGEL_object = DGEL_object[filterByExpr(DGEL_object), ,keep.lib.sizes=FALSE] #remove genes with low counts and recalculate library size
+# 
+# DGEL_object = calcNormFactors(DGEL_object)
+
+
+design = model.matrix(~sample_groups)
+
+DGEL_object <- estimateDisp(DGEL_object, design, robust=TRUE)
+fit <- glmQLFit(DGEL_object, design, robust=TRUE)
+results <- glmQLFTest(fit)
+
+edgeR_MACS2_output = as.data.frame(results) %>% 
+  # filter(PValue < 0.05) %>% 
+  #dplyr::rename(name = "Geneid", score = "logFC") %>% 
+  mutate(name = paste0(Geneid,"_logFC_",round(logFC,3))) %>% GRanges
+
+write_bed(edgeR_MACS2_output, file="./output/edgeR_MACS2_logFC.bed")
+
+edgeR_MACS2_output = as.data.frame(results) %>% 
+  # filter(PValue < 0.05) %>% 
+  #dplyr::rename(name = "Geneid", score = "logFC") %>% 
+  mutate(name = paste0(Geneid,"_PVal_",round(PValue,4))) %>% GRanges
+
+write_bed(edgeR_MACS2_output, file="./output/edgeR_MACS2_PVal.bed")
+
+### csaw to quantify peak strength
+
+# Check fragment length for MACS2
+# "For weak signal datasets, the read-length peak will start to dominate."
+# https://hbctraining.github.io/Intro-to-ChIPseq/lessons/06_combine_chipQC_and_metrics.html
+bam_files = list.files(path = "d:/PERSONAL_SACO/Cubas lab/BRC1 ChIPseq/sam_output/", pattern=".*\\.bam$", full.names=TRUE)
+bam_filenames = bam_files %>% str_match("ChIP\\d|Input\\d") %>% as.vector
+
+# Load csaw Parameters and turn on removal of duplicate reads (use dedup.on as param object for cross-correlation studies)
+param = readParam()
+dedup.on = initialize(param, dedup=TRUE)
+
+# Calculate cross-correlation for each .bam file and make dataframe for plotting with labels for max ccf for each file
+ccf_list = lapply(bam_files, correlateReads, param=dedup.on) %>% `names<-`(bam_filenames)
+
+ccf_list_plot = as.data.frame(do.call(cbind, ccf_list)) %>% rownames_to_column("bp") %>% mutate (bp = as.numeric(bp)) %>% 
+  pivot_longer(-bp,names_to = "sample",values_to = "ccf")
+ccf_labels = sapply(ccf_list, maximizeCcf, ignore=100) %>% as.data.frame %>% rownames_to_column %>% setNames(c("sample","max_ccf"))
+
+# Calculate average correlation profile across all the IP bam files
+ccf_total = bam_files[1:3] %>% correlateReads(param=dedup.on)
+max_total_ccf = maximizeCcf(ccf_total, ignore=100)
+
+# Plot ccf per file
+ggplot(ccf_list_plot, aes(x = bp, y = ccf, group = sample)) +
+  geom_line() +
+  geom_vline(aes(xintercept = max_ccf), ccf_labels) +
+  geom_label(inherit.aes = FALSE, data = ccf_labels, 
+             aes(label = paste0("Max ccf (>100 bp): ",max_ccf)), label.size = NA, alpha = 0.5,
+             x = -Inf, y = Inf,
+             hjust = 0, vjust = 1) +
+  coord_cartesian(xlim = c(0,300)) +
+  scale_x_continuous(expand = expansion(mult = c(0,0.05))) +
+  facet_wrap(~sample)
+
+# Count peaks
+data <- windowCounts(bam_files, ext=max_total_ccf, width=10)
+
+# remove "unintersting regions"
+binned <- windowCounts(bam_files, bin=TRUE, width=10000)
+keep <- filterWindowsGlobal(data, binned)$filter > log2(5)
+data2 <- data[keep,]
+
+data2 <- normFactors(binned, se.out=data2)
+
+# Create DGEList object
+sample_names = bam_filenames
+sample_groups = gsub('.{1}$', '', sample_names) %>% factor(levels=unique(gsub('.{1}$', '', sample_names)))
+
+y <- asDGEList(data2, group = sample_groups)
+rownames(y$samples) = sample_names
+
+design = model.matrix(~sample_groups)
+
+y <- estimateDisp(y, design)
+fit <- glmQLFit(y, design, robust=TRUE)
+results <- glmQLFTest(fit)
+
+merged <- mergeResults(data2, results$table, tol=500L)
+
+is.sig <- merged$combined$FDR <= 0.05
+test <- merged$regions[is.sig]
+test$score <- merged$combined$rep.logFC[is.sig]
+names(test) <- paste0("region", 1:sum(is.sig))
+export(test, "./output/test_csaw.bed")
+
+### csaw with good replicates
+
+bam_files2 = bam_files[-c(1,4)]
+bam_filenames2 = bam_filenames[-c(1,4)]
+
+data <- windowCounts(bam_files2, ext=max_total_ccf, width=10)
+
+# remove "unintersting regions"
+binned <- windowCounts(bam_files2, bin=TRUE, width=10000)
+keep <- filterWindowsGlobal(data, binned)$filter > log2(5)
+data2 <- data[keep,]
+
+data2 <- normFactors(binned, se.out=data2)
+
+# Create DGEList object
+sample_names = bam_filenames2
+sample_groups = gsub('.{1}$', '', sample_names) %>% factor(levels=unique(gsub('.{1}$', '', sample_names)))
+
+y <- asDGEList(data2, group = sample_groups)
+rownames(y$samples) = sample_names
+
+design = model.matrix(~sample_groups)
+
+y <- estimateDisp(y, design)
+fit <- glmQLFit(y, design, robust=TRUE)
+results <- glmQLFTest(fit)
+
+merged <- mergeResults(data2, results$table, tol=500L)
+
+is.sig <- merged$combined$FDR <= 0.05
+test <- merged$regions[is.sig]
+test$score <- merged$combined$rep.logFC[is.sig]
+names(test) <- paste0("region", 1:sum(is.sig))
+export(test, "./output/test_csaw_rep1_2.bed")
+
+###
+
+
+
+```
+
+
+# Extra code
+Compare with JR featurecounts data:
+```{r}
+feature_counts_rds = readRDS("./input/featureCounts.rds")
+
+feature_counts = cbind(feature_counts_rds$annotation, feature_counts_rds$counts) %>% dplyr::rename(Geneid ="GeneID")
+
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_HBind_")
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("gus_1","gus_2","gus_3",
+                 "hb21i_1","hb21i_2","hb21i_3",
+                 "hb40i_1","hb40i_2","hb40i_3",
+                 "hb53i_1","hb53i_2","hb53i_3")
+
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% dplyr::select(19:30) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+DGEL_object = DGEList(counts = counts, 
+             genes = gene_info,
+             group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+write.table(RPKM_object, file = paste0("./output/",exp_name,"RPKM_JR.txt"), row.names=F, sep="\t", quote=F)
+
+# Remove genes with low RPKM counts
+RPKM_cutoff = 1
+
+drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
+mds = plotMDS(DGEL_object_filtered, plot=FALSE)
+dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
+dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
+
+MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
+  mutate(treatment = recode(Group, 
+                            "gus" = "GUSind",
+                            "hb21i" = "HB21ind",
+                            "hb40i" = "HB40ind",
+                            "hb53i" = "HB53ind"))
+
+custom_jco = pal_jco("default")(4)[c(3,1,2,4)]
+
+ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
+  geom_point() +
+  scale_color_manual(values = custom_jco) +
+  labs(x = dim1_label,
+       y = dim2_label) +
+  geom_dl(aes(label = treatment),
+          method = "smart.grid") +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Build model and test all against control (wt_ctr)
+design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
+
+my_contrasts = makeContrasts(hb21i_vs_gus=hb21i-gus,
+                             hb40i_vs_gus=hb40i-gus,
+                             hb53i_vs_gus=hb53i-gus,
+                             levels=design)
+
+test_list = list()
+
+for(contrast in colnames(my_contrasts)) {
+  print(contrast)
+  test_list[[contrast]] = glmQLFTest(fit, contrast=my_contrasts[,contrast]) %>% topTags(n = Inf) %>% as.data.frame() %>% 
+    rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
+}
+
+merged_tests = test_list %>% purrr::reduce(left_join, by = c("Geneid","Chr","Start","End","Strand","Length"))
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+fdr_colnames = colnames(merged_tests)[grepl("^FDR",colnames(merged_tests))]
+contrast_colnames = colnames(merged_tests)[grepl("^logFC",colnames(merged_tests))]
+
+filtered_tests = merged_tests %>% 
+  filter(if_any(all_of(fdr_colnames), ~ (.) < FDRts)) %>% 
+  filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file and remove extra columns
+extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
+filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests_JR.txt"), row.names=F, sep="\t", quote=F, na="")
+```
+
+Extra code:
+```{r}
+# #  Pair-wise comparisons
+# design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+# 
+# contr = makeContrasts(hb21ivsgus = hb21i - gus,
+#                       hb40ivsgus = hb40i - gus,
+#                       hb53ivsgus = hb53i - gus,
+#                       levels = design)
+# 
+# DGL_object_filtered = estimateDisp(DGL_object_filtered, design, robust=TRUE)
+# 
+# fit = glmQLFit(DGL_object_filtered, design, robust=TRUE)
+# 
+# qlf_test = glmQLFTest(fit, contrast = contr) 
+# 
+# FDRts = 0.05 #set FDR threshold
+# FCts = log2(2) #set Fold change threshold
+# 
+# all_vs_ctr = topTags(qlf_test, n = Inf, p.value = FDRts)
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# ##############
+# # Build model and make contrasts to obtain FC
+# 
+# design_pairwise = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+# 
+# # To do make contrasts and loop edgeR through each contrast
+# design.pairs <-
+# function(levels) {
+# n <- length(levels)
+# design <- matrix(0,n,choose(n,2))
+# rownames(design) <- levels
+# colnames(design) <- 1:choose(n,2)
+# k <- 0
+# for (i in 1:(n-1))
+# for (j in (i+1):n) {
+# k <- k+1
+# design[i,k] <- 1
+# design[j,k] <- -1
+# colnames(design)[k] <- paste(levels[i],"-",levels[j],sep="")
+# }
+# design
+# }
+# 
+# #make contrasts and use in edgeR loop and join results by gene_id
+# unique(sample_groups) %>% design.pairs
+# 
+# # correct p-val with p.adjust(p, method = "fdr")   p = unadjusted pvalue of all comparisons
+
+# superscript_function = function(x){
+#   a = str_sub(x,1,-4)
+#   b = str_sub(x,-3,-1)
+#   paste0(a,"^",b)
+# }
+
+
+# To check which method of geom_dl work best
+
+# label_methods = c("ahull.grid","chull.grid","extreme.grid","smart.grid")
+# 
+# plot_label_methods = function(method) {
+#   ggplot(data = RPKM_PCA_PLOT, aes(x = PC1, y = PC2, color = genotype)) +
+#     geom_point(alpha = 1) +
+#     geom_dl(aes(label = genotype),
+#             method = method) +
+#     labs(title = method,
+#          color = "Treatment",
+#          x = paste0("PC1: ",round(RPKM_PCA_pv[1],2),"% var"),
+#          y = paste0("PC2: ",round(RPKM_PCA_pv[2],2),"% var")) +
+#     scale_color_manual(values = custom_jco) +
+#     scale_fill_manual(values = custom_jco) +
+#     coord_cartesian(clip = "off") +
+#     theme(aspect.ratio = 1,
+#           legend.position = "left",
+#           legend.text = element_text(size = 10),
+#           legend.spacing.x = unit(0.5, "mm"),
+#           legend.title.align = 0.5,
+#           legend.key=element_blank())
+# }
+# 
+# myplots <- lapply(label_methods, plot_label_methods)
+# grid.arrange(grobs = myplots)
+
+
+#####
+# Build model and make contrasts to obtain FC
+
+# design_pairwise = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+# 
+# # To do make contrasts and loop edgeR through each contrast
+# design.pairs <-
+# function(levels) {
+# n <- length(levels)
+# design <- matrix(0,n,choose(n,2))
+# rownames(design) <- levels
+# colnames(design) <- 1:choose(n,2)
+# k <- 0
+# for (i in 1:(n-1))
+# for (j in (i+1):n) {
+# k <- k+1
+# design[i,k] <- 1
+# design[j,k] <- -1
+# colnames(design)[k] <- paste(levels[i],"-",levels[j],sep="")
+# }
+# design
+# }
+# 
+# #make contrasts and use in edgeR loop and join results by gene_id
+# unique(sample_groups) %>% design.pairs
+```
+
+OLD Experiment 1: wt, brc1, hb21hb40hb53; control/+ABA
+```{r}
+# Read featureCounts output
+exp_name = "experiment_1_"
+feature_counts = fread("./input/2022_03_05_feature_counts_experiment_1_gene_hisat2.txt")
+
+# Extract data to build DGEList object to process with edgeR
+sample_names = c("wt_ctr_1","wt_ctr_2","wt_ctr_3",
+                 "wt_aba_1","wt_aba_2","wt_aba_3",
+                 "tri_ctr_1","tri_ctr_2","tri_ctr_3",
+                 "tri_aba_1","tri_aba_2","tri_aba_3",
+                 "brc1_ctr_1","brc1_ctr_2","brc1_ctr_3",
+                 "brc1_aba_1","brc1_aba_2","brc1_aba_3")
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+                      genes = gene_info,
+                      group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+write.table(RPKM_object, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
+
+# Remove genes with low RPKM counts
+RPKM_cutoff = 1
+
+drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# PCA plot
+RPKM = (rpkm(DGEL_object_filtered,log = T))
+RPKM_PCA = prcomp(t(RPKM))
+RPKM_PCA_pv = ((RPKM_PCA$sdev^2) / (sum(RPKM_PCA$sdev^2)))*100
+RPKM_PCA_data = RPKM_PCA$x[,1:2]
+
+RPKM_PCA_PLOT = RPKM_PCA_data %>% as.data.frame %>%
+  rownames_to_column("SampleID") %>%
+  separate(SampleID,into=c("genotype","replicate"), sep="_(?!.*_)",remove=FALSE) %>% 
+  mutate_if(is.character, as.factor) %>% 
+  mutate(genotype = factor(genotype, levels = c("wt_ctr","wt_aba","tri_ctr","tri_aba","brc1_ctr","brc1_aba"))) %>% 
+  mutate(genotype = recode(genotype, 
+                           "wt_ctr" = "wt",
+                           "wt_aba" = "wt + ABA",
+                           "tri_ctr" = "hb21hb40hb53",
+                           "tri_aba" = "hb21hb40hb53 + ABA",
+                           "brc1_ctr" = "brc1",
+                           "brc1_aba" = "brc1 + ABA"))
+
+legend_labels = RPKM_PCA_PLOT$genotype %>% levels
+
+custom_jco = c("#868686FF","#565656","#0073C2FF", "#005693","#EFC000FF", "#BE9800")
+
+custom_jco = 1:6
+RPKM_PCA_PLOT2 = RPKM_PCA_PLOT %>% filter(genotype %in% c("wt", "hb21hb40hb53", "brc1"))
+
+PCA_plot = ggplot(data = RPKM_PCA_PLOT, aes(x = PC1, y = PC2, color = genotype)) +
+  geom_point(alpha = 1) +
+  # geom_dl(aes(label = genotype),
+  #         method = "smart.grid") +
+  labs(x = paste0("PC1: ",round(RPKM_PCA_pv[1],2),"% var"),
+       y = paste0("PC2: ",round(RPKM_PCA_pv[2],2),"% var")) +
+  scale_color_manual(values = custom_jco, labels = legend_labels) +
+  scale_fill_manual(values = custom_jco) +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+  
+# Build model and test all against control (wt_ctr)
+design = model.matrix(~sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
+
+qlf_test = glmQLFTest(fit, coef=2:6) #compares all the samples to the control (ANOVA-like test)
+
+all_vs_ctr = topTags(qlf_test, n = Inf) #unfiltered data
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+contrast_colnames = colnames(qlf_test)[grepl("^logFC",colnames(qlf_test))]
+
+all_vs_ctr = topTags(qlf_test, n = Inf, p.value = FDRts) %>% 
+  data.frame %>% filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file
+all_vs_ctr_output = all_vs_ctr %>% add_gene_annotation
+
+write.table(all_vs_ctr_output, file = paste0("./output/",exp_name,"all_vs_ctr.txt"), row.names=F, sep="\t", quote=F, na="")
+
+###
+counts2 = counts %>% dplyr::select(contains("ctr"))
+
+sample_groups2 = gsub('.{2}$', '', colnames(counts2)) %>% factor(levels=unique(gsub('.{2}$', '', colnames(counts2))))
+
+DGEL_object2 = DGEList(counts = counts2, 
+                      genes = gene_info,
+                      group = sample_groups2) %>% calcNormFactors()
+
+RPKM_cutoff = 1
+
+drop = DGEL_object2 %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
+
+DGEL_object2_filtered = DGEL_object2[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
+
+# PCA plot
+RPKM = (rpkm(DGEL_object2_filtered,log = T))
+RPKM_PCA = prcomp(t(RPKM))
+RPKM_PCA_pv = ((RPKM_PCA$sdev^2) / (sum(RPKM_PCA$sdev^2)))*100
+RPKM_PCA_data = RPKM_PCA$x[,1:2]
+
+RPKM_PCA_PLOT = RPKM_PCA_data %>% as.data.frame %>%
+  rownames_to_column("SampleID") %>%
+  separate(SampleID,into=c("genotype","replicate"), sep="_(?!.*_)",remove=FALSE) %>% 
+  mutate_if(is.character, as.factor) %>% 
+  mutate(genotype = factor(genotype, levels = c("wt_ctr","tri_ctr","brc1_ctr"))) %>% 
+  mutate(genotype = recode(genotype, 
+                           "wt_ctr" = "wt",
+                           "tri_ctr" = "hb21hb40hb53",
+                           "brc1_ctr" = "brc1"))
+
+legend_labels = RPKM_PCA_PLOT$genotype %>% levels
+
+custom_jco = c("#868686FF","#0073C2FF", "#EFC000FF")
+
+PCA_plot = ggplot(data = RPKM_PCA_PLOT, aes(x = PC1, y = PC2, color = genotype)) +
+  geom_point(alpha = 1) +
+  # geom_dl(aes(label = genotype),
+  #         method = "smart.grid") +
+  labs(x = paste0("PC1: ",round(RPKM_PCA_pv[1],2),"% var"),
+       y = paste0("PC2: ",round(RPKM_PCA_pv[2],2),"% var")) +
+  scale_color_manual(values = custom_jco, labels = legend_labels) +
+  scale_fill_manual(values = custom_jco) +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Selected comparisons:
+design = model.matrix(~sample_groups2) %>% `colnames<-`(levels(sample_groups2))
+
+DGEL_object2_filtered = estimateDisp(DGEL_object2_filtered, design, robust=TRUE)
+
+fit = glmQLFit(DGEL_object2_filtered, design, robust=TRUE)
+
+qlf_test = glmQLFTest(fit, coef=2:3)
+
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+contrast_colnames = colnames(qlf_test)[grepl("^logFC",colnames(qlf_test))]
+
+all_vs_ctr = topTags(qlf_test, n = Inf, p.value = FDRts) %>% 
+  data.frame %>% filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+# Add gene name and description to output file
+all_vs_ctr_output = all_vs_ctr %>% add_gene_annotation
+
+### To do write output file
+write.table(all_vs_ctr_output, file = paste0("./output/",exp_name,"brc1_tri_vs_ctr.txt"), row.names=F, sep="\t", quote=F, na="")
+
+#####
+# Build model and make contrasts to obtain FC
+
+design_pairwise = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+# To do make contrasts and loop edgeR through each contrast
+design.pairs <-
+function(levels) {
+n <- length(levels)
+design <- matrix(0,n,choose(n,2))
+rownames(design) <- levels
+colnames(design) <- 1:choose(n,2)
+k <- 0
+for (i in 1:(n-1))
+for (j in (i+1):n) {
+k <- k+1
+design[i,k] <- 1
+design[j,k] <- -1
+colnames(design)[k] <- paste(levels[i],"-",levels[j],sep="")
+}
+design
+}
+
+#make contrasts and use in edgeR loop and join results by gene_id
+unique(sample_groups) %>% design.pairs
+```
