@@ -440,7 +440,7 @@ GFP:BRC1 ChIP
 exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
 
 #feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
-ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf")
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
 ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
 
 # Retrieve 3kb upstream and 1kb downstream of TSS 
@@ -459,7 +459,7 @@ peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q1.*\\.narro
 peak_grangeslist = sapply(peak_file_list, read_narrowpeaks) %>% `names<-`(peak_file_list %>% str_extract("BRC1_ChIP*.")) %>% GRangesList
 
 peak_coverage = coverage(peak_grangeslist)
-peak_coverage
+#peak_coverage
 
 # Make GRanges and add column names to parse to GFF
 covered_ranges = IRanges::slice(peak_coverage, lower=2, rangesOnly=T) %>% GRanges %>% 
