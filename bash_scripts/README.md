@@ -1,1 +1,1 @@
-### This folder contains bash shell scripts used for sequencing analyses
+This folder contains bash shell scripts used for sequencing analyses
