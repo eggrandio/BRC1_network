@@ -165,7 +165,7 @@ filtered_tests = merged_tests %>%
 extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
 filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
 
-write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
 ```
 
 HBind RNAseq
@@ -269,7 +269,7 @@ filtered_tests = merged_tests %>%
 extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
 filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
 
-write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
 
 
 ###
@@ -431,7 +431,7 @@ filtered_tests = merged_tests %>%
 extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
 filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
 
-write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
 ```
 
 GFP:BRC1 ChIP
@@ -626,6 +626,36 @@ export(test, "./output/test_csaw_rep1_2.bed")
 
 
 # Extra code
+Extract RPKM with featurecount by exons
+```{r}
+### To do: retrieve SMXL expression level in buds
+feature_counts = fread("./input/2022_03_10_feature_counts_experiment_1_exons.txt")
+counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
+gene_info = feature_counts %>% dplyr::select(c(Geneid,Chr,Start,End,Strand,Length))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.{2}$', '', sample_names)))
+
+# Build design and contrasts for statistical tests
+design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
+
+# Build DGEList object and normalize by library size
+DGEL_object = DGEList(counts = counts, 
+                      genes = gene_info,
+                      group = sample_groups) %>% calcNormFactors()
+
+# Create RPKM object
+RPKM_object = rpkm(DGEL_object, gene.length = "Length") %>% as.data.frame %>% cbind("gene_id"=DGEL_object$genes$Geneid,.)
+
+test = add_gene_annotation(RPKM_object,gene_id_column = "gene_id")
+
+test %>% dplyr::filter(!grepl("BRC1",gene_symbol))
+
+test %>% filter(str_detect(gene_symbol, "SMXL6|SMXL7|SMXL8")) %>% select(c("gene_id","gene_symbol",contains("ctr")))
+
+write.table(test, file = paste0("./output/",exp_name,"RPKM_exon_count.txt"), row.names=F, sep="\t", quote=F)
+
+####
+```
+
 Compare with JR featurecounts data:
 ```{r}
 feature_counts_rds = readRDS("./input/featureCounts.rds")
