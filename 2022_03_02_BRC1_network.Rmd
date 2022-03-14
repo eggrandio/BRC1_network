@@ -29,6 +29,7 @@ library(edgeR)
 #library(AnnotationHub)
 library(AnnotationDbi)
 library(org.At.tair.db)
+library(GO.db)
 #library(rBLAST)
 library(BSgenome.Athaliana.TAIR.TAIR9)
 library(csaw)
@@ -88,7 +89,7 @@ sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels=unique(gsub('.
 # Build design and contrasts for statistical tests
 design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
 
-my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1=GFP_BRC1ind-brc1,
+my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1 = GFP_BRC1ind-brc1,
                              levels=design)
 
 # Build DGEList object and normalize by library size
@@ -141,6 +142,28 @@ DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
 
 fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
 
+#####
+# Simplified test for one contrast:
+# Do statistical F-test with only one contrast
+test = glmQLFTest(fit, contrast=my_contrasts[,"GFP_BRC1ind_vs_brc1"]) %>% 
+  topTags(n = Inf) %>% as.data.frame()
+
+# Filter data first by FDR and then by Fold change
+FDRts = 0.05 #set FDR threshold
+FCts = log2(2) #set Fold change threshold
+
+filtered_tests = test %>% 
+  filter(logFC < FDRts) %>% 
+  filter(abs(logFC) > FCts)   #FDR and logFC are column names in "test" object
+
+# Write output file
+# emove "extra olumnts" that start with logCPM, F_ and PValue
+extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))] 
+filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+
+write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+#####
+
 test_list = list()
 
 for(contrast in colnames(my_contrasts)) {
@@ -166,6 +189,34 @@ extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(m
 filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
 
 write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+
+##### IN PROGRESS:
+### GO enrichment and GSEA 
+
+if(!exists("athGO")){
+  athGO = godata("org.At.tair.db", ont="BP")
+}
+#Object to match GO ID with GO definitions
+GO_def = AnnotationDbi::select(GO.db,
+                              keys=(keys(GO.db)),
+                              columns=c("GOID","TERM","DEFINITION"),
+                              keytype="GOID")
+#Object to find GO common ancestor
+GO_Anc = as.list(GOBPANCESTOR)
+
+
+GO_input = filtered_tests_output %>% dplyr::select(Geneid, logFC_GFP_BRC1ind_vs_brc1)
+
+GO_up = GO_input %>% filter(get(colnames(GO_input[2])) > 0)
+
+GOenrich_up = enrichGO(gene = GO_up,
+                OrgDb = org.At.tair.db,
+                keyType = "TAIR",
+                ont = "BP",
+                pAdjustMethod = "BH",
+                qvalueCutoff = 0.05)
+
+
 ```
 
 HBind RNAseq
@@ -620,6 +671,8 @@ export(test, "./output/test_csaw_rep1_2.bed")
 
 ###
 
+# Things to do:
+# Plot peak location respective of TSS. With "heatmap" and also distribution along genes (utr, cds, etc)
 
 
 ```
