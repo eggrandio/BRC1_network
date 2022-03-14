@@ -9,13 +9,50 @@ library(tidyverse)
 library(data.table)
 library(GenomicRanges)
 library(GenomicFeatures)
+library(plyranges)
 #library(readxl)
 
-# Sequence analysis
-library(biomaRt)
-library(Biostrings)
-library(plyranges)
+# Differential expression and ChIP analyses
 library(edgeR)
+library(csaw)
+
+# Gene annotation
+library(biomaRt)
+library(AnnotationDbi)
+library(org.At.tair.db)
+library(GO.db)
+library(clusterProfiler)
+ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
+ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
+#View(listAttributes(ensembl))
+
+# Sequence analysis
+library(Biostrings)
+library(BSgenome.Athaliana.TAIR.TAIR9)
+
+# Data visualization
+library(ggplot2)
+library(RColorBrewer)
+#library(Gviz)
+library(ComplexHeatmap)
+library(ggsci)
+library(ggrepel)
+library(directlabels)
+
+# Functions
+dss2df = function(dss) data.frame(PeakID=names(dss), seq=as.character(dss), width=width(dss))
+source("./R/add_gene_annotation.R")
+
+# Set global ggplot theme parameters
+theme_update(axis.text.x = element_text(color="black"), 
+             axis.text.y = element_text(color="black"),
+             axis.ticks = element_line(color="black"),
+             panel.border = element_rect(color="black", fill = NA),
+             panel.grid.minor = element_blank(),
+             panel.background = element_blank(),
+             plot.background = element_rect(fill = "transparent", color = NA))
+
+# Extra libraries
 #library(ChIPpeakAnno)
 #library(JASPAR2022)
 #library(JASPAR2020)
@@ -27,16 +64,7 @@ library(edgeR)
 #library(genbankr)
 #library(TxDb.Athaliana.BioMart.plantsmart51)
 #library(AnnotationHub)
-library(AnnotationDbi)
-library(org.At.tair.db)
-library(GO.db)
 #library(rBLAST)
-library(BSgenome.Athaliana.TAIR.TAIR9)
-library(csaw)
-
-
-ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
-ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
 
 #View(listAttributes(ensembl))
 
@@ -46,28 +74,6 @@ ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
 
 #ensembl = useMart("plants_mart",host="plants.ensembl.org")
 #ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
-
-dss2df = function(dss) data.frame(PeakID=names(dss), seq=as.character(dss), width=width(dss))
-source("./R/add_gene_annotation.R")
-
-# Data visualization
-library(ggplot2)
-library(RColorBrewer)
-#library(Gviz)
-library(ComplexHeatmap)
-library(ggsci)
-library(ggrepel)
-library(directlabels)
-
-
-# ggplot theme parameters
-theme_update(axis.text.x = element_text(color="black"), 
-             axis.text.y = element_text(color="black"),
-             axis.ticks = element_line(color="black"),
-             panel.border = element_rect(color="black", fill = NA),
-             panel.grid.minor = element_blank(),
-             panel.background = element_blank(),
-             plot.background = element_rect(fill = "transparent", color = NA))
 ```
 
 BRC1:GFP RNAseq
@@ -196,20 +202,31 @@ write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_
 if(!exists("athGO")){
   athGO = godata("org.At.tair.db", ont="BP")
 }
-#Object to match GO ID with GO definitions
+# Object to match GO ID with GO definitions
 GO_def = AnnotationDbi::select(GO.db,
                               keys=(keys(GO.db)),
                               columns=c("GOID","TERM","DEFINITION"),
                               keytype="GOID")
-#Object to find GO common ancestor
+# Object to find GO common ancestor
 GO_Anc = as.list(GOBPANCESTOR)
 
+# Format input data for GO and GSEA analyses
+fc_column = colnames(filtered_tests_output)[grepl(c("^logFC"),colnames(filtered_tests_output))] 
 
-GO_input = filtered_tests_output %>% dplyr::select(Geneid, logFC_GFP_BRC1ind_vs_brc1)
+GO_input = filtered_tests_output %>% dplyr::select(Geneid, all_of(fc_column))
 
-GO_up = GO_input %>% filter(get(colnames(GO_input[2])) > 0)
+genes_up = GO_input %>% filter(get(fc_column) > 0)
+genes_dn = GO_input %>% filter(get(fc_column) < 0)
 
-GOenrich_up = enrichGO(gene = GO_up,
+GOenrich_up = enrichGO(gene = genes_up,
+                OrgDb = org.At.tair.db,
+                keyType = "TAIR",
+                ont = "BP",
+                pAdjustMethod = "BH",
+                qvalueCutoff = 0.05)
+
+
+GOenrich_dn = enrichGO(gene = genes_dn,
                 OrgDb = org.At.tair.db,
                 keyType = "TAIR",
                 ont = "BP",
