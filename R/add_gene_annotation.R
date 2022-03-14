@@ -40,7 +40,7 @@ add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
   # Write output table, if no gene symbol, add gene id
   print("Writing output table")
   annotated_edgeR_output = edgeR_output %>%
-    mutate(gene_symbol = coalesce(gene_symbol,gene_id_column), .after=gene_id_column,
+    mutate(gene_symbol = coalesce(gene_symbol,get(gene_id_column)), .after=gene_id_column,
            long_description = long_description) %>%
     left_join(short_description, by = setNames("tair_locus",gene_id_column)) %>%
     relocate(short_description, .after = gene_symbol) %>%
