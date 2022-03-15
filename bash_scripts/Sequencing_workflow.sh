@@ -14,12 +14,8 @@ wget ftp://ftp.ensemblgenomes.org/pub/plants/release-52/fasta/arabidopsis_thalia
 
 # Build bowtie2 and HISAT2 genome indexes
 # Build bowtie2 index:
-<<<<<<< HEAD
 fasta_files=$(find *.fa.gz | paste -sd,)
-=======
-fasta_files=$(find *.fa | paste -sd,)
->>>>>>> ac70327f8ffd92878796905bd51c0989a9f4455b
-bowtie2-build --threads 4 -f $fasta_files athaliana
+bowtie2-build --threads 4 -f "${fasta_files}" athaliana
 
 # Retrieve ensemble plants 52 annotation file (.gff3) for hisat2 index
 cd ~/mapping/Ath_TAIR10_genome/
@@ -35,7 +31,7 @@ hisat2_extract_exons.py Arabidopsis_thaliana.TAIR10.52.gtf > Arabidopsis_thalian
 # hisat2 index requires unzipped fasta files
 gunzip -k *.fa.gz
 fasta_files=$(find *.fa | paste -sd,)
-hisat2-build --threads 4 --ss Arabidopsis_thaliana.TAIR10.52_splice_sites --exon Arabidopsis_thaliana.TAIR10.52_exons -f $fasta_files athaliana
+hisat2-build --threads 4 --ss Arabidopsis_thaliana.TAIR10.52_splice_sites --exon Arabidopsis_thaliana.TAIR10.52_exons -f "${fasta_files}" athaliana
 
 # To check strandness of fastq (if not known), align one file with hisat2 without setting --rna-strandness, then use rseqc to check strandness (requires .bed file for annotation). To interpret results, check https://www.biostars.org/p/295344/
 # In our case we know it is reverse stranded
@@ -51,7 +47,7 @@ agat_sp_manage_introns.pl --gff Arabidopsis_thaliana.TAIR10.52.gff3 --plot --bre
 
 # Check quality of sequences:
 fasta_files=*.fastq.gz
-fastqc -o fastqc_output -t 8 ${fasta_files}
+fastqc -o fastqc_output -t 8 "${fasta_files}"
 
 # Align using bowtie2/HISAT2
 
