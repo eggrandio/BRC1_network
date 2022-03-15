@@ -22,6 +22,8 @@ library(AnnotationDbi)
 library(org.At.tair.db)
 library(GO.db)
 library(clusterProfiler)
+library(pathview)
+
 ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
 ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
 #View(listAttributes(ensembl))
@@ -199,39 +201,79 @@ write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_
 ##### IN PROGRESS:
 ### GO enrichment and GSEA 
 
+# Generate GO object with Information Content for semantic similarity analyses
 if(!exists("athGO")){
   athGO = godata("org.At.tair.db", ont="BP")
 }
+# Object to find GO common ancestor
+GO_Anc = as.list(GOBPANCESTOR)
+
 # Object to match GO ID with GO definitions
 GO_def = AnnotationDbi::select(GO.db,
                               keys=(keys(GO.db)),
                               columns=c("GOID","TERM","DEFINITION"),
                               keytype="GOID")
-# Object to find GO common ancestor
-GO_Anc = as.list(GOBPANCESTOR)
 
-# Format input data for GO and GSEA analyses
+
+
+# Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
 fc_column = colnames(filtered_tests_output)[grepl(c("^logFC"),colnames(filtered_tests_output))] 
-
 GO_input = filtered_tests_output %>% dplyr::select(Geneid, all_of(fc_column))
 
-genes_up = GO_input %>% filter(get(fc_column) > 0)
-genes_dn = GO_input %>% filter(get(fc_column) < 0)
 
-GOenrich_up = enrichGO(gene = genes_up,
+
+
+ranked_genes = setNames(GO_input[,fc_column],
+                        GO_input$Geneid) %>% sort %>% rev
+
+ranked_genes[ranked_genes > 0]
+
+genes_up = ranked_genes[ranked_genes > 0]
+genes_dn = ranked_genes[ranked_genes < 0]
+
+# Perform GO enrichment analysis with up- and down-regulated genes
+GOenrich_up = enrichGO(gene = names(genes_up),
                 OrgDb = org.At.tair.db,
                 keyType = "TAIR",
                 ont = "BP",
                 pAdjustMethod = "BH",
                 qvalueCutoff = 0.05)
 
+goplot(GOenrich_up)
 
-GOenrich_dn = enrichGO(gene = genes_dn,
+GOenrich_dn = enrichGO(gene = names(genes_dn),
                 OrgDb = org.At.tair.db,
                 keyType = "TAIR",
                 ont = "BP",
                 pAdjustMethod = "BH",
                 qvalueCutoff = 0.05)
+
+goplot(GOenrich_dn)
+
+# KEGG enrichment 
+# search_kegg_organism('ath', by='kegg_code')
+
+# To do, merge up and down regulated pathways for plotting together
+KEG_enrich_up = enrichKEGG(gene         = names(genes_up),
+                           organism     = "ath",
+                           pvalueCutoff = 0.05)
+
+KEG_enrich_dn = enrichKEGG(gene         = genes_dn$Geneid,
+                           organism     = "ath",
+                           pvalueCutoff = 0.05)
+
+KEGG_ids = KEG_enrich_up %>% as.data.frame() %>% pull(ID)
+KEGG_ids2 = KEG_enrich_dn %>% as.data.frame() %>% pull(ID)
+
+#browseKEGG(KEG_enrich_up, KEGG_ids[1])
+
+pathview(gene.data  = genes_up,
+         pathway.id = KEGG_ids[1],
+         species    = "ath",
+         gene.idtype = "TAIR",
+         gene.annotpkg = "org.At.tair.db",
+         limit      = list(gene=max(abs(genes_up)), cpd=1))
+
 
 
 ```
@@ -832,6 +874,47 @@ write.table(filtered_tests_output, file = paste0("./output/",exp_name,"_filtered
 
 Extra code:
 ```{r}
+### map to entrez id
+# names(genes_up)
+# 
+# db_ensembl_id = AnnotationDbi::select(org.At.tair.db,
+#                                            column = "ENTREZID",
+#                                            keys = names(genes_up),
+#                                            keytype = "TAIR",
+#                                            multiVals = "first")
+# 
+# 
+# bm_ensembl_id = getBM(attributes = c("tair_locus","entrezgene_id"),
+#                             filters = "tair_locus",
+#                             values = names(genes_up),
+#                             mart = ensembl)
+# 
+# test = full_join(db_ensembl_id,bm_ensembl_id, by = c("TAIR" = "tair_locus"))
+# ###
+# pathways.list <- keggList("pathway", "ath")
+# 
+# pathway.codes <- sub("path:", "", names(pathways.list)) 
+# 
+# genes.by.pathway <- sapply(pathway.codes,
+#     function(pwid){
+#         pw <- keggGet(pwid)
+#         if (is.null(pw[[1]]$GENE)) return(NA)
+#         pw2 <- pw[[1]]$GENE[c(TRUE,FALSE)] # may need to modify this to c(FALSE, TRUE) for other organisms
+#         pw2 <- unlist(lapply(strsplit(pw2, split = ";", fixed = T), function(x)x[1]))
+#         return(pw2)
+#     }
+# )
+# head(genes.by.pathway)
+# 
+# test2 = test %>% filter(!is.na(ENTREZID)) %>% pull(TAIR)
+# 
+# for(g in test2){
+#   print(any(sapply(genes.by.pathway,function(x) g %in% x)))
+# }
+# 
+# ###
+
+
 # #  Pair-wise comparisons
 # design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
 # 
