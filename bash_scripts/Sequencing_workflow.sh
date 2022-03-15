@@ -14,7 +14,11 @@ wget ftp://ftp.ensemblgenomes.org/pub/plants/release-52/fasta/arabidopsis_thalia
 
 # Build bowtie2 and HISAT2 genome indexes
 # Build bowtie2 index:
+<<<<<<< HEAD
 fasta_files=$(find *.fa.gz | paste -sd,)
+=======
+fasta_files=$(find *.fa | paste -sd,)
+>>>>>>> ac70327f8ffd92878796905bd51c0989a9f4455b
 bowtie2-build --threads 4 -f $fasta_files athaliana
 
 # Retrieve ensemble plants 52 annotation file (.gff3) for hisat2 index
