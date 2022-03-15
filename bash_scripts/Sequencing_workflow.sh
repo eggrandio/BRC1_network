@@ -6,7 +6,7 @@ conda install fastqc
 conda install hisat2
 conda install macs2
 conda install agat
-(...)
+# (...)
 
 # Retrieve Arabidopsis genome from ensemble:
 cd ~/mapping/Ath_TAIR10_genome/
