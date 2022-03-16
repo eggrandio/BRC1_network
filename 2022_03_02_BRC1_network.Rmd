@@ -10,6 +10,7 @@ library(data.table)
 library(GenomicRanges)
 library(GenomicFeatures)
 library(plyranges)
+library(NbClust)
 #library(readxl)
 
 # Differential expression and ChIP analyses
@@ -23,6 +24,7 @@ library(org.At.tair.db)
 library(GO.db)
 library(clusterProfiler)
 library(pathview)
+library(GOSemSim)
 
 ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
 ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
@@ -35,15 +37,25 @@ library(BSgenome.Athaliana.TAIR.TAIR9)
 # Data visualization
 library(ggplot2)
 library(RColorBrewer)
+library(circlize)
+library(randomcoloR)
+library(dendextend)
 #library(Gviz)
 library(ComplexHeatmap)
 library(ggsci)
 library(ggrepel)
 library(directlabels)
+library(WeightedCluster)
 
 # Functions
-dss2df = function(dss) data.frame(PeakID=names(dss), seq=as.character(dss), width=width(dss))
 source("./R/add_gene_annotation.R")
+
+dss2df = function(dss) data.frame(PeakID=names(dss), seq=as.character(dss), width=width(dss))
+
+mode_value = function(x) {
+  ux = unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
 
 # Set global ggplot theme parameters
 theme_update(axis.text.x = element_text(color="black"), 
@@ -100,6 +112,8 @@ design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
 my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1 = GFP_BRC1ind-brc1,
                              levels=design)
 
+# For Gema: conver to function
+#####
 # Build DGEList object and normalize by library size
 DGEL_object = DGEList(counts = counts, 
                       genes = gene_info,
@@ -116,34 +130,6 @@ RPKM_cutoff = 1
 drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
 
 DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors
-
-# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
-mds = plotMDS(DGEL_object_filtered, plot=FALSE)
-dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
-dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
-
-MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
-  mutate(treatment = recode(Group,
-                            "brc1" = "brc1",
-                            "GFP_BRC1ind" = "GFP:BRC1ind"))
-
-custom_jco = pal_jco("default")(4)[c(3,1)]
-
-ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
-  geom_point() +
-  scale_color_manual(values = custom_jco) +
-  labs(x = dim1_label,
-       y = dim2_label) +
-  geom_dl(aes(label = treatment),
-          method = "smart.grid") +
-  coord_cartesian(clip = "off") +
-  theme(aspect.ratio = 1,
-        legend.position = "left",
-        legend.text = element_text(size = 10),
-        legend.text.align = 0,
-        legend.spacing.x = unit(0.5, "mm"),
-        legend.title = element_blank(),
-        legend.key=element_blank())
 
 # Perform statistical test using my_contrasts
 DGEL_object_filtered = estimateDisp(DGEL_object_filtered, design, robust=TRUE)
@@ -198,15 +184,52 @@ filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select
 
 write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
 
+# Save results in object to merge them with other results later
+
+GFPBRC1ind_results = filtered_tests_output
+
+##### end of function
+
+# Data visaluzation
+# MDS plot (distance calculated from 500 top genes with highest deviation pairwise between groups
+mds = plotMDS(DGEL_object_filtered, plot=FALSE)
+dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
+dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
+
+MDS_plot = data.frame(Dim1 = mds$x, Dim2 = mds$y, Group = DGEL_object_filtered$samples$group) %>% 
+  mutate(treatment = recode(Group,
+                            "brc1" = "brc1",
+                            "GFP_BRC1ind" = "GFP:BRC1ind"))
+
+custom_jco = pal_jco("default")(4)[c(3,1)]
+
+ggplot(MDS_plot, aes(x=Dim1, y=Dim2, color = treatment)) + 
+  geom_point() +
+  scale_color_manual(values = custom_jco) +
+  labs(x = dim1_label,
+       y = dim2_label) +
+  geom_dl(aes(label = treatment),
+          method = "smart.grid") +
+  coord_cartesian(clip = "off") +
+  theme(aspect.ratio = 1,
+        legend.position = "left",
+        legend.text = element_text(size = 10),
+        legend.text.align = 0,
+        legend.spacing.x = unit(0.5, "mm"),
+        legend.title = element_blank(),
+        legend.key=element_blank())
+
+# Volcano plot
+
+
+
 ##### IN PROGRESS:
 ### GO enrichment and GSEA 
 
-# Generate GO object with Information Content for semantic similarity analyses
+# Generate GO object with Information Content for Semantic Similarity analyses
 if(!exists("athGO")){
   athGO = godata("org.At.tair.db", ont="BP")
 }
-# Object to find GO common ancestor
-GO_Anc = as.list(GOBPANCESTOR)
 
 # Object to match GO ID with GO definitions
 GO_def = AnnotationDbi::select(GO.db,
@@ -214,19 +237,21 @@ GO_def = AnnotationDbi::select(GO.db,
                               columns=c("GOID","TERM","DEFINITION"),
                               keytype="GOID")
 
+# Object to find GO common ancestor
+GO_anc = as.list(GOBPANCESTOR)
 
+# Object to match GO ID with GO definitions
+GO_def = AnnotationDbi::select(GO.db,
+                              keys=(keys(GO.db)),
+                              columns=c("GOID","TERM","DEFINITION"),
+                              keytype="GOID")
 
 # Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
 fc_column = colnames(filtered_tests_output)[grepl(c("^logFC"),colnames(filtered_tests_output))] 
 GO_input = filtered_tests_output %>% dplyr::select(Geneid, all_of(fc_column))
 
-
-
-
 ranked_genes = setNames(GO_input[,fc_column],
                         GO_input$Geneid) %>% sort %>% rev
-
-ranked_genes[ranked_genes > 0]
 
 genes_up = ranked_genes[ranked_genes > 0]
 genes_dn = ranked_genes[ranked_genes < 0]
@@ -238,6 +263,7 @@ GOenrich_up = enrichGO(gene = names(genes_up),
                 ont = "BP",
                 pAdjustMethod = "BH",
                 qvalueCutoff = 0.05)
+GOenrich_up %>% as.data.frame() %>% pull(ID) %>% length()
 
 goplot(GOenrich_up)
 
@@ -249,6 +275,161 @@ GOenrich_dn = enrichGO(gene = names(genes_dn),
                 qvalueCutoff = 0.05)
 
 goplot(GOenrich_dn)
+
+#####
+# Clustering of GO enriched terms
+# Generate object with GO Semantic Similarity and Information Content
+
+
+# 3- Summarize GO by semantic similarity
+# Get common GO terms and calculate semantic similarity between them
+GO_data = as.data.frame(GOenrich_dn) # to query for GO IDs and descriptions
+
+GO_IDs = GO_data %>% pull(unique(ID))
+ss_rel = mgoSim(GO_IDs, GO_IDs, semData=athGO, measure="Rel", combine=NULL)
+
+# Calculate optimal cluster number "mathematically"
+#### WeighedCluster
+GO_hclust = (1 - ss_rel) %>% as.dist %>%
+  hclust(method = "ward.D2")
+
+GO_hclust_n = length(GO_hclust$order)
+
+clustrange = as.clustrange(GO_hclust, diss=(1 - ss_rel), ncluster = GO_hclust_n)
+
+# R2 and R2-sq will always give maximum number of clusters as optimal (see WeighedCluster user's guide)
+# RHC is reverse HC, so max value is ideal
+clustrange_summary = summary(clustrange, max.rank=1) %>% rownames_to_column("method") %>% filter(!(method %in% c("R2","R2sq"))) 
+
+best_cluster = clustrange_summary$`1. N groups` %>% mode_value()
+
+best_cluster
+
+plot(clustrange, 
+     stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+     norm="zscore",lwd=3)
+
+pamRange <- wcKMedRange((1 - ss_rel), kvals=2:GO_hclust_n)
+pamrange_summary = summary(pamRange, max.rank=2)
+best_cluster_pam = pamrange_summary$`1. N groups` %>% mode_value()
+
+best_cluster_pam
+
+plot(pamRange, 
+     stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+     norm="zscore",lwd=3)
+####
+which.peaks <- function(x,partial=TRUE,decreasing=FALSE){
+     if (decreasing){
+         if (partial){
+             which(diff(c(FALSE,diff(x)>0,TRUE))>0)
+         }else {
+             which(diff(diff(x)>0)>0)+1
+         }
+     }else {
+         if (partial){
+             which(diff(c(TRUE,diff(x)>=0,FALSE))<0)
+         }else {
+             which(diff(diff(x)>=0)<0)+1
+         }
+     }
+ }
+
+test = pamRange$stats$PBC
+
+which.peaks(test)
+sapply(pamRange$stats, which.peaks)
+
+###
+# Visualize GO similarity
+row_labs = structure(paste(GO_IDs,GO_data$Description), names = paste0(GO_IDs))
+col_fun = colorRamp2(c(0,1), c("white", "red"))
+
+test = structure(GO_data$p.adjust, names = paste0(GO_IDs))
+pvalue_col_fun = colorRamp2(c(0, 0.05), c("green", "white")) 
+
+ha = HeatmapAnnotation(pvalue = test,
+                       which = "row", 
+                       annotation_label = "adj. p-val.",
+                       annotation_name_side="top",
+                       annotation_name_rot=45,
+                       col = list(pvalue = pvalue_col_fun),
+                       annotation_legend_param = list(
+                         pvalue = list(
+                           at = c(0, 0.05))))
+
+GO_heatmap = Heatmap(ss_rel,
+                     name = "Similarity",
+                     clustering_method_rows = "ward.D2",
+                     clustering_method_columns = "ward.D2",
+                     col = col_fun,
+                     row_labels = row_labs[rownames(ss_rel)],
+                     row_names_max_width = max_text_width(row_labs),
+                     right_annotation = ha,
+                     show_column_names = FALSE
+                     )
+
+GO_heatmap
+
+# Visualize GO clustering
+# dd = (1 - ss_rel) %>% as.dist %>%
+#   hclust(method = "ward.D2") %>% as.dendrogram(hang = -1) %>%
+#   set("labels_cex", 0.6) 
+# 
+# labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
+# 
+# par(mar = c(1, 1, 1, 20),
+#     xpd = NA) 
+# plot(dd, horiz = T)
+
+
+# In this case, upon visual inspection (GO_heatmap) we see three clusters. Replot with colors to visualize
+cluster_number = 15
+div_pal = distinctColorPalette(cluster_number)
+
+clusters = cutree(dd, cluster_number,order_clusters_as_data=T) %>% 
+  as.factor() %>% fct_inorder() %>% fct_rev()
+
+dd = (1 - ss_rel) %>% as.dist %>%
+  hclust(method = "ward.D2") %>% as.dendrogram(hang = -1) %>%
+  set("labels_cex", 0.6) %>% 
+  set("branches_k_color", k=cluster_number, value = div_pal) %>% 
+  set("labels_col", k=cluster_number, value = div_pal)
+
+labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
+
+par(mar = c(1, 1, 1, 20),
+    xpd = NA,
+    bg = "grey50"
+    ) 
+plot(dd, horiz = T)
+
+# 4- Select representative term for each cluster
+# Retrieve Information Content for each term
+tmp = GO_data %>% 
+  mutate(Cluster = factor(clusters[match(Description, names(clusters))])) %>%
+  dplyr::select(c("ID","Description","Cluster")) %>% mutate(IC = avinGO@IC[ID])
+
+# Retrieve ancestral GO terms
+tmp2 = GO_anc[tmp$ID] %>% stack() %>% 
+  mutate(CL = tmp$Cluster[match(ind,tmp$ID)]) %>% 
+  data.table()
+
+# Obtain representative ancestral GO term by IC^2 (if there is a tie it will return only one term)
+reprGO = tmp2[,.N,by=c("CL","values")] %>% 
+  mutate(IC = avinGO@IC[values]) %>% 
+  mutate(importance = (IC^2)) %>% group_by(CL) %>% 
+  slice(which.max(importance)) %>% 
+  #dplyr::filter(importance == max(importance,na.rm=T)) %>%
+  ungroup() %>% mutate(Desc = GO_def$TERM[match(values,GO_def$GOID)])
+
+reprGO
+
+
+####
+
+
+
 
 # KEGG enrichment 
 # search_kegg_organism('ath', by='kegg_code')
