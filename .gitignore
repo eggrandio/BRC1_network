@@ -47,6 +47,7 @@ vignettes/*.pdf
 ~$*.xls*
 *.xlk
 ~$*.ppt*
+~$*.tmp*
 
 # Prevent mac users to commit .DS_Store files
 *.DS_Store
