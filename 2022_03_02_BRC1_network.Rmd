@@ -112,7 +112,7 @@ design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
 my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1 = GFP_BRC1ind-brc1,
                              levels=design)
 
-# For Gema: conver to function
+# For Gema: convert to function
 #####
 # Build DGEList object and normalize by library size
 DGEL_object = DGEList(counts = counts, 
@@ -562,6 +562,9 @@ filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select
 
 write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
 
+# Save results in object to merge them with other results later
+
+HBind_results = filtered_tests_output
 
 ###
 # Upset plot to see overlap
@@ -723,6 +726,12 @@ extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(m
 filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
 
 write.table(filtered_tests_output, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
+
+# Save results in object to merge them with other results later
+
+ABA_results = filtered_tests_output
+
+
 ```
 
 GFP:BRC1 ChIP
@@ -741,6 +750,79 @@ ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) 
 
 # Export 3kb up and 1kb down to bed file
 write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
+
+# Experiment name and date of analysis for output files:
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
+
+#feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
+
+# Retrieve 3kb upstream and 1kb downstream of TSS 
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) %>% 
+  anchor_5p %>% stretch(-2000) %>% 
+  `mcols<-`(value = list("name" = .$gene_id))
+
+# Export 3kb up and 1kb down to bed file
+write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
+
+# Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
+# Import MACS2 output. Select the least restrictive MACS2 peaks (no qvalue filter, q1)
+peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q0001.*\\.narrowPeak$", full.names=TRUE)
+
+peak_grangeslist = sapply(peak_file_list, read_narrowpeaks) %>% `names<-`(peak_file_list %>% str_extract("BRC1_ChIP*.")) %>% GRangesList
+
+peak_coverage = coverage(peak_grangeslist)
+#peak_coverage
+
+# Make GRanges and add column names to parse to GFF
+covered_ranges = IRanges::slice(peak_coverage, lower=2, rangesOnly=T) %>% GRanges %>% 
+  mutate(gene_id = paste0("peak_",rep(1:length(.)))) %>% 
+  mutate(name = gene_id) %>% 
+  mutate(type = rep("gene",length(.)))
+
+write_bed(covered_ranges, file = "./output/macs2_q0001_consensus.bed")
+write_gff3(covered_ranges, file = "./output/macs2_q0001_consensus.gff")
+
+macs2_consensus_q0001 = covered_ranges
+
+###
+peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q001.*\\.narrowPeak$", full.names=TRUE)
+
+peak_grangeslist = sapply(peak_file_list, read_narrowpeaks) %>% `names<-`(peak_file_list %>% str_extract("BRC1_ChIP*.")) %>% GRangesList
+
+peak_coverage = coverage(peak_grangeslist)
+#peak_coverage
+
+# Make GRanges and add column names to parse to GFF
+covered_ranges = IRanges::slice(peak_coverage, lower=2, rangesOnly=T) %>% GRanges %>% 
+  mutate(gene_id = paste0("peak_",rep(1:length(.)))) %>% 
+  mutate(name = gene_id) %>% 
+  mutate(type = rep("gene",length(.)))
+
+write_bed(covered_ranges, file = "./output/macs2_q001_consensus.bed")
+write_gff3(covered_ranges, file = "./output/macs2_q001_consensus.gff")
+
+macs2_consensus_q001 = covered_ranges
+
+###
+peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q0\\.05.*\\.narrowPeak$", full.names=TRUE)
+
+peak_grangeslist = sapply(peak_file_list, read_narrowpeaks) %>% `names<-`(peak_file_list %>% str_extract("BRC1_ChIP*.")) %>% GRangesList
+
+peak_coverage = coverage(peak_grangeslist)
+#peak_coverage
+
+# Make GRanges and add column names to parse to GFF
+covered_ranges = IRanges::slice(peak_coverage, lower=2, rangesOnly=T) %>% GRanges %>% 
+  mutate(gene_id = paste0("peak_",rep(1:length(.)))) %>% 
+  mutate(name = gene_id) %>% 
+  mutate(type = rep("gene",length(.)))
+
+write_bed(covered_ranges, file = "./output/macs2_q005_consensus.bed")
+write_gff3(covered_ranges, file = "./output/macs2_q005_consensus.gff")
+
+macs2_consensus_q005 = covered_ranges
 
 ###### Use edgeR with macs2 consensus peaks for quantification
 # Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
@@ -916,6 +998,59 @@ export(test, "./output/test_csaw_rep1_2.bed")
 
 
 ```
+
+BRC1 network
+```{r}
+macs2_consensus_q0001
+macs2_consensus_q001
+macs2_consensus_q005
+
+ABA_results
+HBind_results
+GFPBRC1ind_results
+
+test = ABA_results %>% select(c(Geneid,logFC_brc1_ctr_vs_wt_ctr,FDR_brc1_ctr_vs_wt_ctr,logFC_tri_ctr_vs_wt_ctr,FDR_tri_ctr_vs_wt_ctr))
+
+#### BUILD MATRIX FOR HEATMAP
+data = test
+gene_symbol = AnnotationDbi::mapIds(org.At.tair.db,
+                                    column = "SYMBOL",
+                                    keys = data$Geneid,
+                                    keytype = "TAIR",
+                                    multiVals = "first")
+mat_row_labels = apply(cbind(data$Geneid, gene_symbol), 1, 
+        function(x) paste(x[!is.na(x)], collapse = " "))
+
+filtered_data = as.matrix(data[,c(2,4)]) %>% `rownames<-`(mat_row_labels) %>% `colnames<-`(c("brc1","triple"))
+
+Heatmap(filtered_data,
+        clustering_method_rows = "ward.D2",
+        clustering_method_columns = "ward.D2")
+
+#Z-score by rows
+x = filtered_data
+x = as.matrix(x)
+nsamples = ncol(x)
+M = rowMeans(x, na.rm = TRUE)
+DF = nsamples - 1L
+IsNA = is.na(x)
+if (any(IsNA)) {
+  mode(IsNA) = "integer"
+  DF = DF - rowSums(IsNA)
+  DF[DF == 0L] = 1L}
+x = x - M
+V = rowSums(x^2L, na.rm = TRUE)/DF
+x = x/sqrt(V + 0.01)
+
+Z <- t(scale(t(filtered_data)))
+
+
+Heatmap(Z,
+        clustering_method_rows = "ward.D2",
+        clustering_method_columns = "ward.D2")
+```
+
+
 
 
 # Extra code
