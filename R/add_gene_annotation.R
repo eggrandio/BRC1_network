@@ -1,14 +1,12 @@
 add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
   # Load prerequisite libraries and generate ensemble plants biomaRt object 
-  library(org.At.tair.db)
-  library(biomaRt)
-  library(tidyverse)
   if(!exists("ensembl")){
-    ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
-    ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
-  }
+    ensembl = biomaRt::useMart(biomart="plants_mart",
+                               dataset="athaliana_eg_gene",
+                               host="https://plants.ensembl.org")
+    }
   edgeR_output = as.data.frame(edgeR_output)
-  gene_list = edgeR_output %>% pull(gene_id_column)
+  gene_list = edgeR_output %>% dplyr::pull(gene_id_column)
   print(paste0(length(gene_list)," genes detected"))
   
   # Get gene symbol from org.At.tair.db (separated by comma if there are multiple symbols)
@@ -30,20 +28,20 @@ add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
   
   # Get short gene description from ensemble plants and remove [Source:IDXXX]
   print("Retrieving short gene description")
-  short_description = getBM(attributes = c("tair_locus","description"),
-                            filters = "tair_locus",
-                            values = gene_list,
-                            mart = ensembl) %>%
+  short_description = biomaRt::getBM(attributes = c("tair_locus","description"),
+                                     filters = "tair_locus",
+                                     values = gene_list,
+                                     mart = ensembl) %>%
     dplyr::rename(short_description = description) %>%
-    mutate(short_description = gsub(" \\[Source.*","",short_description))
+    dplyr::mutate(short_description = gsub(" \\[Source.*","",short_description))
   
   # Write output table, if no gene symbol, add gene id
   print("Generating output table")
   annotated_edgeR_output = edgeR_output %>%
-    mutate(gene_symbol = coalesce(gene_symbol,get(gene_id_column)), .after=all_of(gene_id_column),
+    mutate(gene_symbol = dplyr::coalesce(gene_symbol,get(gene_id_column)), .after=all_of(gene_id_column),
            long_description = long_description) %>%
-    left_join(short_description, by = setNames("tair_locus",all_of(gene_id_column))) %>%
-    relocate(short_description, .after = gene_symbol) %>%
+    dplyr::left_join(short_description, by = setNames("tair_locus",all_of(gene_id_column))) %>%
+    dplyr::relocate(short_description, .after = gene_symbol) %>%
     dplyr::select(-c(Chr,Start,End,Strand,Length))
   
   # Return output

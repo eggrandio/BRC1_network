@@ -26,8 +26,9 @@ library(clusterProfiler)
 library(pathview)
 library(GOSemSim)
 
-ensembl = useMart("plants_mart",host="https://plants.ensembl.org")
-ensembl = useDataset("athaliana_eg_gene",mart=ensembl)
+ensembl = biomaRt::useMart(biomart="plants_mart",
+                           dataset="athaliana_eg_gene",
+                           host="https://plants.ensembl.org")
 #View(listAttributes(ensembl))
 
 # Sequence analysis
@@ -41,7 +42,6 @@ library(RColorBrewer)
 library(circlize)
 library(randomcoloR)
 library(dendextend)
-#library(Gviz)
 library(ComplexHeatmap)
 library(ggsci)
 library(ggrepel)
@@ -53,6 +53,7 @@ library(WeightedCluster)
 source("./R/add_gene_annotation.R")
 source("./R/difexp_analysis.R")
 source("./R/volcano_plot.R")
+source("./R/mds_ggplot.R")
 source("./R/mode_value.R")
 source("./R/dss2df.R")
 
