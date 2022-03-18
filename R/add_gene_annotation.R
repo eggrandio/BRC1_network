@@ -13,20 +13,20 @@ add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
   
   # Get gene symbol from org.At.tair.db (separated by comma if there are multiple symbols)
   print("Retrieving gene symbol")
-  gene_symbol = AnnotationDbi::mapIds(org.At.tair.db,
-                                      column = "SYMBOL",
-                                      keys = gene_list,
-                                      keytype = "TAIR",
-                                      multiVals = "list") %>%
+  gene_symbol = suppressMessages(AnnotationDbi::mapIds(org.At.tair.db,
+                                                       column = "SYMBOL",
+                                                       keys = gene_list,
+                                                       keytype = "TAIR",
+                                                       multiVals = "list")) %>%
     map_chr(., ~str_c(.x, collapse=", "))
-
+  
   # Get long gene description from org.At.tair.db (only one description is retrieved)
   print("Retrieving long gene description")
-  long_description = AnnotationDbi::mapIds(org.At.tair.db,
-                                           column = "GENENAME",
-                                           keys = gene_list,
-                                           keytype = "TAIR",
-                                           multiVals = "first")
+  long_description = suppressMessages(AnnotationDbi::mapIds(org.At.tair.db,
+                                                            column = "GENENAME",
+                                                            keys = gene_list,
+                                                            keytype = "TAIR",
+                                                            multiVals = "first"))
   
   # Get short gene description from ensemble plants and remove [Source:IDXXX]
   print("Retrieving short gene description")
@@ -38,14 +38,14 @@ add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
     mutate(short_description = gsub(" \\[Source.*","",short_description))
   
   # Write output table, if no gene symbol, add gene id
-  print("Writing output table")
+  print("Generating output table")
   annotated_edgeR_output = edgeR_output %>%
-    mutate(gene_symbol = coalesce(gene_symbol,get(gene_id_column)), .after=gene_id_column,
+    mutate(gene_symbol = coalesce(gene_symbol,get(gene_id_column)), .after=all_of(gene_id_column),
            long_description = long_description) %>%
-    left_join(short_description, by = setNames("tair_locus",gene_id_column)) %>%
+    left_join(short_description, by = setNames("tair_locus",all_of(gene_id_column))) %>%
     relocate(short_description, .after = gene_symbol) %>%
     dplyr::select(-c(Chr,Start,End,Strand,Length))
-
+  
   # Return output
   return(annotated_edgeR_output)
 }
