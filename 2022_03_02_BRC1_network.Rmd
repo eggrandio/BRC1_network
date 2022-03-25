@@ -43,6 +43,7 @@ library(circlize)
 library(randomcoloR)
 library(dendextend)
 library(ComplexHeatmap)
+library(EnrichedHeatmap)
 library(ggsci)
 library(ggrepel)
 library(ggpmisc)
@@ -288,7 +289,7 @@ ggsave(volc_plot2,
 GFP:BRC1 ChIP
 ```{r}
 # Experiment name and date of analysis for output files:
-exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
+exp_name = paste0(format(Sys.Date(),"%Y_%m_%d_"), "ChIP_GFPBRC1ind_")
 
 #feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
 ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
@@ -302,20 +303,20 @@ ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) 
 # Export 3kb up and 1kb down to bed file
 write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
 
-# Experiment name and date of analysis for output files:
-exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
-
-#feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
-ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
-ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
-
-# Retrieve 3kb upstream and 1kb downstream of TSS 
-ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) %>% 
-  anchor_5p %>% stretch(-2000) %>% 
-  `mcols<-`(value = list("name" = .$gene_id))
-
-# Export 3kb up and 1kb down to bed file
-write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
+# # Experiment name and date of analysis for output files:
+# exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ChIP_GFPBRC1ind_")
+# 
+# #feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
+# ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+# ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
+# 
+# # Retrieve 3kb upstream and 1kb downstream of TSS 
+# ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) %>% 
+#   anchor_5p %>% stretch(-2000) %>% 
+#   `mcols<-`(value = list("name" = .$gene_id))
+# 
+# # Export 3kb up and 1kb down to bed file
+# write_bed(ath_3kup_1kdown, "./output/ath_3kup_1kdown.bed")
 
 # Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
 # Import MACS2 output. Select the least restrictive MACS2 peaks (no qvalue filter, q1)
@@ -481,7 +482,7 @@ data <- windowCounts(bam_files, ext=max_total_ccf, width=10)
 
 # remove "unintersting regions"
 binned <- windowCounts(bam_files, bin=TRUE, width=10000)
-keep <- filterWindowsGlobal(data, binned)$filter > log2(5)
+keep <- filterWindowsGlobal(data, binned)$filter > log2(2)
 data2 <- data[keep,]
 
 data2 <- normFactors(binned, se.out=data2)
@@ -516,7 +517,7 @@ data <- windowCounts(bam_files2, ext=max_total_ccf, width=10)
 
 # remove "unintersting regions"
 binned <- windowCounts(bam_files2, bin=TRUE, width=10000)
-keep <- filterWindowsGlobal(data, binned)$filter > log2(5)
+keep <- filterWindowsGlobal(data, binned)$filter > log2(2)
 data2 <- data[keep,]
 
 data2 <- normFactors(binned, se.out=data2)
@@ -546,6 +547,117 @@ export(test, "./output/test_csaw_rep1_2.bed")
 
 # Things to do:
 # Plot peak location respective of TSS. With "heatmap" and also distribution along genes (utr, cds, etc)
+tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+
+#Import Bayes Peak output for each sample (find overlapping peaks in three replicates)
+peak_files = list.files(path = "./output/", pattern = ".bed", all.files = TRUE,
+           full.names = TRUE)
+
+peak_files[5:7]
+peak_file_names = sapply(strsplit(peak_files[5:7], "_"), function(x) x[2])
+
+list1 = lapply(peak_files[5:7], read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+peak_file_names = c("csaw","csaw12")
+list2 = lapply(peak_files[8:9], read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+list3 = c(list1,list2)
+
+ext5 = 10000
+ext3 = 1000
+test = lapply(list3,normalizeToMatrix,
+              target = tss,
+              extend = c(ext5,ext3),
+              verbose = FALSE,
+              mean_mode = "w0", w = 25, 
+              background = 0, smooth = TRUE)
+
+
+top_anno = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = "grey30"),
+                                                   axis_param = list(side = "left")))
+                             
+test2 = mapply(EnrichedHeatmap,test, column_title = names(test), 
+               MoreArgs = list(col = c("white", "grey30"),
+                               use_raster = TRUE, raster_resize_mat = TRUE, 
+                               raster_quality = 1,
+                               show_heatmap_legend = FALSE, 
+                               top_annotation = top_anno))
+
+###
+ht_list2 = sapply(test2,"+")
+
+###
+ht_list = NULL
+
+for(i in seq_along(test2)){
+  ht_list = ht_list + test2[[i]]
+}
+
+ht_list %>% class
+
+# draw(ht_list)
+
+figure_filename = paste0("./output/peak_location_",ext5,"_",ext3,".png")
+  
+png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
+draw(ht_list, 
+     ht_gap = unit(1, "cm"),
+     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
+dev.off()
+
+#### To do: plot HB Dapseq data relative to TSS
+peak_files = list.files(path = "./input/dapseq_data/", pattern = "*.narrowPeak", all.files = TRUE,
+           full.names = TRUE) %>% str_extract(".*HB_ATHB21.*|.*HB_ATHB40.*|.*HB_ATHB53.*") %>% as.vector %>% discard(is.na)
+
+peak_file_names = c("HB21","HB21_amp","HB40","HB40_amp","HB53","HB53_amp")
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names) %>% `seqlevelsStyle<-`(seqlevelsStyle(tss))
+
+peak_list_200 = lapply(peak_list, function(x) filter(x, score>200))
+
+ext5 = 3000
+ext3 = 1000
+test = lapply(peak_list_200,normalizeToMatrix,
+              target = tss,
+              extend = c(ext5,ext3),
+              #value_column = 2, #use score as value for colors
+              verbose = FALSE,
+              mean_mode = "w0", w = 25, 
+              background = 0, smooth = TRUE)
+
+
+top_anno = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = "grey30"),
+                                                   axis_param = list(side = "left")))
+                             
+test2 = mapply(EnrichedHeatmap,test, column_title = names(test), 
+               MoreArgs = list(col = c("white", "grey30"),
+                               use_raster = TRUE, raster_resize_mat = TRUE, 
+                               raster_quality = 1,
+                               show_heatmap_legend = FALSE, 
+                               top_annotation = top_anno))
+
+###
+#ht_list2 = sapply(test2,"+")
+
+###
+ht_list = NULL
+
+for(i in seq_along(test2)){
+  ht_list = ht_list + test2[[i]]
+}
+
+# ht_list %>% class
+
+# draw(ht_list)
+
+figure_filename = paste0("./output/HB_peak200_location_",ext5,"_",ext3,".png")
+  
+png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
+draw(ht_list, 
+     ht_gap = unit(1, "cm"),
+     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
+dev.off()
+#### To do: select genes with peak in their 3u1d and plot peak signal vs RNAseq response in GFPBRC1ind (also abs(FC)?)
+
 
 
 ```
