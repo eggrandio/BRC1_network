@@ -1,5 +1,5 @@
-mds_ggplot = function(DGEL_input,group_labels,col_palette) {
-  mds = plotMDS(DGEL_input, plot=FALSE)
+mds_ggplot = function(DGEL_input,group_labels,col_palette,top_genes=500) {
+  mds = plotMDS(DGEL_input, top=top_genes,plot=FALSE)
   dim1_label = paste0(mds$axislabel," 1 (",(mds$var.explained[1] * 100 ) %>% round(1)," %)")
   dim2_label = paste0(mds$axislabel," 2 (",(mds$var.explained[2] * 100 ) %>% round(1)," %)")
   
