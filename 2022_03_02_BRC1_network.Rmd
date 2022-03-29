@@ -336,11 +336,11 @@ write_gff3(macs2_consensus_q005, file = "./output/macs2_q005_consensus.gff")
 # 1- Check fragment length to precisely quantify peak signal (calculate cross-correlation coefficient (ccf)) ####
 # "For weak signal datasets, the read-length peak will start to dominate."
 # https://hbctraining.github.io/Intro-to-ChIPseq/lessons/06_combine_chipQC_and_metrics.html
-bam_files = list.files(path = "d:/PERSONAL_SACO/Cubas lab/BRC1 ChIPseq/sam_output/", pattern=".*\\.bam$", full.names=TRUE)
+bam_files = list.files(path = "D:/PERSONAL_SACO/Cubas lab/BRC1 ChIPseq/sam_output/", pattern=".*\\.bam$", full.names=TRUE)
 bam_files = bam_files[c(4:6,1:3)] # reorder columns so controls are first
 bam_filenames = bam_files %>% str_match("ChIP\\d|Input\\d") %>% as.vector
 
-# Load csaw Parameters and turn on removal of duplicate reads (use dedup.on as param object for cross-correlation studies)
+# Load csaw Parameters and turn on removal of duplicate reads (use param=dedup.on as param object for cross-correlation studies)
 param = readParam()
 dedup.on = initialize(param, dedup=TRUE)
 
@@ -422,8 +422,8 @@ design = model.matrix(~sample_groups)
 DGEL = asDGEList(data2, group = sample_groups)
 rownames(DGEL$samples) = sample_names
 
-DGEL = estimateDisp(y, design)
-fit = glmQLFit(y, design, robust=TRUE)
+DGEL = estimateDisp(DGEL, design)
+fit = glmQLFit(DGEL, design, robust=TRUE)
 results = glmQLFTest(fit)
 
 merged = mergeResults(data2, results$table, tol=200L)
@@ -437,7 +437,7 @@ export(csaw_result, "./output/test_csaw_rep1_2.bed")
 
 ###
 
-# Plot peak location respective of TSS. With "heatmap" and also distribution along genes (utr, cds, etc)
+# Plot peak location respective of TSS. With "heatmap"
 tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
 
 peak_files = list.files(path = "./output/", pattern = ".bed", all.files = TRUE,
@@ -453,6 +453,7 @@ list2 = lapply(peak_files[8:9], read_bed) %>% GRangesList() %>% `names<-`(peak_f
 
 list3 = c(list1,list2)
 
+#####
 ext5 = 10000
 ext3 = 1000
 test = lapply(list3,normalizeToMatrix,
