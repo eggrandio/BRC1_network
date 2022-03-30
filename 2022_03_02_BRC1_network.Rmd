@@ -50,13 +50,8 @@ library(ggpmisc)
 library(directlabels)
 library(WeightedCluster)
 
-# Functions
-source("./R/add_gene_annotation.R")
-source("./R/difexp_analysis.R")
-source("./R/volcano_plot.R")
-source("./R/mds_ggplot.R")
-source("./R/mode_value.R")
-source("./R/dss2df.R")
+# Load custom functions
+invisible(sapply(list.files(path = "./R/", pattern = "\\.R$", ignore.case = TRUE, full.names = TRUE), source, .GlobalEnv))
 
 # Set global ggplot theme parameters
 theme_update(axis.text.x = element_text(color="black"), 
@@ -288,18 +283,6 @@ ggsave(volc_plot2,
 
 GFP:BRC1 ChIP
 ```{r}
-# Experiment name and date of analysis for output files:
-exp_name = paste0(format(Sys.Date(),"%Y_%m_%d_"), "ChIP_GFPBRC1ind_")
-
-# Create GRanges object with all arabidopsis genes from ensembl .gft file
-ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
-ath_genes = ath_gtf %>% filter(type == "gene") #%>% select(gene_id)
-
-# Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
-ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) %>% 
-  anchor_5p %>% stretch(-2000) %>% 
-  `mcols<-`(value = list("name" = .$gene_id))
-
 # Generate consensus peak annotation (from MACS2 peak calling)
 # Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
 # Used three 1value threshold to call peaks in MACS2 (qval < 0.05, 0.01 or 0.001)
@@ -307,7 +290,7 @@ ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width=1) %>% stretch(5999) 
 peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q0001.*\\.narrowPeak$", full.names=TRUE)
 peak_names = peak_file_list %>% str_extract("BRC1_ChIP*.")
 
-macs2_consensus_q0001 = get_consensus_peaks(peak_file_list,peak_names)
+macs2_consensus_q0001 = get_consensus_peaks(peak_file_list, peak_names)
 write_bed(macs2_consensus_q0001, file = "./output/macs2_q0001_consensus.bed")
 write_gff3(macs2_consensus_q0001, file = "./output/macs2_q0001_consensus.gff")
 
@@ -327,11 +310,8 @@ macs2_consensus_q005 = get_consensus_peaks(peak_file_list,peak_names)
 write_bed(macs2_consensus_q005, file = "./output/macs2_q005_consensus.bed")
 write_gff3(macs2_consensus_q005, file = "./output/macs2_q005_consensus.gff")
 
-#######
-
-
-
-### csaw to quantify peak strength (TO DO: CLEAN CODE)
+#####
+# csaw to quantify peak strength (TO DO: CLEAN CODE)
 
 # 1- Check fragment length to precisely quantify peak signal (calculate cross-correlation coefficient (ccf)) ####
 # "For weak signal datasets, the read-length peak will start to dominate."
@@ -368,10 +348,10 @@ ggplot(ccf_list_plot, aes(x = bp, y = ccf, group = sample)) +
   coord_cartesian(xlim = c(0,300)) +
   scale_x_continuous(expand = expansion(mult = c(0,0.05))) +
   facet_wrap(~sample)
-#####
+
 
 # 2- Count peak signal using common ccf ####
-data = windowCounts(bam_files, ext=max_total_ccf, width=10)
+data = windowCounts(bam_files, ext=max_total_ccf, width=10, spacing=10)
 
 # Remove "unintersting regions" (regions withour peaks)
 binned = windowCounts(bam_files, bin=TRUE, width=10000)
@@ -394,18 +374,21 @@ results = glmQLFTest(fit)
 
 merged = mergeResults(data2, results$table, tol=200L) # merge peaks closer than 200 bp
 
+# Filter results for significance (FDR), size > 10 bp, score > 0 (enriched in IP)
 is.sig = merged$combined$FDR <= 0.05
 csaw_result = merged$regions[is.sig]
 csaw_result$score = merged$combined$rep.logFC[is.sig]
-names(csaw_result) = paste0("region", 1:sum(is.sig))
+csaw_result$peak_width = width(csaw_result)
+csaw_result = csaw_result %>% filter((score > 0) & (peak_width > 10))
+names(csaw_result) = paste0("region_", 1:length(csaw_result))
+
 export(csaw_result, "./output/test_csaw.bed")
 
 # 2b - csaw with good replicates
-
 bam_files2 = bam_files[-c(1,4)]
 bam_filenames2 = bam_filenames[-c(1,4)]
 
-data = windowCounts(bam_files2, ext=max_total_ccf, width=10)
+data = windowCounts(bam_files2, ext=max_total_ccf, width=10, spacing=10)
 
 # remove "unintersting regions"
 binned = windowCounts(bam_files2, bin=TRUE, width=10000)
@@ -426,135 +409,89 @@ DGEL = estimateDisp(DGEL, design)
 fit = glmQLFit(DGEL, design, robust=TRUE)
 results = glmQLFTest(fit)
 
-merged = mergeResults(data2, results$table, tol=200L)
+merged = mergeResults(data2, results$table, tol=200L) # merge peaks closer than 200 bp
 
+# Filter results for significance (FDR), size > 10 bp, score > 0 (enriched in IP)
 is.sig = merged$combined$FDR <= 0.05
 csaw_result = merged$regions[is.sig]
 csaw_result$score = merged$combined$rep.logFC[is.sig]
-csaw_result$FDR = merged$combined$FDR[is.sig]
-names(csaw_result) = paste0("region", 1:sum(is.sig))
+csaw_result$peak_width = width(csaw_result)
+csaw_result = csaw_result %>% filter((score > 0) & (peak_width > 10))
+names(csaw_result) = paste0("region_", 1:length(csaw_result))
+
 export(csaw_result, "./output/test_csaw_rep1_2.bed")
 
-###
+#####
 
 # Plot peak location respective of TSS. With "heatmap"
+# Create GRanges object with all arabidopsis genes from ensembl .gtf file
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene")
 tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
 
-peak_files = list.files(path = "./output/", pattern = ".bed", all.files = TRUE,
-           full.names = TRUE)
+peak_files = list.files(path = "./output/", pattern = ".bed", all.files = TRUE, full.names = TRUE)
 
-peak_files[5:7]
-peak_file_names = sapply(strsplit(peak_files[5:7], "_"), function(x) x[2])
+macs_peak_files = peak_files %>% str_match(".*macs2_q.*\\.bed$") %>% na.omit() %>% as.vector
+peak_file_names = sapply(strsplit(macs_peak_files, "_"), function(x) x[2])
+list1 = lapply(macs_peak_files, read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
 
-list1 = lapply(peak_files[5:7], read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
-
+csaw_peak_files = peak_files %>% str_match(".*csaw.*\\.bed$") %>% na.omit() %>% as.vector
 peak_file_names = c("csaw","csaw12")
-list2 = lapply(peak_files[8:9], read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
+list2 = lapply(csaw_peak_files, read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
 
+# Example 1. Compare csaw to MACS2 peaks ####
 list3 = c(list1,list2)
 
-#####
-ext5 = 10000
-ext3 = 1000
-test = lapply(list3,normalizeToMatrix,
-              target = tss,
-              extend = c(ext5,ext3),
-              verbose = FALSE,
-              mean_mode = "w0", w = 25, 
-              background = 0, smooth = TRUE)
+example = batch_enrichedheatmaps(list3, tss = tss, 
+                                 anno_color = "black", 
+                                 show_heatmap_legend = TRUE)
 
+figure_filename = paste0("./output/test_",ext5,"_",ext3,".png")
 
-top_anno = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = "grey30"),
-                                                   axis_param = list(side = "left")))
-                             
-test2 = mapply(EnrichedHeatmap,test, column_title = names(test), 
-               MoreArgs = list(col = c("white", "grey30"),
-                               use_raster = TRUE, raster_resize_mat = TRUE, 
-                               raster_quality = 1,
-                               show_heatmap_legend = FALSE, 
-                               top_annotation = top_anno))
-
-###
-ht_list2 = sapply(test2,"+")
-
-###
-ht_list = NULL
-
-for(i in seq_along(test2)){
-  ht_list = ht_list + test2[[i]]
-}
-
-ht_list %>% class
-
-# draw(ht_list)
-
-figure_filename = paste0("./output/peak_location_",ext5,"_",ext3,".png")
-  
 png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
-draw(ht_list, 
+draw(example, 
      ht_gap = unit(1, "cm"),
      padding = unit(c(0, 0.5, 0, 0.02), "cm"))
 dev.off()
 
-#### To do: plot HB Dapseq data relative to TSS
+# Example 2. Plot HB Dapseq data relative to TSS ####
 peak_files = list.files(path = "./input/dapseq_data/", pattern = "*.narrowPeak", all.files = TRUE,
            full.names = TRUE) %>% str_extract(".*HB_ATHB21.*|.*HB_ATHB40.*|.*HB_ATHB53.*") %>% as.vector %>% discard(is.na)
 
 peak_file_names = c("HB21","HB21_amp","HB40","HB40_amp","HB53","HB53_amp")
 peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names) %>% `seqlevelsStyle<-`(seqlevelsStyle(tss))
 
-peak_list_200 = lapply(peak_list, function(x) filter(x, score>200))
+dapseq_htlist = batch_enrichedheatmaps(peak_list,
+                                       tss = tss,
+                                       anno_color = "black",
+                                       value_column = "signalValue",
+                                       heatmap_col_breaks = c(0,0.99),
+                                       show_heatmap_legend = TRUE)
 
-ext5 = 3000
-ext3 = 1000
-test = lapply(peak_list_200,normalizeToMatrix,
-              target = tss,
-              extend = c(ext5,ext3),
-              #value_column = 2, #use score as value for colors
-              verbose = FALSE,
-              mean_mode = "w0", w = 25, 
-              background = 0, smooth = TRUE)
-
-
-top_anno = HeatmapAnnotation(lines = anno_enriched(gp = gpar(col = "grey30"),
-                                                   axis_param = list(side = "left")))
-                             
-test2 = mapply(EnrichedHeatmap,test, column_title = names(test), 
-               MoreArgs = list(col = c("white", "grey30"),
-                               use_raster = TRUE, raster_resize_mat = TRUE, 
-                               raster_quality = 1,
-                               show_heatmap_legend = FALSE, 
-                               top_annotation = top_anno))
-
-###
-#ht_list2 = sapply(test2,"+")
-
-###
-ht_list = NULL
-
-for(i in seq_along(test2)){
-  ht_list = ht_list + test2[[i]]
-}
-
-# ht_list %>% class
-
-# draw(ht_list)
-
-figure_filename = paste0("./output/HB_peak200_location_",ext5,"_",ext3,".png")
+figure_filename = paste0("./output/HB_peak_location_",ext5,"_",ext3,".png")
   
 png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
-draw(ht_list, 
+draw(dapseq_htlist, 
      ht_gap = unit(1, "cm"),
      padding = unit(c(0, 0.5, 0, 0.02), "cm"))
 dev.off()
 
+# Select genes with peak in their 3kb_up+1kb_dn of TSS ####
+# Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
+  anchor_5p %>% stretch(-2000) %>%
+  `mcols<-`(value = list("name" = .$gene_id))
 
-#### To do: select genes with peak in their 3u1d and plot peak signal vs RNAseq response in GFPBRC1ind (also abs(FC)?)
-ath_3kup_1kdown
+#####
+# Make function to get direct target genes
 
+plyranges::find_overlaps(peak_file, de_file)
+
+
+#####
 BRC1ind_data
 
-csaw_result_filtered = csaw_result[width(csaw_result)>10]
+#csaw_result_filtered = csaw_result[width(csaw_result)>10]
 
 test = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name))
 
@@ -1043,8 +980,16 @@ pathview(gene.data  = genes_up,
 ```
 
 # Extra code
-Extract RPKM with featurecount by exons
 ```{r}
+
+#fiter csaw by >10 and positive score
+# filtered_list2 = lapply(list2, function(x) { plyranges::mutate(x,peak_width = width(x)) } ) %>% 
+#   lapply(., function(x) { plyranges::filter(x,peak_width >10)}) %>% 
+#   lapply(., function(x) { plyranges::filter(x,score>0)}) %>% `names<-`(paste0(peak_file_names,"_fil"))
+
+
+
+
 # ### To do: retrieve SMXL expression level in buds
 # feature_counts = fread("./input/2022_03_10_feature_counts_experiment_1_exons.txt")
 # counts = feature_counts %>% dplyr::select(-c(Geneid,Chr,Start,End,Strand,Length)) %>% `colnames<-`(sample_names)
