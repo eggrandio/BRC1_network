@@ -1,0 +1,120 @@
+
+==============================================
+2022-03-31 13:10:28
+Options:
+--t 8 --d Read_Distribution_default.txt --genome /home/gema/CNB/reference_genome/chr_fasta_files/ --s 119481543 --expt /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_ATHB21.sorted.bam --ctrl /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_control.sorted.bam --out gem3/DAP_ATHB21_q0.05 --f BAM --outNP --range 200 --fold 2 --q 1.30 --k_min 6 --k_max 20 --k_seqs 600 --k_neg_dinu_shuffle --pp_nmotifs 1 
+
+Original read count stats:
+_IP  	Bases: 1361570	HitCounts: 1991386.0
+_CTRL	Bases: 546267	HitCounts: 2351614.0
+
+At Poisson p-value 1.0e-03, in a 501bp window, expect 17 reads.
+
+
+The genome is segmented into 110860 regions for analysis.
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	5182
+Insignificant:	359
+Filtered:	26
+
+Finish binding event prediction: 48.3s
+
+Refine read distribution from 2000 binding events. 
+
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	5184
+Insignificant:	266
+Filtered:	19
+
+Finish binding event prediction: 7.1s
+
+Refine read distribution from 2000 binding events. 
+
+
+==============================================
+2022-03-31 13:11:58
+Options:
+--t 8 --d Read_Distribution_default.txt --genome /home/gema/CNB/reference_genome/chr_fasta_files/ --s 119481543 --expt /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_ATHB40.sorted.bam --ctrl /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_control.sorted.bam --out gem3/DAP_ATHB40_q0.05 --f BAM --outNP --range 200 --fold 2 --q 1.30 --k_min 6 --k_max 20 --k_seqs 600 --k_neg_dinu_shuffle --pp_nmotifs 1 
+
+Original read count stats:
+_IP  	Bases: 4419235	HitCounts: 1.0769173E7
+_CTRL	Bases: 546267	HitCounts: 2351614.0
+
+At Poisson p-value 1.0e-03, in a 501bp window, expect 49 reads.
+
+
+The genome is segmented into 113652 regions for analysis.
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	23732
+Insignificant:	337
+Filtered:	41
+
+Finish binding event prediction: 1.8m
+
+Refine read distribution from 2000 binding events. 
+
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	23533
+Insignificant:	335
+Filtered:	43
+
+Finish binding event prediction: 1.0m
+
+Refine read distribution from 2000 binding events. 
+
+
+==============================================
+2022-03-31 13:15:25
+Options:
+--t 8 --d Read_Distribution_default.txt --genome /home/gema/CNB/reference_genome/chr_fasta_files/ --s 119481543 --expt /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_ATHB53.sorted.bam --ctrl /home/gema/CNB/DAPseq/2022-03-29_OMalleyEtal_sequencing_data_mapping/DAP_control.sorted.bam --out gem3/DAP_ATHB53_q0.05 --f BAM --outNP --range 200 --fold 2 --q 1.30 --k_min 6 --k_max 20 --k_seqs 600 --k_neg_dinu_shuffle --pp_nmotifs 1 
+
+Original read count stats:
+_IP  	Bases: 988008	HitCounts: 7985979.0
+_CTRL	Bases: 546267	HitCounts: 2351614.0
+
+At Poisson p-value 1.0e-03, in a 501bp window, expect 19 reads.
+
+
+The genome is segmented into 32973 regions for analysis.
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	7346
+Insignificant:	178
+Filtered:	10
+
+Finish binding event prediction: 1.4m
+
+Refine read distribution from 2000 binding events. 
+
+
+Running with 8 threads ...
+
+---------------------------
+Events discovered 
+Significant:	7631
+Insignificant:	184
+Filtered:	1
+
+Finish binding event prediction: 18.2s
+
+Refine read distribution from 2000 binding events. 
+
