@@ -7,7 +7,7 @@ get_direct_targets = function(peak_file,
                               gene_id_column_in_de_file = "Geneid",
                               gene_id_column_in_target_region = "gene_id",
                               peak_name_column = "peak_name",
-                              output = c("vector","filtered"))
+                              output = c("vector", "filtered"))
 {
   output = match.arg(output)
   if (is.null(target_region)) {
