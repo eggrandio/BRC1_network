@@ -10,8 +10,6 @@ library(data.table)
 library(GenomicRanges)
 library(GenomicFeatures)
 library(plyranges)
-#library(NbClust)
-#library(readxl)
 
 # Differential expression and ChIP analyses
 library(edgeR)
@@ -69,7 +67,7 @@ GFP:BRC1 RNAseq
 ```{r}
 # Define parameters for differential expression statistical tests
 exp_name = paste0(format(Sys.Date(),"%Y_%m_%d_"), "GFPBRC1ind_")
-feature_counts = fread("./input/2022_03_04_BRC1GFP_feature_counts_gene_hisat2.txt")
+feature_counts = fread("./input/BRC1ind_featureCounts.count")
 feature_counts = feature_counts[,c(1:6,10:12,7:9)] # Rearrange columns to have controls as first columns
 sample_names = c("brc1_1","brc1_2","brc1_3",
                  "GFP_BRC1ind_1","GFP_BRC1ind_2","GFP_BRC1ind_3")
@@ -126,7 +124,7 @@ HBind RNAseq
 ```{r}
 # Define parameters for differential expression statistical tests
 exp_name = paste0(format(Sys.Date(),"%Y_%m_%d_"), "HBind_")
-feature_counts = fread("./input/2022_03_05_feature_counts_experiment_2_gene_hisat2.txt")
+feature_counts = fread("./input/HBs_experiment_featureCounts.count")
 sample_names = c("gus_1","gus_2","gus_3",
                  "hb21i_1","hb21i_2","hb21i_3",
                  "hb40i_1","hb40i_2","hb40i_3",
@@ -150,6 +148,44 @@ hbind_results = difexp_analysis(feature_counts=feature_counts,
 HBind_data_unfiltered = hbind_results$merged_tests
 HBind_data = hbind_results$filtered_tests
 HBind_DGEL = hbind_results$DGEL
+
+###
+
+# x = hbind_results$list_by_contrast %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
+# 
+# 
+# hbind_results$list_by_contrast %>% bind_rows() %>% pull(Geneid) %>% unique %>% length
+# 
+# 
+# 
+# z = HBind_data_unfiltered %>% filter(Geneid %in% x$Geneid)
+# 
+# fdr_1 = (get(fdr_colnames[1]) < 0.05)
+# fc_1 = (abs(get(contrast_colnames[1])) > log2(2))
+# 
+# HBind_data_unfiltered %>% filter(((get(fdr_colnames[1]) < 0.05)&(abs(get(contrast_colnames[1])) > log2(2))) | 
+#                                   ((get(fdr_colnames[2]) < 0.05)&(abs(get(contrast_colnames[2])) > log2(2))) |
+#                                    ((get(fdr_colnames[3]) < 0.05)&(abs(get(contrast_colnames[3])) > log2(2))))
+
+### Check filtering in diffexp_analysis
+
+
+# 
+# y = hbind_results$list_by_contrast
+# 
+# z = y[[1]]
+# 
+# dplyr::filter(z,fdr_colnames[1] > 0.05)
+# 
+# fdr_colnames = sapply(y, function(x) colnames(x)[grepl("^FDR",colnames(x))])
+# contrast_colnames = sapply(y, function(x) colnames(x)[grepl("^logFC",colnames(x))])
+# 
+# filter_func = function(x, fdr_col, fc_col) {
+#   dplyr::filter(x, (get(fdr_col) < FDRts) & (abs(get(fc_col) > FCts)))
+# }
+# 
+# test = mapply(filter_func, test_list, fdr_colnames, contrast_colnames, SIMPLIFY = FALSE)
+
 
 # Write rpkm and filtered fold changes to output
 write.table(hbind_results$rpkm, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
@@ -190,7 +226,7 @@ ABA treatment RNAseq: wt, brc1, hb21hb40hb53; control/+ABA
 ```{r}
 # Define parameters for differential expression statistical tests
 exp_name = paste0(format(Sys.Date(),"%Y_%m_%d"), "_ABA_")
-feature_counts = fread("./input/2022_03_05_feature_counts_experiment_1_gene_hisat2.txt")
+feature_counts = fread("./input/ABA_experiment_featureCounts.count")
 sample_names = c("wt_ctr_1","wt_ctr_2","wt_ctr_3",
                  "wt_aba_1","wt_aba_2","wt_aba_3",
                  "tri_ctr_1","tri_ctr_2","tri_ctr_3",
@@ -292,7 +328,6 @@ peak_names = peak_file_list %>% str_extract("BRC1_ChIP*.")
 
 macs2_consensus_q0001 = get_consensus_peaks(peak_file_list, peak_names)
 write_bed(macs2_consensus_q0001, file = "./output/macs2_q0001_consensus.bed")
-write_gff3(macs2_consensus_q0001, file = "./output/macs2_q0001_consensus.gff")
 
 # Consensus with MACS2 qval < 0.01
 peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q001.*\\.narrowPeak$", full.names=TRUE)
@@ -300,7 +335,6 @@ peak_names = peak_file_list %>% str_extract("BRC1_ChIP*.")
 
 macs2_consensus_q001 = get_consensus_peaks(peak_file_list,peak_names)
 write_bed(macs2_consensus_q001, file = "./output/macs2_q001_consensus.bed")
-write_gff3(macs2_consensus_q001, file = "./output/macs2_q001_consensus.gff")
 
 # Consensus with MACS2 qval < 0.05
 peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q0\\.05.*\\.narrowPeak$", full.names=TRUE)
@@ -308,7 +342,6 @@ peak_names = peak_file_list %>% str_extract("BRC1_ChIP*.")
 
 macs2_consensus_q005 = get_consensus_peaks(peak_file_list,peak_names)
 write_bed(macs2_consensus_q005, file = "./output/macs2_q005_consensus.bed")
-write_gff3(macs2_consensus_q005, file = "./output/macs2_q005_consensus.gff")
 
 #####
 # csaw to quantify peak strength (TO DO: CLEAN CODE)
@@ -476,59 +509,19 @@ draw(dapseq_htlist,
      padding = unit(c(0, 0.5, 0, 0.02), "cm"))
 dev.off()
 
+
+
 # Select genes with peak in their 3kb_up+1kb_dn of TSS ####
 # Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
 ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
-  anchor_5p %>% stretch(-2000) %>%
-  `mcols<-`(value = list("name" = .$gene_id))
+  anchor_5p %>% stretch(-2000) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
 
 #####
-# Make function to get direct target genes
-
-plyranges::find_overlaps(peak_file, de_file)
-
-
-#####
-BRC1ind_data
-
-#csaw_result_filtered = csaw_result[width(csaw_result)>10]
-
-test = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name))
-
-test2 = as.data.frame(test)
-
-test3 = BRC1ind_data %>% select("Geneid","logFC_GFP_BRC1ind_vs_brc1")
-
-test4 = left_join(test2,test3,by = (setNames("Geneid","name")))
-
-test5 = test4 %>% filter(!is.na(logFC_GFP_BRC1ind_vs_brc1))
-
-ggplot(test5,aes(log2(score),abs(logFC_GFP_BRC1ind_vs_brc1))) +
-  geom_point()
+# TO DO Make function to generate annotation_df from list of direct targets
+brc1_dt = get_direct_targets(macs2_consensus_q0001, BRC1ind_data, ath_3kup_1kdown)
 
 
-
-
-
-
-##
-peak_granges = peak_list$HB21
-
-hb = "hb21"
-fc_column = paste0("logFC_",hb,"i_vs_gus")
-fdr_column = paste0("FDR_",hb,"i_vs_gus")
-
-hb21_de_data = HBind_data_unfiltered %>% select(Geneid,fc_column,fdr_column) %>% filter(get(fdr_column) < 0.05) %>% 
-  `colnames<-`(c("Geneid","logFC","FDR")) %>% select("Geneid","logFC")
-
-peak_data = find_overlaps(peak_granges,ath_3kup_1kdown) %>% `names<-`(paste0(.$name.x,"_",.$name.y)) %>% as.data.frame
-
-diffexp_data = hb21_de_data
-
-data_for_plot = left_join(peak_data,diffexp_data,by = (setNames("Geneid","name.y"))) %>% drop_na()
-
-ggplot(data_for_plot, aes(x=log2(signalValue),y=(logFC))) +
-  geom_point()
+hb21_dt = get_direct_targets(hbind_results$filtered_tests)
 
 ###
 # heatmap
@@ -543,53 +536,31 @@ input = BRC1ind_data %>% select(c(Geneid,logFC_GFP_BRC1ind_vs_brc1)) %>% left_jo
 # 
 
 brc1_de = aba_data_unfiltered %>% filter(FDR_brc1_ctr_vs_wt_ctr<0.05)
-
 brc1_de_anno = ifelse(input$Geneid %in% brc1_de$Geneid, 1,0) %>% `names<-`(input$Geneid)
 
-
 brc1_array = read.table("./input/BRC1dep_PC2013.txt",header = TRUE) %>% mutate(Geneid = toupper(Geneid))
-
 brc1_array_anno = ifelse(input$Geneid %in% brc1_array$Geneid, 1,0) %>% `names<-`(input$Geneid)
 
-###To do: add BRC1dep de microarray data
+BRC1_bound = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% as_tibble()
+BRC1_bound_anno = ifelse(input$Geneid %in% BRC1_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
+BRC1_bound_macs005 = find_overlaps(macs2_consensus_q005,ath_3kup_1kdown) %>% as_tibble()
+BRC1_bound_anno_macs005 = ifelse(input$Geneid %in% BRC1_bound_macs005$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound_anno = ifelse(input$Geneid %in% BRC1_bound$name, 1,0) %>% `names<-`(input$Geneid)
+BRC1_bound_macs001 = find_overlaps(macs2_consensus_q001,ath_3kup_1kdown) %>% as_tibble()
+BRC1_bound_anno_macs001 = ifelse(input$Geneid %in% BRC1_bound_macs001$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound_macs005 = find_overlaps(macs2_consensus_q005,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
+BRC1_bound_macs0001 = find_overlaps(macs2_consensus_q0001,ath_3kup_1kdown) %>% as_tibble()
+BRC1_bound_anno_macs0001 = ifelse(input$Geneid %in% BRC1_bound_macs0001$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound_anno_macs005 = ifelse(input$Geneid %in% BRC1_bound_macs005$name.y, 1,0) %>% `names<-`(input$Geneid)
+HB21_bound = find_overlaps(peak_list$HB21,ath_3kup_1kdown) %>% as_tibble()
+HB21_bound_anno = ifelse(input$Geneid %in% HB21_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound_macs001 = find_overlaps(macs2_consensus_q001,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
+HB40_bound = find_overlaps(peak_list$HB40,ath_3kup_1kdown) %>% as_tibble()
+HB40_bound_anno = ifelse(input$Geneid %in% HB40_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound_anno_macs001 = ifelse(input$Geneid %in% BRC1_bound_macs001$name.y, 1,0) %>% `names<-`(input$Geneid)
-
-
-BRC1_bound_macs0001 = find_overlaps(macs2_consensus_q0001,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
-
-BRC1_bound_anno_macs0001 = ifelse(input$Geneid %in% BRC1_bound_macs0001$name.y, 1,0) %>% `names<-`(input$Geneid)
-
-
-
-HB21_bound = find_overlaps(peak_list$HB21,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
-
-HB21_bound_anno = ifelse(input$Geneid %in% HB21_bound$name.y, 1,0) %>% `names<-`(input$Geneid)
-
-HB40_bound = find_overlaps(peak_list$HB40,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
-
-HB40_bound_anno = ifelse(input$Geneid %in% HB40_bound$name.y, 1,0) %>% `names<-`(input$Geneid)
-
-HB53_bound = find_overlaps(peak_list$HB53,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name)) %>% 
-  as_tibble()
-
-HB53_bound_anno = ifelse(input$Geneid %in% HB53_bound$name.y, 1,0) %>% `names<-`(input$Geneid)
+HB53_bound = find_overlaps(peak_list$HB53,ath_3kup_1kdown) %>% as_tibble()
+HB53_bound_anno = ifelse(input$Geneid %in% HB53_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
 
 anno_df = cbind(brc1_de_anno,
                 brc1_array_anno,
@@ -981,6 +952,49 @@ pathview(gene.data  = genes_up,
 
 # Extra code
 ```{r}
+# ##### Plot logFC and chip peak strength
+# BRC1ind_data
+# 
+# #csaw_result_filtered = csaw_result[width(csaw_result)>10]
+# 
+# test = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% `names<-`(paste0(names(.),"_",.$name))
+# 
+# test2 = as.data.frame(test)
+# 
+# test3 = BRC1ind_data %>% select("Geneid","logFC_GFP_BRC1ind_vs_brc1")
+# 
+# test4 = left_join(test2,test3,by = (setNames("Geneid","name")))
+# 
+# test5 = test4 %>% filter(!is.na(logFC_GFP_BRC1ind_vs_brc1))
+# 
+# ggplot(test5,aes(log2(score),abs(logFC_GFP_BRC1ind_vs_brc1))) +
+#   geom_point()
+# 
+# 
+# 
+# 
+# 
+# 
+# ##
+# peak_granges = peak_list$HB21
+# 
+# hb = "hb21"
+# fc_column = paste0("logFC_",hb,"i_vs_gus")
+# fdr_column = paste0("FDR_",hb,"i_vs_gus")
+# 
+# hb21_de_data = HBind_data_unfiltered %>% select(Geneid,fc_column,fdr_column) %>% filter(get(fdr_column) < 0.05) %>% 
+#   `colnames<-`(c("Geneid","logFC","FDR")) %>% select("Geneid","logFC")
+# 
+# peak_data = find_overlaps(peak_granges,ath_3kup_1kdown) %>% `names<-`(paste0(.$name.x,"_",.$name.y)) %>% as.data.frame
+# 
+# diffexp_data = hb21_de_data
+# 
+# data_for_plot = left_join(peak_data,diffexp_data,by = (setNames("Geneid","name.y"))) %>% drop_na()
+# 
+# ggplot(data_for_plot, aes(x=log2(signalValue),y=(logFC))) +
+#   geom_point()
+
+
 
 #fiter csaw by >10 and positive score
 # filtered_list2 = lapply(list2, function(x) { plyranges::mutate(x,peak_width = width(x)) } ) %>% 

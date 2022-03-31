@@ -23,7 +23,7 @@ difexp_analysis = function(feature_counts,
   drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
   DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors %>% estimateDisp(design, robust=TRUE)
   
-  # Statistical test by my_comparisons and merge results --------------------
+  # Statistical test by my_comparisons, filter by FDR and logFC thresholds and merge results --------------------
   # TO DO change loop to lapply (vectorize contrasts?)
   fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
   
@@ -34,16 +34,25 @@ difexp_analysis = function(feature_counts,
       rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
   }
   
-  merged_tests = test_list %>% purrr::reduce(left_join, by = c("Geneid","Chr","Start","End","Strand","Length"))
-  
-
+  merged_tests = test_list %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
+ 
   # Filter results by FDR and logFC thresholds ------------------------------
   print(paste0("Filtering resutls by FDR lower than ",FDRts," and abs(log2FC) higher than ",FCts))
-  fdr_colnames = colnames(merged_tests)[grepl("^FDR",colnames(merged_tests))]
-  contrast_colnames = colnames(merged_tests)[grepl("^logFC",colnames(merged_tests))]
-  filtered_tests = merged_tests %>% 
-    filter(if_any(all_of(fdr_colnames), ~ (.) < FDRts)) %>% 
-    filter(if_any(all_of(contrast_colnames), ~ abs(.) > FCts))
+
+  fdr_colnames = sapply(test_list, function(x) colnames(x)[grepl("^FDR",colnames(x))])
+  contrast_colnames = sapply(test_list, function(x) colnames(x)[grepl("^logFC",colnames(x))])
+  
+  filter_func = function(x, fdr_col, fc_col) {
+    dplyr::filter(x, (get(fdr_col) < FDRts) & (abs(get(fc_col)) > FCts))
+  }
+  
+  filtered_test_list = mapply(filter_func,
+                              test_list,
+                              fdr_colnames,
+                              contrast_colnames,
+                              SIMPLIFY = FALSE)
+
+  filtered_tests = filtered_test_list %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
   
   # Add gene name and description to output file and remove extra columns
   extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
@@ -52,6 +61,7 @@ difexp_analysis = function(feature_counts,
   # Return list with generated objects --------------------------------------
   result_list = list("rpkm" = RPKM_object,
                      "DGEL" = DGEL_object_filtered,
+                     "list_by_contrast" = filtered_test_list,
                      "merged_tests" = merged_tests,
                      "filtered_tests" = filtered_tests_output)
   return(result_list)
