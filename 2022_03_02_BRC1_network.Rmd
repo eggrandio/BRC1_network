@@ -545,9 +545,6 @@ brc1_dt = get_direct_targets(macs2_consensus_q0001, BRC1ind_data, ath_3kup_1kdow
 hb21_dt = get_direct_targets(hbind_results$filtered_tests)
 
 
-
-
-###
 # heatmap
 input = BRC1ind_data %>% select(c(Geneid,logFC_GFP_BRC1ind_vs_brc1)) %>% left_join(HBind_data,by="Geneid") %>% 
   left_join(aba_data_unfiltered) %>% 
@@ -638,6 +635,37 @@ Heatmap(ht_input,
         show_row_names = FALSE,
         #show_column_names = FALSE
         )
+```
+
+To check number of peaks depending on qvalue filter for MACS2 narrowPeak files with
+```{r}
+macs_q1_files = list.files(path = "./input/gema/peaks/macs2_ChIP/", pattern = "\\.narrowPeak$", full.names = TRUE)
+peak_names = c("ChIP2","ChIP3","ChIP7")
+macs_q1 = lapply(macs_q1_files, read_narrowpeaks) %>% `names<-`(peak_names)
+
+qvals = -log10(c(0.1,0.05,0.01,0.001))
+
+tmp_func = function(x,y) { plyranges::filter(x, qValue > y) %>% length }
+
+a = list()
+for(q in qvals){
+  q_val = 10^-q %>% paste0("qval_",.)
+  a[[q_val]] = sapply(macs_q1, tmp_func, q)
+}
+
+tmp_func2 = function(x,y) { 
+  plyranges::filter(x, qValue > y)
+  }
+
+b = list()
+for(q in qvals){
+  q_val = 10^-q %>% paste0("qval_",.)
+  test = sapply(macs_q1, tmp_func2, q)
+  z = get_consensus_peaks_GRangesList(test,peak_names)
+  b[q_val] = (length(z))
+}
+
+as.data.frame(a) %>% rbind("Consensus" = b)
 ```
 
 (to do) Compare BRC1dep

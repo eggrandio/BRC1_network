@@ -4,7 +4,7 @@ get_consensus_peaks = function(peak_file_list,
   
   peak_coverage = sapply(peak_file_list, plyranges::read_narrowpeaks) %>% 
     `names<-`(peak_names) %>% 
-    GenomicRanges::GRangesList() %>% IRanges::coverage()
+    GenomicRanges::GRangesList() %>% GenomicRanges::coverage()
 
   covered_ranges = IRanges::slice(peak_coverage, lower=rep_number, rangesOnly=T) %>% GenomicRanges::GRanges() %>% 
     plyranges::mutate(peak_name = paste0("peak_",rep(1:length(.)))) #%>% 
