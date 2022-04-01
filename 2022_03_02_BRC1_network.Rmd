@@ -521,34 +521,48 @@ ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999
 hb_peak_list = peak_list[c(1,3,5)]
 hb_de_list = hbind_results$list_by_contrast
 
-de_gene_ids = sapply(hb_de_list, pull, "Geneid")
-
-direct_target_ids = mapply(get_direct_targets, hb_peak_list, hb_de_list, 
-                           MoreArgs = list(target_region = ath_3kup_1kdown,
-                                           output = "vector",
-                                           peak_name_column = "name"), 
-                           SIMPLIFY = FALSE)
+test = make_anno_df(hb_de_list,hb_peak_list,
+                    target_region = ath_3kup_1kdown,
+                    peak_name_column = "name")
 
 
-test = mapply("%in%", de_gene_ids, direct_target_ids)
+brc1_de_list = brc1ind_results$list_by_contrast
+brc1_peaks = GRangesList(macs2_consensus_q005,macs2_consensus_q001,macs2_consensus_q0001) %>% `names<-`(c("q0.05","q0.01","q.0.001"))
 
-de_gene_ids %>% unlist %>% unique %>% length
+brc1_dt = get_direct_targets(brc1_peaks$q0.05,brc1_de_list[[1]],target_region = ath_3kup_1kdown)
 
-###To do generate df of common gene_ids with 0 and 1 depending if they are direct targets
+brc1_de_direct_targets = brc1_de_list[[1]] %>% filter(Geneid %in% brc1_dt)
 
-test %>% sapply(sum)
+##### 
+test = make_anno_df(brc1_de_direct_targets,hb_peak_list,
+                    target_region = ath_3kup_1kdown,
+                    peak_name_column = "name")
+
+test2 = make_anno_df(brc1_de_direct_targets,brc1_peaks,
+                     target_region = ath_3kup_1kdown,
+                     peak_name_column = "peak_name",
+                     gene_id_column = "Geneid")
 
 
-brc1_dt = get_direct_targets(macs2_consensus_q0001, BRC1ind_data, ath_3kup_1kdown)
+x = get_direct_targets(brc1_peaks[[1]], de_file=brc1_de_direct_targets, target_region = ath_3kup_1kdown)
 
-
-hb21_dt = get_direct_targets(hbind_results$filtered_tests)
-
+anno_df = cbind(test2,test)
 
 # heatmap
-input = BRC1ind_data %>% select(c(Geneid,logFC_GFP_BRC1ind_vs_brc1)) %>% left_join(HBind_data,by="Geneid") %>% 
-  left_join(aba_data_unfiltered) %>% 
-  select(c(Geneid,logFC_GFP_BRC1ind_vs_brc1,logFC_brc1_ctr_vs_wt_ctr,logFC_hb21i_vs_gus,logFC_hb40i_vs_gus,logFC_hb53i_vs_gus)) 
+input = brc1_de_direct_targets %>% select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% left_join(HBind_data, by =
+                                                                                      "Geneid") %>%
+  left_join(aba_data, by = "Geneid") %>%
+  select(
+    c(
+      Geneid,
+      logFC_GFP_BRC1ind_vs_brc1,
+      logFC_brc1_ctr_vs_wt_ctr,
+      logFC_wt_aba_vs_wt_ctr,
+      logFC_hb21i_vs_gus,
+      logFC_hb40i_vs_gus,
+      logFC_hb53i_vs_gus
+    )
+  ) 
 
 # input = HBind_data %>% 
 #   select(c(Geneid,logFC_hb21i_vs_gus,logFC_hb40i_vs_gus,logFC_hb53i_vs_gus)) 
@@ -562,37 +576,6 @@ brc1_de_anno = ifelse(input$Geneid %in% brc1_de$Geneid, 1,0) %>% `names<-`(input
 brc1_array = read.table("./input/BRC1dep_PC2013.txt",header = TRUE) %>% mutate(Geneid = toupper(Geneid))
 brc1_array_anno = ifelse(input$Geneid %in% brc1_array$Geneid, 1,0) %>% `names<-`(input$Geneid)
 
-BRC1_bound = find_overlaps(csaw_result_filtered,ath_3kup_1kdown) %>% as_tibble()
-BRC1_bound_anno = ifelse(input$Geneid %in% BRC1_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-BRC1_bound_macs005 = find_overlaps(macs2_consensus_q005,ath_3kup_1kdown) %>% as_tibble()
-BRC1_bound_anno_macs005 = ifelse(input$Geneid %in% BRC1_bound_macs005$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-BRC1_bound_macs001 = find_overlaps(macs2_consensus_q001,ath_3kup_1kdown) %>% as_tibble()
-BRC1_bound_anno_macs001 = ifelse(input$Geneid %in% BRC1_bound_macs001$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-BRC1_bound_macs0001 = find_overlaps(macs2_consensus_q0001,ath_3kup_1kdown) %>% as_tibble()
-BRC1_bound_anno_macs0001 = ifelse(input$Geneid %in% BRC1_bound_macs0001$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-HB21_bound = find_overlaps(peak_list$HB21,ath_3kup_1kdown) %>% as_tibble()
-HB21_bound_anno = ifelse(input$Geneid %in% HB21_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-HB40_bound = find_overlaps(peak_list$HB40,ath_3kup_1kdown) %>% as_tibble()
-HB40_bound_anno = ifelse(input$Geneid %in% HB40_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-HB53_bound = find_overlaps(peak_list$HB53,ath_3kup_1kdown) %>% as_tibble()
-HB53_bound_anno = ifelse(input$Geneid %in% HB53_bound$gene_id, 1,0) %>% `names<-`(input$Geneid)
-
-anno_df = cbind(brc1_de_anno,
-                brc1_array_anno,
-                BRC1_bound_anno,
-                BRC1_bound_anno_macs005,
-                BRC1_bound_anno_macs001,
-                BRC1_bound_anno_macs0001,
-                HB21_bound_anno,
-                HB40_bound_anno,
-                HB53_bound_anno) %>% as.data.frame()
-
 # Create list of coloring functions for annotation dataframe
 anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
 
@@ -601,26 +584,10 @@ for(i in colnames(anno_df)){
   col_fun_list[[i]] = anno_col_fun
 }
 
-ha = HeatmapAnnotation(brc1_de_anno = brc1_de_anno,
-                       brc1_array = brc1_array_anno,
-                       BRC1bound = BRC1_bound_anno,
-                       BRC1b2 = BRC1_bound_anno_macs005,
-                       BRC1b3 = BRC1_bound_anno_macs001,
-                       BRC1b4 = BRC1_bound_anno_macs0001,
-                       HB21bound = HB21_bound_anno,
-                       HB40bound = HB40_bound_anno,
-                       HB53bound = HB53_bound_anno,
-                       which = "row", 
-                       annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
-                                            "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
-                       annotation_name_side="top",
-                       annotation_name_rot=45,
-                       show_legend = FALSE)
-
 ha = HeatmapAnnotation(df = anno_df,
                        which = "row",
-                       annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
-                                            "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
+                       # annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
+                       #                      "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
                        annotation_name_side="top",
                        annotation_name_rot=45,
                        show_legend = FALSE,
@@ -629,7 +596,14 @@ ha = HeatmapAnnotation(df = anno_df,
 
 ht_input = input %>% column_to_rownames("Geneid") %>% as.matrix()
 
-Heatmap(ht_input,
+Heatmap(ht_input[,-(2:3)],
+        clustering_method_rows = "ward.D2",
+        right_annotation = ha,
+        show_row_names = FALSE,
+        #show_column_names = FALSE
+        )
+
+Heatmap(ht_input[,c(1,4:6)],
         clustering_method_rows = "ward.D2",
         right_annotation = ha,
         show_row_names = FALSE,

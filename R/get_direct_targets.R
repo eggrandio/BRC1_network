@@ -10,6 +10,7 @@ get_direct_targets = function(peak_file,
                               output = c("vector", "filtered"))
 {
   output = match.arg(output)
+  
   if (is.null(target_region)) {
     print(paste0("target_region coordinates not provided, generating them from: ", gtf, 
                  " (", up_region," bp upstream and ", down_region, " bp downstream of tss"))
@@ -27,9 +28,9 @@ get_direct_targets = function(peak_file,
   # To do: add distance to corresponding tss
   # split peaks_in_genes, obtain corresponding tss to the gene, calculate distance, and merge into granges
   
-  gene_ids_of_bound_genes = peaks_in_genes %>% as.data.frame() %>% pull(get(gene_id_column_in_target_region))
+  gene_ids_of_bound_genes = peaks_in_genes %>% as.data.frame() %>% dplyr::pull(get(gene_id_column_in_target_region))
   
-  direct_targets = de_file %>% filter(get(gene_id_column_in_de_file) %in% gene_ids_of_bound_genes)
+  direct_targets = de_file %>% dplyr::filter(get(gene_id_column_in_de_file) %in% gene_ids_of_bound_genes)
   
   n_direct_targets = length(row.names(direct_targets))
   n_de = length(row.names(de_file))
