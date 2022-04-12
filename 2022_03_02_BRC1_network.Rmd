@@ -71,7 +71,7 @@ feature_counts = fread("./input/BRC1ind_featureCounts.count")
 feature_counts = feature_counts[,c(1:6,10:12,7:9)] # Rearrange columns to have controls as first columns
 sample_names = c("brc1_1","brc1_2","brc1_3",
                  "GFP_BRC1ind_1","GFP_BRC1ind_2","GFP_BRC1ind_3")
-sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels= %>% (gsub('.{2}$', '', sample_names)))
+sample_groups = gsub('.{2}$', '', sample_names) %>% factor(levels= unique(gsub('.{2}$', '', sample_names)))
 design = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_groups))
 my_contrasts = makeContrasts(GFP_BRC1ind_vs_brc1 = GFP_BRC1ind-brc1,
                              levels=design)
@@ -239,7 +239,7 @@ my_contrasts = makeContrasts(brc1_ctr_vs_wt_ctr=brc1_ctr-wt_ctr,
                              tri_ctr_vs_wt_ctr=tri_ctr-wt_ctr,
                              wt_aba_vs_wt_ctr=wt_aba-wt_ctr,
                              brc1_aba_vs_brc1_ctr=brc1_aba-brc1_ctr,
-                             tri_aba_vs_tri_ctr=tri_ctr-tri_aba,
+                             tri_aba_vs_tri_ctr=tri_aba-tri_ctr,
                              levels=design)
 
 # Perform statistcal tests
@@ -609,13 +609,146 @@ Heatmap(ht_input[,c(1,4:6)],
         show_row_names = FALSE,
         #show_column_names = FALSE
         )
+
+Heatmap(ht_input[,c(1)],
+        clustering_method_rows = "ward.D2",
+        right_annotation = ha,
+        show_row_names = FALSE,
+        #show_column_names = FALSE
+        )
 ```
+
+GO enrichment, GSEA and KEGG enrichment
+```{r}
+### GO enrichment and GSEA 
+
+# Generate GO object with Information Content for Semantic Similarity analyses
+if(!exists("athGO")){
+  athGO = godata("org.At.tair.db", ont="BP")
+}
+
+# Object to find GO common ancestor
+GO_anc = as.list(GOBPANCESTOR)
+
+# Object to match GO ID with GO definitions
+GO_def = suppressMessages(AnnotationDbi::select(GO.db,
+                                                keys=(keys(GO.db)),
+                                                columns=c("GOID","TERM","DEFINITION"),
+                                                keytype="GOID"))
+
+# Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
+input_data = brc1ind_results$list_by_contrast[[1]]
+fc_column = colnames(input_data)[grepl(c("^logFC"),colnames(input_data))] 
+GO_input = input_data %>% dplyr::select(Geneid, all_of(fc_column))
+
+
+ranked_genes = setNames(GO_input[,fc_column],
+                        GO_input$Geneid) %>% sort %>% rev
+
+genes_up = ranked_genes[ranked_genes > 0]
+genes_dn = ranked_genes[ranked_genes < 0]
+
+# Perform GO enrichment analysis with up- and down-regulated genes
+GOenrich_up = enrichGO(gene = names(genes_up),
+                OrgDb = org.At.tair.db,
+                keyType = "TAIR",
+                ont = "BP",
+                pAdjustMethod = "BH",
+                qvalueCutoff = 0.05)
+GOenrich_up %>% as.data.frame() %>% pull(ID) %>% length()
+
+goplot(GOenrich_up)
+
+GOenrich_dn = enrichGO(gene = names(genes_dn),
+                OrgDb = org.At.tair.db,
+                keyType = "TAIR",
+                ont = "BP",
+                pAdjustMethod = "BH",
+                qvalueCutoff = 0.05)
+
+goplot(GOenrich_dn)
+
+#####
+heatmap1 = simplify_go(GOenrich_up,
+                       GO_sem_sim = athGO,
+                       GO_def = GO_def)
+heatmap2 = simplify_go(GOenrich_dn,
+                       GO_sem_sim = athGO,
+                       GO_def = GO_def)
+
+#####
+GO_data = as.data.frame(GOenrich_up) # to query for GO IDs and descriptions
+
+go_id = GO_data %>% pull(unique(ID))
+
+ss_rel = mgoSim(go_id, go_id, semData=athGO, measure="Rel", combine=NULL)
+
+test = simplifyGO(ss_rel, plot = T)
+
+
+
+
+
+# Calculate optimal cluster number "mathematically"
+#### WeighedCluster
+GO_hclust = (1 - ss_rel) %>% as.dist %>%
+  hclust(method = "ward.D2")
+
+GO_hclust_n = length(GO_hclust$order)
+
+clustrange = as.clustrange(GO_hclust, diss = (1 - ss_rel), ncluster = GO_hclust_n)
+pamRange = wcKMedRange((1 - ss_rel), kvals = 2:GO_hclust_n)
+
+# par(mfrow=c(1,2))
+# plot(clustrange,
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
+#      norm="zscore",lwd=3)
+# plot(pamRange,
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
+#      norm="zscore",lwd=3)
+
+crange_pbc = clustrange$stats$PBC
+prange_pbc = pamRange$stats$PBC
+
+max_crange_pbc = find_local_max(crange_pbc)
+max_prange_pbc = find_local_max(prange_pbc)
+
+max1_crange_pbc = which.max(crange_pbc)
+max1_prange_pbc = which.max(prange_pbc)
+
+##### Figure to check different GO cluster numbers (currently using clustrange)
+go_id = GOenrich_dn %>% get_goids
+
+test4 = check_go_clustering(go_id)
+
+test_list = list()
+for(i in seq_along(test4)){
+  test_list[[i]] = grid.grabExpr(draw(test4[[i]]))
+}
+
+figure = ggarrange(plotlist = test_list)
+
+figure
+
+figure_filename = paste0("./output/test_check_cluster.png")
+
+png(figure_filename, width = 33, height = 15, units = "cm", res = 300)
+figure
+dev.off()
+```
+
+
 
 To check number of peaks depending on qvalue filter for MACS2 narrowPeak files with
 ```{r}
 macs_q1_files = list.files(path = "./input/gema/peaks/macs2_ChIP/", pattern = "\\.narrowPeak$", full.names = TRUE)
+
+dapseq_files = list.files(path = "./input/gema/peaks/macs2_DAP/", pattern = "\\.narrowPeak$", full.names = TRUE)
+
 peak_names = c("ChIP2","ChIP3","ChIP7")
-macs_q1 = lapply(macs_q1_files, read_narrowpeaks) %>% `names<-`(peak_names)
+
+peak_names = c("HB21", "HB40", "HB53")
+macs_q1 = lapply(dapseq_files, read_narrowpeaks) %>% `names<-`(peak_names)
 
 qvals = -log10(c(0.1,0.05,0.01,0.001))
 
@@ -978,6 +1111,343 @@ pathview(gene.data  = genes_up,
 
 # Extra code
 ```{r}
+# ###
+# test = cutree(GO_hclust, k = max_crange_pbc)
+# 
+# repr_GO = GO_anc[go_id] %>% stack() %>% `colnames<-`(c("ancestral", "go_id")) %>% 
+#   left_join(dplyr::select(df, c("cluster", "id")), by = setNames("id", "go_id")) %>% 
+#   group_by(cluster, ancestral) %>% add_count() %>% ungroup %>% 
+#   mutate(IC = GO_semsim@IC[ancestral]) %>% 
+#   mutate(importance = (n*IC^2)) %>% 
+#   group_by(cluster) %>% 
+#   dplyr::slice(which.max(importance)) %>% 
+#   left_join(dplyr::select(GO_def, c("GOID","TERM")), by = setNames("GOID", "ancestral")) %>% 
+#   dplyr::select(c("ancestral","cluster","importance","TERM"))
+# 
+# set.seed(1)
+# test2 = as.data.frame(test) %>% mutate_if(is.integer, as.factor)
+# 
+# col_list = lapply(test2, function(x) {set.seed(1)
+#   distinctColorPalette(k = length(levels(x)))})
+# 
+# col_list_vector = mapply(setNames, col_list, lapply(test2,levels))
+# 
+# 
+# 
+# custom_colors = setNames(col_vector, levels(anno_df$anc_term))
+# 
+# # Heatmap parameters (annotation, row labels, color function for matrix)
+# ha = HeatmapAnnotation(df = as.data.frame(test),
+#                        which = "row",
+#                        annotation_label = "GO Cluster",
+#                        show_annotation_name = FALSE,
+#                        col = col_list_vector)
+# 
+# row_labs = structure(paste(go_id, GO_data$Description), names = paste0(go_id))
+# col_fun = colorRamp2(c(0,1), c("white", "red"))
+# 
+# # Generate Heatmap
+# term_order = unlist(lapply(levels(test2$`12`), function(le) {
+#   l = test2$`12` == le
+#   if(sum(l) <= 1) {
+#     return(which(l))
+#   } else {
+#     mm = ss_rel[l, l, drop = FALSE]
+#     which(l)[hclust(stats::dist(mm))$order]
+#   }
+# }))
+#   
+# 
+# 
+# GO_heatmap = Heatmap(ss_rel,
+#                      name = "Similarity",
+#                      #clustering_method_columns = "ward.D2",
+#                      #clustering_method_rows = "ward.D2",
+#                      row_order = term_order, column_order = term_order,
+#                      col = col_fun,
+#                      row_labels = row_labs[rownames(ss_rel)],
+#                      row_names_max_width = max_text_width(row_labs),
+#                      right_annotation = ha,
+#                      show_column_names = FALSE)
+# GO_heatmap
+# 
+
+
+
+# # Calculate optimal cluster number with WeighedCluster
+#   GO_hclust = (1 - ss_rel) %>% as.dist %>%
+#     hclust(method = clust_method)
+#   
+#   GO_hclust_n = length(GO_hclust$order)
+#   
+#   clustrange = WeightedCluster::as.clustrange(GO_hclust, diss=(1 - ss_rel), ncluster = GO_hclust_n)
+# 
+#   clustrange_plot = plot(clustrange, 
+#                          stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#                          norm="zscore",lwd=3)
+#   
+#   pamRange = WeightedCluster::wcKMedRange((1 - ss_rel), kvals=2:GO_hclust_n)
+# 
+#   pamrange_plot = plot(pamRange, 
+#                        stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#                        norm="zscore",lwd=3)
+#   
+#   par(mfrow=c(1,2))
+#   plot(clustrange, 
+#        stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#        norm="zscore",lwd=3)
+#   plot(pamRange, 
+#        stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#        norm="zscore",lwd=3)
+#   
+#   test = clustrange$stats$PBC
+#   test2 = pamRange$stats$PBC
+#   
+#   clust_range_max = find_local_max(clustrange$stats$PBC) %>% .[.!=1] # remove 1 if its a max value
+#   pam_range_max = find_local_max(pamRange$stats$PBC) %>% .[.!=1] # remove 1 if its a max value
+#   
+#   return(list("clust_range_max" = clust_range_max,
+#               "pam_range_max" = pam_range_max))
+#   ### To do, cluster GOs based on find_local_max
+#   ### Make EXTERNAL function to retrieve representative GOs from GOenrich object for different partitions (and then apply it for each partition)
+#   ### Make annotation for different partitions for Heatmap and plot diss_matrix with legends to see partitions
+#   cluster_number = 7
+#   
+#   hc = (1 - ss_rel) %>% as.dist %>%
+#     hclust(method = "ward.D2")
+#   
+#   anno_df = mapply(cutree, k = clust_range_max, 
+#                    MoreArgs = list(tree = hc), 
+#                    SIMPLIFY = FALSE) %>% 
+#     as.data.frame() %>% `colnames<-`(c(paste0("k_", clust_range_max))) %>% 
+#     mutate(across(where(is.numeric),as.factor))
+#   
+#   clusters = cutree(hc, cluster_number, order_clusters_as_data=T) %>%
+#     as.factor() %>% fct_inorder() %>% fct_rev()
+#   
+#   tmp = GO_data %>%
+#     mutate(cluster = factor(clusters[match(ID, names(clusters))])) %>%
+#     dplyr::select(c("ID","Description","cluster")) %>% mutate(IC = GO_sem_sim@IC[ID])
+#   
+#   
+#   # Retrieve ancestor GO of go_ids, add cluster number to each ancestor GO, count them with data.table and add Information Content
+#   # Then select the most common ancestral GO term (at least in 50% of GOs) with highest Information Content
+#   
+#   # Obtain representative ancestral GO term by IC^2 (if there is a tie it will return only one term)
+#   
+#   ### TO DO MAKE SURE ANCESTRAL TERMS ARE SELECTED CORRECTLY
+#   
+#   tmp = GO_anc[go_ids] %>% stack() %>% 
+#     #mutate(CL = tmp$cluster[match(ind,tmp$ID)]) %>% 
+#     mutate(cluster = anno_df[,2][match(ind, row.names(anno_df))]) %>% 
+#     data.table() %>% .[,.N,by=c("cluster","values")] %>% 
+#     mutate(IC = GO_sem_sim@IC[values]) %>% 
+#     # to do: group by cluster, add column of n genes by cluster and then select those with N > n/2, then select by IC
+#     group_by(cluster) %>% 
+#     mutate(min_n = length(cluster)/2)
+#   
+#   #### to do calculate "all"/2  
+#   #### WHY ALL =/= NUMBER OF GOs IN CLUSTER ?!?!
+#     mutate(min_n = (filter(., values == "all") %>% pull(N))/2)
+#     
+#     
+#     dplyr::slice(which.max(IC)) %>% 
+#     #dplyr::filter(importance == max(importance,na.rm=T)) %>%
+#     ungroup() %>% mutate(GO_description = GO_def$TERM[match(values,GO_def$GOID)])
+#   
+# 
+#   # reprGO = tmp2[,.N,by=c("CL","values")] %>% 
+#   #   mutate(IC = athGO@IC[values]) %>% 
+#   #   #mutate(importance = (N*IC^2)) %>% 
+#   #   group_by(CL) %>% 
+#   #   dplyr::slice(which.max(IC)) %>% 
+#   #   #dplyr::filter(importance == max(importance,na.rm=T)) %>%
+#   #   ungroup() %>% mutate(GO_description = GO_def$TERM[match(values,GO_def$GOID)])
+#   
+#   reprGO
+
+
+
+# GO_heatmap = Heatmap(ss_rel,
+#                      name = "Similarity",
+#                      clustering_method_rows = "ward.D2",
+#                      clustering_method_columns = "ward.D2",
+#                      col = col_fun,
+#                      row_labels = row_labs[rownames(ss_rel)],
+#                      row_names_max_width = max_text_width(row_labs),
+#                      right_annotation = ha,
+#                      show_column_names = FALSE)
+# 
+# GO_heatmap
+# 
+# 
+# # test = structure(GO_data$p.adjust, names = paste0(GO_IDs))
+# # pvalue_col_fun = colorRamp2(c(0, 0.05), c("green", "white"))
+# # 
+# # ha = HeatmapAnnotation(pvalue = test,
+# #                        which = "row",
+# #                        annotation_label = "adj. p-val.",
+# #                        annotation_name_side="top",
+# #                        annotation_name_rot=45,
+# #                        col = list(pvalue = pvalue_col_fun),
+# #                        annotation_legend_param = list(
+# #                          pvalue = list(
+# #                            at = c(0, 0.05))))
+# 
+# dd = (1 - ss_rel) %>% as.dist %>% hclust(method = "ward.D2") %>% as.dendrogram()
+# 
+# test = cutree(dd, max_crange_pbc) %>% as.data.frame() %>% `colnames<-`(paste0("k_", colnames(.))) %>% mutate_if(is.numeric,as.factor)
+# 
+# ha = HeatmapAnnotation(df = test,
+#                        which = "row",
+#                        annotation_label = "cluster",
+#                        annotation_name_side="top",
+#                        annotation_name_rot=45)
+# 
+# 
+# GO_heatmap = Heatmap(ss_rel,
+#                      name = "Similarity",
+#                      clustering_method_rows = "ward.D2",
+#                      clustering_method_columns = "ward.D2",
+#                      col = col_fun,
+#                      row_labels = row_labs[rownames(ss_rel)],
+#                      row_names_max_width = max_text_width(row_labs),
+#                      #right_annotation = ha,
+#                      show_column_names = FALSE,
+#                      row_km = 9)
+# 
+# GO_heatmap
+# 
+# # Visualize GO clustering
+# dd = (1 - ss_rel) %>% as.dist %>%
+#   hclust(method = "ward.D2") %>% as.dendrogram(hang = -1) %>%
+#   set("labels_cex", 0.6)
+# 
+# labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
+# 
+# par(mar = c(1, 1, 1, 20),
+#     xpd = NA)
+# plot(dd, horiz = T)
+# 
+# 
+# # In this case, upon visual inspection (GO_heatmap) we see three clusters. Replot with colors to visualize
+# cluster_number = 15
+# div_pal = distinctColorPalette(cluster_number)
+# 
+# clusters = cutree(dd, cluster_number,order_clusters_as_data=T) %>% 
+#   as.factor() %>% fct_inorder() %>% fct_rev()
+# 
+# dd = (1 - ss_rel) %>% as.dist %>%
+#   hclust(method = "ward.D2") %>% as.dendrogram(hang = -1) %>%
+#   set("labels_cex", 0.6) %>% 
+#   set("branches_k_color", k=cluster_number, value = div_pal) %>% 
+#   set("labels_col", k=cluster_number, value = div_pal)
+# 
+# labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
+# 
+# par(mar = c(1, 1, 1, 20),
+#     xpd = NA,
+#     bg = "grey50"
+#     ) 
+# plot(dd, horiz = T)
+# 
+# # 4- Select representative term for each cluster
+# # Retrieve Information Content for each term
+# tmp = GO_data %>% 
+#   mutate(Cluster = factor(clusters[match(Description, names(clusters))])) %>%
+#   dplyr::select(c("ID","Description","Cluster")) %>% mutate(IC = athGO@IC[ID])
+# 
+# # Retrieve ancestral GO terms
+# tmp2 = GO_anc[tmp$ID] %>% stack() %>% 
+#   mutate(CL = tmp$Cluster[match(ind,tmp$ID)]) %>% 
+#   data.table()
+# 
+# # Obtain representative ancestral GO term by IC^2 (if there is a tie it will return only one term)
+# reprGO = tmp2[,.N,by=c("CL","values")] %>% 
+#   mutate(IC = athGO@IC[values]) %>% 
+#   mutate(importance = (IC^2)) %>% group_by(CL) %>% 
+#   dplyr::slice(which.max(importance)) %>% 
+#   #dplyr::filter(importance == max(importance,na.rm=T)) %>%
+#   ungroup() %>% mutate(Desc = GO_def$TERM[match(values,GO_def$GOID)])
+# 
+reprGO
+
+
+# test = cluster_terms(mat)
+# 
+# compare_clustering_methods(mat, plot_type = "heatmap")
+# 
+# #####
+# # Clustering of GO enriched terms
+# # Generate object with GO Semantic Similarity and Information Content
+# 
+# 
+# # 3- Summarize GO by semantic similarity
+# # Get common GO terms and calculate semantic similarity between them
+# GO_data = as.data.frame(GOenrich_up) # to query for GO IDs and descriptions
+# 
+# GO_IDs = GO_data %>% pull(unique(ID))
+# ss_rel = mgoSim(GO_IDs, GO_IDs, semData=athGO, measure="Rel", combine=NULL)
+# 
+# # Calculate optimal cluster number "mathematically"
+# #### WeighedCluster
+# GO_hclust = (1 - ss_rel) %>% as.dist %>%
+#   hclust(method = "ward.D2")
+# 
+# GO_hclust_n = length(GO_hclust$order)
+# 
+# clustrange = as.clustrange(GO_hclust, diss=(1 - ss_rel), ncluster = GO_hclust_n)
+# 
+# # R2 and R2-sq will always give maximum number of clusters as optimal (see WeighedCluster user's guide)
+# # RHC is reverse HC, so max value is ideal
+# 
+# # clustrange_summary = summary(clustrange, max.rank=1) %>% rownames_to_column("method") %>% filter(!(method %in% c("R2","R2sq"))) 
+# # 
+# # best_cluster = clustrange_summary$`1. N groups` %>% mode_value()
+# # 
+# # best_cluster
+# 
+# clustrange_plot = plot(clustrange, 
+#                        stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#                        norm="zscore",lwd=3)
+# 
+# pamRange <- wcKMedRange((1 - ss_rel), kvals=2:GO_hclust_n)
+# # pamrange_summary = summary(pamRange, max.rank=2)
+# # best_cluster_pam = pamrange_summary$`1. N groups` %>% mode_value()
+# # 
+# # best_cluster_pam
+# 
+# pamrange_plot = plot(pamRange, 
+#                      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#                      norm="zscore",lwd=3)
+# 
+# par(mfrow=c(1,2))
+# plot(clustrange, 
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#      norm="zscore",lwd=3)
+# plot(pamRange, 
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"), 
+#      norm="zscore",lwd=3)
+# 
+# crange_pbc = clustrange$stats$PBC
+# prange_pbc = pamRange$stats$PBC
+# 
+# max_crange_pbc = find_local_max(crange_pbc)
+# max_prange_pbc = find_local_max(prange_pbc)
+# 
+# max1_crange_pbc = which.max(crange_pbc)
+# max1_prange_pbc = which.max(prange_pbc)
+# 
+# 
+# #sapply(pamRange$stats, find_local_max)
+# 
+# ###
+# 
+# test = simplify_go(GOenrich_up,
+#             GO_sem_sim= athGO,
+#             )
+
+
 # ##### Plot logFC and chip peak strength
 # BRC1ind_data
 # 
