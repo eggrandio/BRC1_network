@@ -61,6 +61,7 @@ batch_enrichedheatmaps = function(input_list,
   } else {
     col_fun_list = rep(list(heatmap_col), length(norm_matrix_list))
   }
+  order_list = lapply(norm_matrix_list, function(x) order(enriched_score(x), decreasing = TRUE))
   
   enrich_heatmap_list = mapply(
     EnrichedHeatmap::EnrichedHeatmap,
@@ -68,6 +69,7 @@ batch_enrichedheatmaps = function(input_list,
     column_title = names(norm_matrix_list),
     name = names(norm_matrix_list),
     col = col_fun_list,
+    row_order = order_list,
     MoreArgs = list(
       use_raster = use_raster,
       raster_resize_mat = raster_resize_mat,

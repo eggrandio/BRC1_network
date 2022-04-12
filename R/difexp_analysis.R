@@ -34,7 +34,7 @@ difexp_analysis = function(feature_counts,
       rename_with( ~ paste(.x, contrast, sep = "_"), .cols = c("logFC","logCPM","F","PValue","FDR"))
   }
   
-  merged_tests = test_list %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
+  merged_tests = test_list %>% purrr::reduce(left_join, map, by = c("Geneid","Chr","Start","End","Strand","Length"))
   
   # Filter results by FDR and logFC thresholds ------------------------------
   print(paste0("Filtering resutls by FDR lower than ",FDRts," and abs(log2FC) higher than ",FCts))
@@ -54,16 +54,21 @@ difexp_analysis = function(feature_counts,
   
   filtered_tests = filtered_test_list %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
   
+  final_gene_ids = filtered_test_list %>% sapply(function(x) pull(x, Geneid)) %>% unlist %>% unique
+
   # Add gene name and description to output file and remove extra columns
   extra_columns = colnames(merged_tests)[grepl(c("^logCPM|^F_|^PValue"),colnames(merged_tests))]
   filtered_tests_output = filtered_tests %>% add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
+  
+  merged_tests_output = merged_tests %>% dplyr::filter(Geneid %in% final_gene_ids) %>% 
+    add_gene_annotation %>% dplyr::select(-all_of(extra_columns))
   
   # Return list with generated objects --------------------------------------
   result_list = list("rpkm" = RPKM_object,
                      "DGEL" = DGEL_object_filtered,
                      "list_by_contrast" = filtered_test_list,
                      "merged_tests" = merged_tests,
-                     "filtered_tests" = filtered_tests_output)
+                     "filtered_tests" = merged_tests_output)
   
   return(result_list)
 }

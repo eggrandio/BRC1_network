@@ -222,6 +222,9 @@ ggsave(volc_plot,
        width = 16.93*2, height = 12.21)
 ```
 
+HBind analysis
+
+
 ABA treatment RNAseq: wt, brc1, hb21hb40hb53; control/+ABA
 ```{r}
 # Define parameters for differential expression statistical tests
@@ -244,11 +247,11 @@ my_contrasts = makeContrasts(brc1_ctr_vs_wt_ctr=brc1_ctr-wt_ctr,
 
 # Perform statistcal tests
 aba_results = difexp_analysis(feature_counts=feature_counts,
-                                exp_name=exp_name,
-                                sample_names=sample_names,
-                                sample_groups=sample_groups,
-                                design=design,
-                                my_contrasts=my_contrasts)
+                              exp_name=exp_name,
+                              sample_names=sample_names,
+                              sample_groups=sample_groups,
+                              design=design,
+                              my_contrasts=my_contrasts)
 
 # Store results for downstream analyses
 aba_data_unfiltered = aba_results$merged_tests
@@ -298,7 +301,29 @@ ggsave(volc_plot2,
        units = "cm",
        width = 16.93*2, height = 12.21)
 
-# Volcano plot (with FC > 2 threshold)
+### Analysis without FC filtering
+# Perform statistcal tests
+aba_results = difexp_analysis(feature_counts=feature_counts,
+                              exp_name=exp_name,
+                              sample_names=sample_names,
+                              sample_groups=sample_groups,
+                              design=design,
+                              my_contrasts=my_contrasts,
+                              FCts = log2(1))
+
+# Store results for downstream analyses
+aba_data_unfiltered = aba_results$merged_tests
+aba_data = aba_results$filtered_tests
+aba_DGEL = aba_results$DGEL
+
+# Write rpkm and filtered fold changes to output
+#write.table(aba_results$rpkm, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
+write.table(aba_results$filtered_tests, file = paste0("./output/",exp_name,"filtered_tests_no_fc_cut.txt"), 
+            row.names=F, sep="\t", quote=F, na="")
+
+
+# Volcano plot (without FC > 2 threshold)
+vp_input = aba_data_unfiltered
 comparisons = find_tests(vp_input)
 volc_plot_list = lapply(comparisons, volcano_plot, edger_merged_results = vp_input,logfc_threshold = 0)
 
@@ -317,11 +342,506 @@ ggsave(volc_plot2,
        width = 16.93*2, height = 12.21)
 ```
 
+ABA treatment analysis
+```{r}
+library(GGally)
+
+aba_results = difexp_analysis(feature_counts=feature_counts,
+                              exp_name=exp_name,
+                              sample_names=sample_names,
+                              sample_groups=sample_groups,
+                              design=design,
+                              my_contrasts=my_contrasts,
+                              FCts = log2(1))
+
+aba_responding_genes = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% filter(abs(logFC_wt_aba_vs_wt_ctr) > 1)
+aba_up_genes = aba_responding_genes %>% filter(logFC_wt_aba_vs_wt_ctr > 1) %>% pull(Geneid)
+aba_dn_genes = aba_responding_genes %>% filter(logFC_wt_aba_vs_wt_ctr < 1) %>% pull(Geneid)
+
+ggplot(aba_responding_genes, aes(x= logCPM_wt_aba_vs_wt_ctr, y=logFC_wt_aba_vs_wt_ctr ))+
+  geom_point()
+
+aba_responding_rpkm = aba_results$rpkm %>% filter(gene_id %in% aba_responding_genes$Geneid) %>% 
+  mutate(ave_wt_ctr = rowMeans(select(.,starts_with("wt_ctr")))) %>% 
+  mutate(ave_wt_aba = rowMeans(select(.,starts_with("wt_aba")))) %>% 
+  mutate(ave_brc1_ctr = rowMeans(select(.,starts_with("brc1_ctr")))) %>% 
+  mutate(ave_brc1_aba = rowMeans(select(.,starts_with("brc1_aba")))) %>% 
+  mutate(ave_tri_ctr = rowMeans(select(.,starts_with("tri_ctr")))) %>% 
+  mutate(ave_tri_aba = rowMeans(select(.,starts_with("tri_aba")))) %>% 
+  select(c(gene_id,starts_with("ave_")))
+
+aba_up_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_up_genes) %>% select(-gene_id) %>% log2
+aba_dn_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_dn_genes) %>% select(-gene_id) %>% log2
+
+lowerfun = function(data,mapping){
+  ggplot(data = data, mapping = mapping) +
+    geom_point() +
+    geom_abline(intercept = 0, slope = 1, color = "gray")
+}
+
+plot_aba_up = ggpairs(aba_up_rpkm,
+                      lower = list(continuous = wrap(lowerfun))) +
+  labs(title="ABA up-regulated genes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave(plot_aba_up, 
+       filename = "./output/corr_plot_aba_up.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93, height = 16.93)
+
+plot_aba_dn = ggpairs(aba_dn_rpkm,
+                      lower = list(continuous = wrap(lowerfun)))+
+  labs(title="ABA down-regulated genes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave(plot_aba_dn, 
+       filename = "./output/corr_plot_aba_dn.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93, height = 16.93)
+
+###
+volcano_plot2 = function(edger_merged_results,
+                         comparison = NULL,
+                         gene_id_column = "Geneid",
+                         col_up = "black",
+                         col_ns = "white") {
+  
+  # obtain column name of logFC and FDR data depending on comparison name
+  logfc_column = paste0("logFC_",comparison)
+  fdr_column = paste0("FDR_",comparison)
+  
+  # manipulate edger object to specify which points are colored
+  vp_input = edger_merged_results %>% as.data.frame %>% 
+    select(all_of(c(gene_id_column,logfc_column,fdr_column))) %>% 
+    mutate(log10_fdr = -log10(get(fdr_column))) %>% 
+    mutate(vp_color = case_when(
+      (Geneid %in% aba_responding_genes$Geneid) ~ "aba_resp",
+      TRUE ~ "non_s")) %>% 
+    filter(vp_color == "aba_resp")
+
+  # generate the plot
+  vplot = ggplot(vp_input, aes(x=get(logfc_column),y=log10_fdr,color=vp_color))+
+    geom_point(shape=16, alpha = 0.5) +
+    scale_x_continuous(limits = symmetric_limits) +
+    scale_color_manual(values = c("aba_resp" = col_up,
+                                  "non_s" = col_ns)) +
+    labs(title = comparison,
+         x = "log2(fold change)",
+         y = "-log10(adj. p-val)") +
+    coord_cartesian(clip = "off") +
+    geom_hline(yintercept = -log10(0.05)) +
+    geom_vline(xintercept = 1) +
+    geom_vline(xintercept = -1) +
+    theme(legend.position="none",
+          plot.title = element_text(hjust = 0.5))
+  
+  return(vplot)
+}
+
+vp_input = aba_data_unfiltered
+comparisons = find_tests(vp_input)
+volc_plot_list = lapply(comparisons, volcano_plot2, edger_merged_results = vp_input)
+
+volc_plot1 = ggarrange(plotlist=volc_plot_list[1:2], ncol = 2)
+ggsave(volc_plot1, 
+       filename = "./output/volc_plot_brc1_triple_aba_resp.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93*(4/3), height = 12.21)
+
+volc_plot2 = ggarrange(plotlist=volc_plot_list[3:5], ncol = 3)
+ggsave(volc_plot2, 
+       filename = "./output/volc_plot_ABA_aba_resp.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93*2, height = 12.21)
+
+##### Without selecting by FC
+aba_responding_genes = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% filter(abs(logFC_wt_aba_vs_wt_ctr) > 0)
+aba_up_genes = aba_responding_genes %>% filter(logFC_wt_aba_vs_wt_ctr > 0) %>% pull(Geneid)
+aba_dn_genes = aba_responding_genes %>% filter(logFC_wt_aba_vs_wt_ctr < 0) %>% pull(Geneid)
+
+ggplot(aba_responding_genes, aes(x= logCPM_wt_aba_vs_wt_ctr, y=logFC_wt_aba_vs_wt_ctr ))+
+  geom_point()
+
+aba_responding_rpkm = aba_results$rpkm %>% filter(gene_id %in% aba_responding_genes$Geneid) %>% 
+  mutate(ave_wt_ctr = rowMeans(select(.,starts_with("wt_ctr")))) %>% 
+  mutate(ave_wt_aba = rowMeans(select(.,starts_with("wt_aba")))) %>% 
+  mutate(ave_brc1_ctr = rowMeans(select(.,starts_with("brc1_ctr")))) %>% 
+  mutate(ave_brc1_aba = rowMeans(select(.,starts_with("brc1_aba")))) %>% 
+  mutate(ave_tri_ctr = rowMeans(select(.,starts_with("tri_ctr")))) %>% 
+  mutate(ave_tri_aba = rowMeans(select(.,starts_with("tri_aba")))) %>% 
+  select(c(gene_id,starts_with("ave_")))
+
+aba_up_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_up_genes) %>% select(-gene_id) %>% log2
+aba_dn_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_dn_genes) %>% select(-gene_id) %>% log2
+
+lowerfun = function(data,mapping){
+  ggplot(data = data, mapping = mapping) +
+    geom_point() +
+    geom_abline(intercept = 0, slope = 1, color = "gray")
+}
+
+plot_aba_up = ggpairs(aba_up_rpkm,
+                      lower = list(continuous = wrap(lowerfun))) +
+  labs(title="ABA up-regulated genes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave(plot_aba_up, 
+       filename = "./output/corr_plot_aba_up_no_cut.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93, height = 16.93)
+
+plot_aba_dn = ggpairs(aba_dn_rpkm,
+                      lower = list(continuous = wrap(lowerfun)))+
+  labs(title="ABA down-regulated genes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave(plot_aba_dn, 
+       filename = "./output/corr_plot_aba_dn_no_cut.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93, height = 16.93)
+
+###
+vp_input = aba_data_unfiltered
+comparisons = find_tests(vp_input)
+volc_plot_list = lapply(comparisons, volcano_plot2, edger_merged_results = vp_input)
+
+volc_plot1 = ggarrange(plotlist=volc_plot_list[1:2], ncol = 2)
+ggsave(volc_plot1, 
+       filename = "./output/volc_plot_brc1_triple_aba_resp_no_cut.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93*(4/3), height = 12.21)
+
+volc_plot2 = ggarrange(plotlist=volc_plot_list[3:5], ncol = 3)
+ggsave(volc_plot2, 
+       filename = "./output/volc_plot_ABA_aba_resp_no_cut.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93*2, height = 12.21)
+
+
+
+# brc1_aba_treatment = select(aba_results$merged_tests, c(Geneid, logCPM_brc1_aba_vs_brc1_ctr,logFC_brc1_aba_vs_brc1_ctr)) %>% filter(Geneid %in% aba_responding_genes$Geneid)
+# 
+# ggplot(brc1_aba_treatment, aes(x= logCPM_brc1_aba_vs_brc1_ctr, y=logFC_brc1_aba_vs_brc1_ctr ))+
+#   geom_point()
+
+```
+
+
+
 GFP:BRC1 ChIP
 ```{r}
-# Generate consensus peak annotation (from MACS2 peak calling)
-# Merge peaks called in at least 2 replicates (adapted from https://ro-che.info/articles/2018-07-11-chip-seq-consensus)
-# Used three 1value threshold to call peaks in MACS2 (qval < 0.05, 0.01 or 0.001)
+# Use MACS2-generated peak files with qvalue threshold 1, and then filter "manually"
+qval_filter = -log10(0.05)
+peak_max_width = 500
+peak_min_width = 10
+
+
+peak_files = list.files(path = "./input/", pattern = "^ChIP\\d_q1_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "ChIP\\d") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+brc1_peaks = filtered_peak_list %>% get_consensus_peaks_GRangesList()
+
+# Same for DAPseq data
+peak_files = list.files(path = "./input/", pattern = "^DAP_ATHB\\d{2}_q1_es200_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "DAP_ATHB\\d{2}") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+hb_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
+
+test = c(GRangesList(BRC1_peaks = brc1_peaks), hb_peaks)
+
+test2 = endoapply(test, function(x) plyranges::select(x, peak_name))
+
+# Plot peak location respective of TSS. With "heatmap"
+# Create GRanges object with all arabidopsis genes from ensembl .gtf file
+# ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+# ath_genes = ath_gtf %>% filter(type == "gene")
+# tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+
+# 
+example = batch_enrichedheatmaps(test2, 
+                                 tss = tss, 
+                                 anno_color = "black", 
+                                 show_heatmap_legend = TRUE)
+
+figure_filename = paste0("./output/BRC1_HBs_peak_location.png")
+
+png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
+draw(example, 
+     ht_gap = unit(1, "cm"),
+     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
+dev.off()
+
+# Example 2. Plot HB Dapseq data relative to TSS ####
+peak_files = list.files(path = "./input/dapseq_data/", pattern = "*.narrowPeak", all.files = TRUE,
+                        full.names = TRUE) %>% str_extract(".*HB_ATHB21.*|.*HB_ATHB40.*|.*HB_ATHB53.*") %>% as.vector %>% discard(is.na)
+
+peak_file_names = c("HB21","HB21_amp","HB40","HB40_amp","HB53","HB53_amp")
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names) %>% `seqlevelsStyle<-`(seqlevelsStyle(tss))
+
+dapseq_htlist = batch_enrichedheatmaps(peak_list,
+                                       tss = tss,
+                                       anno_color = "black",
+                                       #value_column = "signalValue",
+                                       #heatmap_col_breaks = c(0,0.99),
+                                       show_heatmap_legend = TRUE)
+
+ext5 = 3000
+ext3 = 1000
+figure_filename = paste0("./output/HB_peak_location_",ext5,"_",ext3,".png")
+
+png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
+draw(dapseq_htlist, 
+     ht_gap = unit(1, "cm"),
+     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
+dev.off()
+
+
+
+# Select genes with peak in their 3kb_up+1kb_dn of TSS ####
+# Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
+  anchor_5p %>% stretch(-2000) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+
+#####
+# TO DO Make function to generate annotation_df from list of direct targets
+hb_peak_list = peak_list[c(1,3,5)]
+hb_de_list = hbind_results$list_by_contrast
+
+test = make_anno_df(hb_de_list,hb_peak_list,
+                    target_region = ath_3kup_1kdown,
+                    peak_name_column = "name")
+
+
+brc1_de_list = brc1ind_results$list_by_contrast
+brc1_peaks = GRangesList(macs2_consensus_q005,macs2_consensus_q001,macs2_consensus_q0001) %>% `names<-`(c("q0.05","q0.01","q.0.001"))
+
+brc1_dt = get_direct_targets(brc1_peaks$q0.05,brc1_de_list[[1]],target_region = ath_3kup_1kdown)
+
+brc1_de_direct_targets = brc1_de_list[[1]] %>% filter(Geneid %in% brc1_dt)
+
+##### 
+test = make_anno_df(brc1_de_direct_targets,hb_peak_list,
+                    target_region = ath_3kup_1kdown,
+                    peak_name_column = "name")
+
+test2 = make_anno_df(brc1_de_direct_targets,brc1_peaks,
+                     target_region = ath_3kup_1kdown,
+                     peak_name_column = "peak_name",
+                     gene_id_column = "Geneid")
+
+
+x = get_direct_targets(brc1_peaks[[1]], de_file=brc1_de_direct_targets, target_region = ath_3kup_1kdown)
+
+anno_df = cbind(test2,test)
+
+# heatmap
+input = brc1_de_direct_targets %>% select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% left_join(HBind_data, by =
+                                                                                                "Geneid") %>%
+  left_join(aba_data, by = "Geneid") %>%
+  select(
+    c(
+      Geneid,
+      logFC_GFP_BRC1ind_vs_brc1,
+      logFC_brc1_ctr_vs_wt_ctr,
+      logFC_wt_aba_vs_wt_ctr,
+      logFC_hb21i_vs_gus,
+      logFC_hb40i_vs_gus,
+      logFC_hb53i_vs_gus
+    )
+  ) 
+
+# input = HBind_data %>% 
+#   select(c(Geneid,logFC_hb21i_vs_gus,logFC_hb40i_vs_gus,logFC_hb53i_vs_gus)) 
+# input = input %>%
+#   filter(Geneid %in% brc1_de$Geneid)
+# 
+
+brc1_de = aba_data_unfiltered %>% filter(FDR_brc1_ctr_vs_wt_ctr<0.05)
+brc1_de_anno = ifelse(input$Geneid %in% brc1_de$Geneid, 1,0) %>% `names<-`(input$Geneid)
+
+brc1_array = read.table("./input/BRC1dep_PC2013.txt",header = TRUE) %>% mutate(Geneid = toupper(Geneid))
+brc1_array_anno = ifelse(input$Geneid %in% brc1_array$Geneid, 1,0) %>% `names<-`(input$Geneid)
+
+# Create list of coloring functions for annotation dataframe
+anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
+
+col_fun_list = list()
+for(i in colnames(anno_df)){
+  col_fun_list[[i]] = anno_col_fun
+}
+
+ha = HeatmapAnnotation(df = anno_df,
+                       which = "row",
+                       # annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
+                       #                      "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
+                       annotation_name_side="top",
+                       annotation_name_rot=45,
+                       show_legend = FALSE,
+                       col = col_fun_list)
+
+
+ht_input = input %>% column_to_rownames("Geneid") %>% as.matrix()
+
+Heatmap(ht_input[,-(2:3)],
+        clustering_method_rows = "ward.D2",
+        right_annotation = ha,
+        show_row_names = FALSE,
+        #show_column_names = FALSE
+)
+
+Heatmap(ht_input[,c(1,4:6)],
+        clustering_method_rows = "ward.D2",
+        right_annotation = ha,
+        show_row_names = FALSE,
+        #show_column_names = FALSE
+)
+
+Heatmap(ht_input[,c(1)],
+        clustering_method_rows = "ward.D2",
+        right_annotation = ha,
+        show_row_names = FALSE,
+        #show_column_names = FALSE
+)
+```
+
+
+
+
+GO enrichment, GSEA and KEGG enrichment
+```{r}
+### GO enrichment and GSEA 
+
+# Generate GO object with Information Content for Semantic Similarity analyses
+if(!exists("athGO")){
+  athGO = godata("org.At.tair.db", ont="BP")
+}
+
+# Object to find GO common ancestor
+GO_anc = as.list(GOBPANCESTOR)
+
+# Object to match GO ID with GO definitions
+GO_def = suppressMessages(AnnotationDbi::select(GO.db,
+                                                keys=(keys(GO.db)),
+                                                columns=c("GOID","TERM","DEFINITION"),
+                                                keytype="GOID"))
+
+# Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
+input_data = brc1ind_results$list_by_contrast[[1]]
+fc_column = colnames(input_data)[grepl(c("^logFC"),colnames(input_data))] 
+GO_input = input_data %>% dplyr::select(Geneid, all_of(fc_column))
+
+
+ranked_genes = setNames(GO_input[,fc_column],
+                        GO_input$Geneid) %>% sort %>% rev
+
+genes_up = ranked_genes[ranked_genes > 0]
+genes_dn = ranked_genes[ranked_genes < 0]
+
+# Perform GO enrichment analysis with up- and down-regulated genes
+GOenrich_up = enrichGO(gene = names(genes_up),
+                       OrgDb = org.At.tair.db,
+                       keyType = "TAIR",
+                       ont = "BP",
+                       pAdjustMethod = "BH",
+                       qvalueCutoff = 0.05)
+GOenrich_up %>% as.data.frame() %>% pull(ID) %>% length()
+
+goplot(GOenrich_up)
+
+GOenrich_dn = enrichGO(gene = names(genes_dn),
+                       OrgDb = org.At.tair.db,
+                       keyType = "TAIR",
+                       ont = "BP",
+                       pAdjustMethod = "BH",
+                       qvalueCutoff = 0.05)
+
+goplot(GOenrich_dn)
+
+#####
+heatmap1 = simplify_go(GOenrich_up,
+                       GO_sem_sim = athGO,
+                       GO_def = GO_def)
+heatmap2 = simplify_go(GOenrich_dn,
+                       GO_sem_sim = athGO,
+                       GO_def = GO_def)
+
+#####
+GO_data = as.data.frame(GOenrich_up) # to query for GO IDs and descriptions
+
+go_id = GO_data %>% pull(unique(ID))
+
+ss_rel = mgoSim(go_id, go_id, semData=athGO, measure="Rel", combine=NULL)
+
+test = simplifyGO(ss_rel, plot = T)
+
+# Calculate optimal cluster number "mathematically"
+#### WeighedCluster
+GO_hclust = (1 - ss_rel) %>% as.dist %>%
+  hclust(method = "ward.D2")
+
+GO_hclust_n = length(GO_hclust$order)
+
+clustrange = as.clustrange(GO_hclust, diss = (1 - ss_rel), ncluster = GO_hclust_n)
+pamRange = wcKMedRange((1 - ss_rel), kvals = 2:GO_hclust_n)
+
+# par(mfrow=c(1,2))
+# plot(clustrange,
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
+#      norm="zscore",lwd=3)
+# plot(pamRange,
+#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
+#      norm="zscore",lwd=3)
+
+crange_pbc = clustrange$stats$PBC
+prange_pbc = pamRange$stats$PBC
+
+max_crange_pbc = find_local_max(crange_pbc)
+max_prange_pbc = find_local_max(prange_pbc)
+
+max1_crange_pbc = which.max(crange_pbc)
+max1_prange_pbc = which.max(prange_pbc)
+
+##### Figure to check different GO cluster numbers (currently using clustrange)
+go_id = GOenrich_dn %>% get_goids
+
+test4 = check_go_clustering(go_id)
+
+test_list = list()
+for(i in seq_along(test4)){
+  test_list[[i]] = grid.grabExpr(draw(test4[[i]]))
+}
+
+figure = ggarrange(plotlist = test_list)
+
+figure
+
+figure_filename = paste0("./output/test_check_cluster.png")
+
+png(figure_filename, width = 33, height = 15, units = "cm", res = 300)
+figure
+dev.off()
+```
+
+
+Quantify ChIP "strength" (csaw)
+```{r}
+# Used three qvalue threshold to call peaks in MACS2 (qval < 0.05, 0.01 or 0.001)
 # Consensus with MACS2 qval < 0.001
 peak_file_list = list.files(path = "./input/", pattern="^BRC1_ChIP.*q0001.*\\.narrowPeak$", full.names=TRUE)
 peak_names = peak_file_list %>% str_extract("BRC1_ChIP*.")
@@ -454,287 +974,6 @@ names(csaw_result) = paste0("region_", 1:length(csaw_result))
 
 export(csaw_result, "./output/test_csaw_rep1_2.bed")
 
-#####
-
-# Plot peak location respective of TSS. With "heatmap"
-# Create GRanges object with all arabidopsis genes from ensembl .gtf file
-ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
-ath_genes = ath_gtf %>% filter(type == "gene")
-tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
-
-peak_files = list.files(path = "./output/", pattern = ".bed", all.files = TRUE, full.names = TRUE)
-
-macs_peak_files = peak_files %>% str_match(".*macs2_q.*\\.bed$") %>% na.omit() %>% as.vector
-peak_file_names = sapply(strsplit(macs_peak_files, "_"), function(x) x[2])
-list1 = lapply(macs_peak_files, read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
-
-csaw_peak_files = peak_files %>% str_match(".*csaw.*\\.bed$") %>% na.omit() %>% as.vector
-peak_file_names = c("csaw","csaw12")
-list2 = lapply(csaw_peak_files, read_bed) %>% GRangesList() %>% `names<-`(peak_file_names)
-
-# Example 1. Compare csaw to MACS2 peaks ####
-list3 = c(list1,list2)
-
-example = batch_enrichedheatmaps(list3, tss = tss, 
-                                 anno_color = "black", 
-                                 show_heatmap_legend = TRUE)
-
-figure_filename = paste0("./output/test_",ext5,"_",ext3,".png")
-
-png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
-draw(example, 
-     ht_gap = unit(1, "cm"),
-     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
-dev.off()
-
-# Example 2. Plot HB Dapseq data relative to TSS ####
-peak_files = list.files(path = "./input/dapseq_data/", pattern = "*.narrowPeak", all.files = TRUE,
-           full.names = TRUE) %>% str_extract(".*HB_ATHB21.*|.*HB_ATHB40.*|.*HB_ATHB53.*") %>% as.vector %>% discard(is.na)
-
-peak_file_names = c("HB21","HB21_amp","HB40","HB40_amp","HB53","HB53_amp")
-peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names) %>% `seqlevelsStyle<-`(seqlevelsStyle(tss))
-
-dapseq_htlist = batch_enrichedheatmaps(peak_list,
-                                       tss = tss,
-                                       anno_color = "black",
-                                       value_column = "signalValue",
-                                       heatmap_col_breaks = c(0,0.99),
-                                       show_heatmap_legend = TRUE)
-
-figure_filename = paste0("./output/HB_peak_location_",ext5,"_",ext3,".png")
-  
-png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
-draw(dapseq_htlist, 
-     ht_gap = unit(1, "cm"),
-     padding = unit(c(0, 0.5, 0, 0.02), "cm"))
-dev.off()
-
-
-
-# Select genes with peak in their 3kb_up+1kb_dn of TSS ####
-# Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
-ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
-  anchor_5p %>% stretch(-2000) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
-
-#####
-# TO DO Make function to generate annotation_df from list of direct targets
-hb_peak_list = peak_list[c(1,3,5)]
-hb_de_list = hbind_results$list_by_contrast
-
-test = make_anno_df(hb_de_list,hb_peak_list,
-                    target_region = ath_3kup_1kdown,
-                    peak_name_column = "name")
-
-
-brc1_de_list = brc1ind_results$list_by_contrast
-brc1_peaks = GRangesList(macs2_consensus_q005,macs2_consensus_q001,macs2_consensus_q0001) %>% `names<-`(c("q0.05","q0.01","q.0.001"))
-
-brc1_dt = get_direct_targets(brc1_peaks$q0.05,brc1_de_list[[1]],target_region = ath_3kup_1kdown)
-
-brc1_de_direct_targets = brc1_de_list[[1]] %>% filter(Geneid %in% brc1_dt)
-
-##### 
-test = make_anno_df(brc1_de_direct_targets,hb_peak_list,
-                    target_region = ath_3kup_1kdown,
-                    peak_name_column = "name")
-
-test2 = make_anno_df(brc1_de_direct_targets,brc1_peaks,
-                     target_region = ath_3kup_1kdown,
-                     peak_name_column = "peak_name",
-                     gene_id_column = "Geneid")
-
-
-x = get_direct_targets(brc1_peaks[[1]], de_file=brc1_de_direct_targets, target_region = ath_3kup_1kdown)
-
-anno_df = cbind(test2,test)
-
-# heatmap
-input = brc1_de_direct_targets %>% select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% left_join(HBind_data, by =
-                                                                                      "Geneid") %>%
-  left_join(aba_data, by = "Geneid") %>%
-  select(
-    c(
-      Geneid,
-      logFC_GFP_BRC1ind_vs_brc1,
-      logFC_brc1_ctr_vs_wt_ctr,
-      logFC_wt_aba_vs_wt_ctr,
-      logFC_hb21i_vs_gus,
-      logFC_hb40i_vs_gus,
-      logFC_hb53i_vs_gus
-    )
-  ) 
-
-# input = HBind_data %>% 
-#   select(c(Geneid,logFC_hb21i_vs_gus,logFC_hb40i_vs_gus,logFC_hb53i_vs_gus)) 
-# input = input %>%
-#   filter(Geneid %in% brc1_de$Geneid)
-# 
-
-brc1_de = aba_data_unfiltered %>% filter(FDR_brc1_ctr_vs_wt_ctr<0.05)
-brc1_de_anno = ifelse(input$Geneid %in% brc1_de$Geneid, 1,0) %>% `names<-`(input$Geneid)
-
-brc1_array = read.table("./input/BRC1dep_PC2013.txt",header = TRUE) %>% mutate(Geneid = toupper(Geneid))
-brc1_array_anno = ifelse(input$Geneid %in% brc1_array$Geneid, 1,0) %>% `names<-`(input$Geneid)
-
-# Create list of coloring functions for annotation dataframe
-anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
-
-col_fun_list = list()
-for(i in colnames(anno_df)){
-  col_fun_list[[i]] = anno_col_fun
-}
-
-ha = HeatmapAnnotation(df = anno_df,
-                       which = "row",
-                       # annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
-                       #                      "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
-                       annotation_name_side="top",
-                       annotation_name_rot=45,
-                       show_legend = FALSE,
-                       col = col_fun_list)
-
-
-ht_input = input %>% column_to_rownames("Geneid") %>% as.matrix()
-
-Heatmap(ht_input[,-(2:3)],
-        clustering_method_rows = "ward.D2",
-        right_annotation = ha,
-        show_row_names = FALSE,
-        #show_column_names = FALSE
-        )
-
-Heatmap(ht_input[,c(1,4:6)],
-        clustering_method_rows = "ward.D2",
-        right_annotation = ha,
-        show_row_names = FALSE,
-        #show_column_names = FALSE
-        )
-
-Heatmap(ht_input[,c(1)],
-        clustering_method_rows = "ward.D2",
-        right_annotation = ha,
-        show_row_names = FALSE,
-        #show_column_names = FALSE
-        )
-```
-
-GO enrichment, GSEA and KEGG enrichment
-```{r}
-### GO enrichment and GSEA 
-
-# Generate GO object with Information Content for Semantic Similarity analyses
-if(!exists("athGO")){
-  athGO = godata("org.At.tair.db", ont="BP")
-}
-
-# Object to find GO common ancestor
-GO_anc = as.list(GOBPANCESTOR)
-
-# Object to match GO ID with GO definitions
-GO_def = suppressMessages(AnnotationDbi::select(GO.db,
-                                                keys=(keys(GO.db)),
-                                                columns=c("GOID","TERM","DEFINITION"),
-                                                keytype="GOID"))
-
-# Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
-input_data = brc1ind_results$list_by_contrast[[1]]
-fc_column = colnames(input_data)[grepl(c("^logFC"),colnames(input_data))] 
-GO_input = input_data %>% dplyr::select(Geneid, all_of(fc_column))
-
-
-ranked_genes = setNames(GO_input[,fc_column],
-                        GO_input$Geneid) %>% sort %>% rev
-
-genes_up = ranked_genes[ranked_genes > 0]
-genes_dn = ranked_genes[ranked_genes < 0]
-
-# Perform GO enrichment analysis with up- and down-regulated genes
-GOenrich_up = enrichGO(gene = names(genes_up),
-                OrgDb = org.At.tair.db,
-                keyType = "TAIR",
-                ont = "BP",
-                pAdjustMethod = "BH",
-                qvalueCutoff = 0.05)
-GOenrich_up %>% as.data.frame() %>% pull(ID) %>% length()
-
-goplot(GOenrich_up)
-
-GOenrich_dn = enrichGO(gene = names(genes_dn),
-                OrgDb = org.At.tair.db,
-                keyType = "TAIR",
-                ont = "BP",
-                pAdjustMethod = "BH",
-                qvalueCutoff = 0.05)
-
-goplot(GOenrich_dn)
-
-#####
-heatmap1 = simplify_go(GOenrich_up,
-                       GO_sem_sim = athGO,
-                       GO_def = GO_def)
-heatmap2 = simplify_go(GOenrich_dn,
-                       GO_sem_sim = athGO,
-                       GO_def = GO_def)
-
-#####
-GO_data = as.data.frame(GOenrich_up) # to query for GO IDs and descriptions
-
-go_id = GO_data %>% pull(unique(ID))
-
-ss_rel = mgoSim(go_id, go_id, semData=athGO, measure="Rel", combine=NULL)
-
-test = simplifyGO(ss_rel, plot = T)
-
-
-
-
-
-# Calculate optimal cluster number "mathematically"
-#### WeighedCluster
-GO_hclust = (1 - ss_rel) %>% as.dist %>%
-  hclust(method = "ward.D2")
-
-GO_hclust_n = length(GO_hclust$order)
-
-clustrange = as.clustrange(GO_hclust, diss = (1 - ss_rel), ncluster = GO_hclust_n)
-pamRange = wcKMedRange((1 - ss_rel), kvals = 2:GO_hclust_n)
-
-# par(mfrow=c(1,2))
-# plot(clustrange,
-#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
-#      norm="zscore",lwd=3)
-# plot(pamRange,
-#      stat=c("PBC","ASWw", "ASW","HG", "HGSD", "RHC"),
-#      norm="zscore",lwd=3)
-
-crange_pbc = clustrange$stats$PBC
-prange_pbc = pamRange$stats$PBC
-
-max_crange_pbc = find_local_max(crange_pbc)
-max_prange_pbc = find_local_max(prange_pbc)
-
-max1_crange_pbc = which.max(crange_pbc)
-max1_prange_pbc = which.max(prange_pbc)
-
-##### Figure to check different GO cluster numbers (currently using clustrange)
-go_id = GOenrich_dn %>% get_goids
-
-test4 = check_go_clustering(go_id)
-
-test_list = list()
-for(i in seq_along(test4)){
-  test_list[[i]] = grid.grabExpr(draw(test4[[i]]))
-}
-
-figure = ggarrange(plotlist = test_list)
-
-figure
-
-figure_filename = paste0("./output/test_check_cluster.png")
-
-png(figure_filename, width = 33, height = 15, units = "cm", res = 300)
-figure
-dev.off()
 ```
 
 
@@ -762,7 +1001,7 @@ for(q in qvals){
 
 tmp_func2 = function(x,y) { 
   plyranges::filter(x, qValue > y)
-  }
+}
 
 b = list()
 for(q in qvals){
@@ -808,7 +1047,7 @@ gene_symbol = suppressMessages(mapIds(org.At.tair.db,
                                       multiVals = "first"))
 
 mat_row_labels = apply(cbind(data$Geneid, gene_symbol), 1, 
-        function(x) paste(x[!is.na(x)], collapse = " "))
+                       function(x) paste(x[!is.na(x)], collapse = " "))
 
 logfc_column = "logFC_GFP_BRC1ind_vs_brc1"
 
@@ -838,18 +1077,18 @@ if(!exists("athGO")){
 
 # Object to match GO ID with GO definitions
 GO_def = AnnotationDbi::select(GO.db,
-                              keys=(keys(GO.db)),
-                              columns=c("GOID","TERM","DEFINITION"),
-                              keytype="GOID")
+                               keys=(keys(GO.db)),
+                               columns=c("GOID","TERM","DEFINITION"),
+                               keytype="GOID")
 
 # Object to find GO common ancestor
 GO_anc = as.list(GOBPANCESTOR)
 
 # Object to match GO ID with GO definitions
 GO_def = AnnotationDbi::select(GO.db,
-                              keys=(keys(GO.db)),
-                              columns=c("GOID","TERM","DEFINITION"),
-                              keytype="GOID")
+                               keys=(keys(GO.db)),
+                               columns=c("GOID","TERM","DEFINITION"),
+                               keytype="GOID")
 
 # Format input data for GO and GSEA analyses (vector of Fold-change named with gene IDs)
 fc_column = colnames(filtered_tests_output)[grepl(c("^logFC"),colnames(filtered_tests_output))] 
@@ -863,21 +1102,21 @@ genes_dn = ranked_genes[ranked_genes < 0]
 
 # Perform GO enrichment analysis with up- and down-regulated genes
 GOenrich_up = enrichGO(gene = names(genes_up),
-                OrgDb = org.At.tair.db,
-                keyType = "TAIR",
-                ont = "BP",
-                pAdjustMethod = "BH",
-                qvalueCutoff = 0.05)
+                       OrgDb = org.At.tair.db,
+                       keyType = "TAIR",
+                       ont = "BP",
+                       pAdjustMethod = "BH",
+                       qvalueCutoff = 0.05)
 GOenrich_up %>% as.data.frame() %>% pull(ID) %>% length()
 
 goplot(GOenrich_up)
 
 GOenrich_dn = enrichGO(gene = names(genes_dn),
-                OrgDb = org.At.tair.db,
-                keyType = "TAIR",
-                ont = "BP",
-                pAdjustMethod = "BH",
-                qvalueCutoff = 0.05)
+                       OrgDb = org.At.tair.db,
+                       keyType = "TAIR",
+                       ont = "BP",
+                       pAdjustMethod = "BH",
+                       qvalueCutoff = 0.05)
 
 goplot(GOenrich_dn)
 
@@ -925,20 +1164,20 @@ plot(pamRange,
      norm="zscore",lwd=3)
 ####
 which.peaks <- function(x,partial=TRUE,decreasing=FALSE){
-     if (decreasing){
-         if (partial){
-             which(diff(c(FALSE,diff(x)>0,TRUE))>0)
-         }else {
-             which(diff(diff(x)>0)>0)+1
-         }
-     }else {
-         if (partial){
-             which(diff(c(TRUE,diff(x)>=0,FALSE))<0)
-         }else {
-             which(diff(diff(x)>=0)<0)+1
-         }
-     }
- }
+  if (decreasing){
+    if (partial){
+      which(diff(c(FALSE,diff(x)>0,TRUE))>0)
+    }else {
+      which(diff(diff(x)>0)>0)+1
+    }
+  }else {
+    if (partial){
+      which(diff(c(TRUE,diff(x)>=0,FALSE))<0)
+    }else {
+      which(diff(diff(x)>=0)<0)+1
+    }
+  }
+}
 
 test = pamRange$stats$PBC
 
@@ -972,7 +1211,7 @@ GO_heatmap = Heatmap(ss_rel,
                      row_names_max_width = max_text_width(row_labs),
                      right_annotation = ha,
                      show_column_names = FALSE
-                     )
+)
 
 GO_heatmap
 
@@ -1006,7 +1245,7 @@ labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
 par(mar = c(1, 1, 1, 20),
     xpd = NA,
     bg = "grey50"
-    ) 
+) 
 plot(dd, horiz = T)
 
 # 4- Select representative term for each cluster
@@ -1937,7 +2176,7 @@ PCA_plot = ggplot(data = RPKM_PCA_PLOT, aes(x = PC1, y = PC2, color = genotype))
         legend.spacing.x = unit(0.5, "mm"),
         legend.title = element_blank(),
         legend.key=element_blank())
-  
+
 # Build model and test all against control (wt_ctr)
 design = model.matrix(~sample_groups) %>% `colnames<-`(levels(sample_groups))
 
@@ -1968,8 +2207,8 @@ counts2 = counts %>% dplyr::select(contains("ctr"))
 sample_groups2 = gsub('.{2}$', '', colnames(counts2)) %>% factor(levels=unique(gsub('.{2}$', '', colnames(counts2))))
 
 DGEL_object2 = DGEList(counts = counts2, 
-                      genes = gene_info,
-                      group = sample_groups2) %>% calcNormFactors()
+                       genes = gene_info,
+                       group = sample_groups2) %>% calcNormFactors()
 
 RPKM_cutoff = 1
 
@@ -2044,21 +2283,21 @@ design_pairwise = model.matrix(~0+sample_groups) %>% `colnames<-`(levels(sample_
 
 # To do make contrasts and loop edgeR through each contrast
 design.pairs <-
-function(levels) {
-n <- length(levels)
-design <- matrix(0,n,choose(n,2))
-rownames(design) <- levels
-colnames(design) <- 1:choose(n,2)
-k <- 0
-for (i in 1:(n-1))
-for (j in (i+1):n) {
-k <- k+1
-design[i,k] <- 1
-design[j,k] <- -1
-colnames(design)[k] <- paste(levels[i],"-",levels[j],sep="")
-}
-design
-}
+  function(levels) {
+    n <- length(levels)
+    design <- matrix(0,n,choose(n,2))
+    rownames(design) <- levels
+    colnames(design) <- 1:choose(n,2)
+    k <- 0
+    for (i in 1:(n-1))
+      for (j in (i+1):n) {
+        k <- k+1
+        design[i,k] <- 1
+        design[j,k] <- -1
+        colnames(design)[k] <- paste(levels[i],"-",levels[j],sep="")
+      }
+    design
+  }
 
 #make contrasts and use in edgeR loop and join results by gene_id
 unique(sample_groups) %>% design.pairs
