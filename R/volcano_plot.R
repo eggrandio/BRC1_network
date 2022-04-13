@@ -19,16 +19,14 @@ volcano_plot = function(edger_merged_results,
                         col_dn = "blue",
                         col_ns = "gray") {
   if(is.null(comparison)){stop("Please select a comparison")}
-  # load required libraries
-  library(ggpmisc)
-  library(tidyverse)
+
   # obtain column name of logFC and FDR data depending on comparison name
   logfc_column = paste0("logFC_",comparison)
   fdr_column = paste0("FDR_",comparison)
   
   # manipulate edger object to specify which points are colored
   vp_input = edger_merged_results %>% as.data.frame %>% 
-    select(all_of(c(gene_id_column,logfc_column,fdr_column))) %>% 
+    dplyr::select(all_of(c(gene_id_column,logfc_column,fdr_column))) %>% 
     mutate(log10_fdr = -log10(get(fdr_column))) %>% 
     mutate(vp_color = case_when(
       (log10_fdr > logfdr_threshold) & (get(logfc_column) > logfc_threshold) ~ "sig_up",
