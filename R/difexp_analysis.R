@@ -23,6 +23,10 @@ difexp_analysis = function(feature_counts,
   drop = DGEL_object %>% rpkm %>% rowMeans %>% `<`(RPKM_cutoff) %>% which #get index of genes below threshold
   DGEL_object_filtered = DGEL_object[-drop, ,keep.lib.sizes=FALSE] %>% calcNormFactors %>% estimateDisp(design, robust=TRUE)
   
+  ### TEST edgeR low-expressed genes filter criterium (less strict than RPKM_cutoff = 1)
+  # DGEL_object_filtered = DGEL_object_filtered[filterByExpr(DGEL_object_filtered), ,keep.lib.sizes=FALSE] 
+  # DGEL_object_filtered = calcNormFactors(DGEL_object_filtered)
+  
   # Statistical test by my_comparisons and merge results --------------------
   # TO DO change loop to lapply (how to vectorize contrasts?)
   fit = glmQLFit(DGEL_object_filtered, design, robust=TRUE)
