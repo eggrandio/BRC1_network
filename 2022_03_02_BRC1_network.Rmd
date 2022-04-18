@@ -42,11 +42,15 @@ library(randomcoloR)
 library(dendextend)
 library(ComplexHeatmap)
 library(EnrichedHeatmap)
+library(simplifyEnrichment)
 library(ggsci)
 library(ggrepel)
 library(ggpmisc)
 library(directlabels)
 library(WeightedCluster)
+library(GGally)
+library(ggsankey)
+library(ggupset)
 
 # Load custom functions
 invisible(sapply(list.files(path = "./R/", pattern = "\\.R$", ignore.case = TRUE, full.names = TRUE), source, .GlobalEnv))
@@ -60,7 +64,8 @@ theme_update(axis.text.x = element_text(color="black"),
              panel.grid.minor = element_blank(),
              panel.background = element_blank(),
              legend.background = element_blank(),
-             plot.background = element_rect(fill = "transparent", color = NA))
+             plot.background = element_rect(fill = "transparent", color = NA),
+             plot.title = element_text(hjust = 0.5))
 ```
 
 GFP:BRC1 RNAseq
@@ -149,44 +154,6 @@ HBind_data_unfiltered = hbind_results$merged_tests
 HBind_data = hbind_results$filtered_tests
 HBind_DGEL = hbind_results$DGEL
 
-###
-
-# x = hbind_results$list_by_contrast %>% purrr::reduce(full_join, map2, by = c("Geneid","Chr","Start","End","Strand","Length"))
-# 
-# 
-# hbind_results$list_by_contrast %>% bind_rows() %>% pull(Geneid) %>% unique %>% length
-# 
-# 
-# 
-# z = HBind_data_unfiltered %>% filter(Geneid %in% x$Geneid)
-# 
-# fdr_1 = (get(fdr_colnames[1]) < 0.05)
-# fc_1 = (abs(get(contrast_colnames[1])) > log2(2))
-# 
-# HBind_data_unfiltered %>% filter(((get(fdr_colnames[1]) < 0.05)&(abs(get(contrast_colnames[1])) > log2(2))) | 
-#                                   ((get(fdr_colnames[2]) < 0.05)&(abs(get(contrast_colnames[2])) > log2(2))) |
-#                                    ((get(fdr_colnames[3]) < 0.05)&(abs(get(contrast_colnames[3])) > log2(2))))
-
-### Check filtering in diffexp_analysis
-
-
-# 
-# y = hbind_results$list_by_contrast
-# 
-# z = y[[1]]
-# 
-# dplyr::filter(z,fdr_colnames[1] > 0.05)
-# 
-# fdr_colnames = sapply(y, function(x) colnames(x)[grepl("^FDR",colnames(x))])
-# contrast_colnames = sapply(y, function(x) colnames(x)[grepl("^logFC",colnames(x))])
-# 
-# filter_func = function(x, fdr_col, fc_col) {
-#   dplyr::filter(x, (get(fdr_col) < FDRts) & (abs(get(fc_col) > FCts)))
-# }
-# 
-# test = mapply(filter_func, test_list, fdr_colnames, contrast_colnames, SIMPLIFY = FALSE)
-
-
 # Write rpkm and filtered fold changes to output
 write.table(hbind_results$rpkm, file = paste0("./output/",exp_name,"RPKM.txt"), row.names=F, sep="\t", quote=F)
 write.table(hbind_results$filtered_tests, file = paste0("./output/",exp_name,"filtered_tests.txt"), row.names=F, sep="\t", quote=F, na="")
@@ -223,6 +190,268 @@ ggsave(volc_plot,
 ```
 
 HBind analysis
+```{r}
+### Upset plot to see overlap
+filtered_data = hbind_results$filtered_tests %>% column_to_rownames("Geneid") %>% 
+  dplyr::select(logFC_hb21i_vs_gus,logFC_hb40i_vs_gus,logFC_hb53i_vs_gus) %>%
+  `colnames<-`(c("HB21ind","HB40ind","HB53ind"))
+
+gene_list = list()
+i = 1
+for(l in seq_along(hbind_results$list_by_contrast)) {
+  de_list = hbind_results$list_by_contrast[l]
+  list_name = names(de_list)
+  fc_column = paste0("logFC_",list_name)
+  up_genes = dplyr::filter(hbind_results$list_by_contrast[[l]], get(fc_column) > 1) %>% pull(Geneid) 
+  gene_list[[i]] = up_genes
+  i = i + 1
+  dn_genes = dplyr::filter(hbind_results$list_by_contrast[[l]], get(fc_column) < 1) %>% pull(Geneid)
+  gene_list[[i]] = dn_genes
+  i = i + 1
+}
+
+names(gene_list) = paste0(c("HB21ind up (",
+                       "HB21ind down   (",
+                       "HB40ind up   (",
+                       "HB40ind down   (",
+                       "HB53ind up   (",
+                       "HB53ind down   ("),
+                     sapply(gene_list,length),
+                     c(rep(")",6)))
+
+# reoder list
+gene_list = gene_list[c(1,3,5,2,4,6)]
+
+ggupset_input = list_to_matrix(gene_list) %>% as.data.frame %>%
+  rownames_to_column("GeneID") %>%
+  gather(-GeneID, key = "sample", value = "value") %>%
+  filter(value == 1) %>%
+  dplyr::select(-value) %>%
+  group_by(GeneID) %>%
+  summarize(sample = list(sample), .groups = "drop_last")
+
+# plot 
+UPSET_plot = ggplot(ggupset_input, aes(x=sample)) +
+  geom_bar() +
+  scale_y_continuous("Number of\ncommon genes", expand = expansion(mult = c(0, 0.05))) +
+  geom_text(stat = "count",
+            aes(label=..count..),
+            hjust = 0.5,
+            vjust = -0.5,
+            size = 3,
+            angle = 0) +
+  scale_x_upset(name = "", order_by = "freq",
+                sets = c(names(gene_list)),
+                n_intersections = Inf) +
+  theme_classic() +
+  theme(axis.text.x = element_text(color="black"),
+        axis.text.y = element_text(color="black"),
+        axis.ticks = element_line(color="black"),
+        plot.margin = unit(c(5.5,5.5,5.5,53), "pt"))
+
+ggsave(UPSET_plot, filename="./output/HBind_upsetplot.png",
+       dpi = 600,
+       units = "cm",
+       width = 16.93, height = 12.21)
+
+### Venn diagrams
+x = gene_list[1:3] %>% `names<-`(c("HB21ind","HB40ind","HB53ind"))
+
+custom_colors = c(rep("black", length(x)))
+
+venn_up = 
+  ggVennDiagram(x) +
+  scale_color_manual(values = custom_colors) +
+  scale_fill_gradient(low="white", high = "red") +
+  scale_x_continuous(expand = expansion(mult = .2)) +
+  labs(title="Up-regulated genes") +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5))
+
+x = gene_list[4:6] %>% `names<-`(c("HB21ind","HB40ind","HB53ind"))
+
+custom_colors = c(rep("black", length(x)))
+
+venn_dn = 
+  ggVennDiagram(x) +
+  scale_color_manual(values = custom_colors) +
+  scale_fill_gradient(low="white", high = "blue") +
+  scale_x_continuous(expand = expansion(mult = .2)) +
+  labs(title="Down-regulated genes") +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5))
+
+ggsave(venn_up, filename="./output/HBind_up_venn.png",
+       dpi = 600,
+       units = "cm",
+       width = 10, height = 10)
+
+ggsave(venn_dn, filename="./output/HBind_dn_venn.png",
+       dpi = 600,
+       units = "cm",
+       width = 10, height = 10)
+
+### Sankey plot
+test = data.frame(gene_id = filtered_data %>% rownames) %>% 
+  mutate(HB21ind = case_when(
+    gene_id %in% gene_list$`HB21ind up (1638)` ~ "up",
+    gene_id %in% gene_list$`HB21ind down   (725)` ~ "dn",
+    TRUE ~ "ns")) %>% 
+  mutate(HB40ind = case_when(
+    gene_id %in% gene_list$`HB40ind up   (567)` ~ "up",
+    gene_id %in% gene_list$`HB40ind down   (161)` ~ "dn",
+    TRUE ~ "ns")) %>% 
+    mutate(HB53ind = case_when(
+    gene_id %in% gene_list$`HB53ind up   (564)` ~ "up",
+    gene_id %in% gene_list$`HB53ind down   (120)` ~ "dn",
+    TRUE ~ "ns"))
+
+df = test %>%
+  make_long(HB21ind, HB40ind, HB53ind)
+
+hbind_sankey_plot = ggplot(df, aes(x = x, 
+                                   next_x = next_x,
+                                   node = node, 
+                                   next_node = next_node, 
+                                   fill = factor(node), 
+                                   label = node)) +
+  geom_sankey(flow.alpha = 0.5, 
+              node.color = "black",
+              show.legend = TRUE) +
+  scale_x_discrete(expand = expansion(mult = 0.1)) +
+  scale_fill_manual(values = c("up" = "red",
+                               "ns" = "gray",
+                               "dn" = "blue"),
+                    breaks = c("up", "ns", "dn"),
+                    labels = c("Up-reg.", "Not sig.", "Down-reg.")) +
+  labs(fill = "Direction") +
+  theme(axis.text.x = element_text(size = 14),
+        axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())
+
+ggsave(hbind_sankey_plot, filename = "./output/HBind_sankeyplot.png",
+       dpi = 600,
+       units = "cm",
+       width = 12, height = 10)
+
+### Check if top up-regulated genes in HB21 are also top genes in other HBinds
+test_func = function(n){
+  gene_list = list()
+  i = 1
+  for(l in seq_along(hbind_results$list_by_contrast)) {
+    de_list = hbind_results$list_by_contrast[l]
+    list_name = names(de_list)
+    fc_column = paste0("logFC_",list_name)
+    
+    up_genes= slice_max(hbind_results$list_by_contrast[[l]], get(fc_column), n = n) %>% dplyr::select(c(Geneid, fc_column))
+    gene_list[[i]] = up_genes
+    i = i + 1
+    # dn_genes= slice_min(hbind_results$list_by_contrast[[l]], get(fc_column), n = n) %>% dplyr::select(c(Geneid, fc_column))
+    # gene_list[[i]] = dn_genes
+    # i = i + 1
+  }
+  
+  names(gene_list) = c("HB21ind up",
+                       #"HB21ind down",
+                       "HB40ind up",
+                       #"HB40ind down",
+                       "HB53ind up")
+                       #"HB53ind down")
+  
+  x = gene_list %>% lapply(function(x) pull(x,Geneid))
+  
+  custom_colors = c(rep("black", length(x)))
+  
+  ggVennDiagram(x, label= "count",category.names = c("HB21ind","HB40ind","HB53ind")) +
+    scale_color_manual(values = custom_colors) +
+    scale_fill_gradient(low="white", high = "red") +
+    scale_x_continuous(expand = expansion(mult = .2)) +
+    labs(title=paste0(n," top up-regulated genes")) +
+    theme(legend.position = "none",
+          plot.title = element_text(hjust = 0.5))
+}
+
+n_vector = c(50,100,200,300,400,500)
+
+test = lapply(n_vector, test_func)
+
+plot_upgenes = ggarrange(plotlist = test)
+
+ggsave(plot_upgenes, filename = "./output/HBind_top_x_genes.png",
+       dpi = 600,
+       units = "cm",
+       width = 30, height = 20)
+###
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene")
+tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
+  anchor_5p %>% stretch(-2000) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+
+qval_filter = -log10(0.05)
+peak_max_width = 500
+peak_min_width = 10
+
+peak_files = list.files(path = "./input/", pattern = "^DAP_ATHB\\d{2}_q1_es200_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "DAP_ATHB\\d{2}") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+hb_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
+
+
+anno_df = make_anno_df(hbind_results$filtered_tests,hb_peaks,
+                    target_region = ath_3kup_1kdown,
+                    peak_name_column = "peak_name")
+
+ht_input = hbind_results$filtered_tests %>% 
+  dplyr::select(c(Geneid, starts_with("logFC"))) %>% 
+  column_to_rownames("Geneid") %>% as.matrix() %>% 
+  `colnames<-`(c("HB21ind","HB40ind","HB53ind"))
+
+anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
+
+col_fun_list = list()
+for(i in colnames(anno_df)){
+  col_fun_list[[i]] = anno_col_fun
+}
+
+ha = HeatmapAnnotation(df = anno_df,
+                       which = "row",
+                       annotation_name_gp = gpar(fontsize =6),
+                       # annotation_label = c("brc1 de","brc1 array","BRC1 csaw","BRC1 q005", "BRC1 q001", "BRC1 q0001",
+                       #                      "HB21 Dapseq","HB40 Dapseq","HB53 Dapseq"),
+                       annotation_name_side="top",
+                       annotation_name_rot=45,
+                       show_legend = FALSE,
+                       col = col_fun_list)
+
+custom_breaks = c(quantile(ht_input, .05), 0, quantile(ht_input, .95))
+
+col_fun = colorRamp2(custom_breaks, c("blue", "white","red")) 
+
+hbind_heatmap = 
+  Heatmap(ht_input,
+          col = col_fun,
+          clustering_method_rows = "ward.D2",
+          right_annotation = ha,
+          show_row_names = FALSE,
+          column_names_rot = 0,
+          column_names_centered = TRUE,
+          heatmap_legend_param = list(title = "log2(FC)")
+          #show_column_names = FALSE
+  )
+
+png("./output/HBind_heatmap.png", width = 15, height = 15, units = "cm", res = 600)
+draw(hbind_heatmap)
+dev.off()
+
+```
 
 
 ABA treatment RNAseq: wt, brc1, hb21hb40hb53; control/+ABA
@@ -285,7 +514,7 @@ ggsave(mds_plot+theme(text = element_text(size=15)),
 # Volcano plot (with FC > 2 threshold)
 vp_input = aba_data_unfiltered
 comparisons = find_tests(vp_input)
-volc_plot_list = lapply(comparisons, volcano_plot, edger_merged_results = vp_input)
+volc_plot_list = lapply(comparisons, volcano_plot, edger_merged_results = vp_input, logfc_threshold = 0)
 
 volc_plot1 = ggarrange(plotlist=volc_plot_list[1:2], ncol = 2)
 ggsave(volc_plot1, 
@@ -380,7 +609,8 @@ lowerfun = function(data,mapping){
 }
 
 plot_aba_up = ggpairs(aba_up_rpkm,
-                      lower = list(continuous = wrap(lowerfun))) +
+                      lower = list(continuous = wrap(lowerfun)),
+                      upper = list(continuous = wrap(lowerfun))) +
   labs(title="ABA up-regulated genes")+
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -391,7 +621,8 @@ ggsave(plot_aba_up,
        width = 16.93, height = 16.93)
 
 plot_aba_dn = ggpairs(aba_dn_rpkm,
-                      lower = list(continuous = wrap(lowerfun)))+
+                      lower = list(continuous = wrap(lowerfun)),
+                      upper = list(continuous = wrap(lowerfun)))+
   labs(title="ABA down-regulated genes")+
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -473,7 +704,7 @@ aba_responding_rpkm = aba_results$rpkm %>% filter(gene_id %in% aba_responding_ge
   mutate(ave_brc1_aba = rowMeans(select(.,starts_with("brc1_aba")))) %>% 
   mutate(ave_tri_ctr = rowMeans(select(.,starts_with("tri_ctr")))) %>% 
   mutate(ave_tri_aba = rowMeans(select(.,starts_with("tri_aba")))) %>% 
-  select(c(gene_id,starts_with("ave_")))
+  dplyr::select(c(gene_id, starts_with("ave_")))
 
 aba_up_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_up_genes) %>% select(-gene_id) %>% log2
 aba_dn_rpkm = aba_responding_rpkm %>% filter(gene_id %in% aba_dn_genes) %>% select(-gene_id) %>% log2
@@ -485,7 +716,8 @@ lowerfun = function(data,mapping){
 }
 
 plot_aba_up = ggpairs(aba_up_rpkm,
-                      lower = list(continuous = wrap(lowerfun))) +
+                      lower = list(continuous = wrap(lowerfun)),
+                      upper = list(continuous = wrap(lowerfun))) +
   labs(title="ABA up-regulated genes")+
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -496,7 +728,8 @@ ggsave(plot_aba_up,
        width = 16.93, height = 16.93)
 
 plot_aba_dn = ggpairs(aba_dn_rpkm,
-                      lower = list(continuous = wrap(lowerfun)))+
+                      lower = list(continuous = wrap(lowerfun)),
+                      upper = list(continuous = wrap(lowerfun)))+
   labs(title="ABA down-regulated genes")+
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -525,13 +758,100 @@ ggsave(volc_plot2,
        units = "cm",
        width = 16.93*2, height = 12.21)
 
+#### Check Coefficient of Variation of ABA-responding genes
+cv = function(x) {sd(x)/mean(x)*100}
+
+library(emmeans)
+library(multcomp)
+library(multcompView)
+##### Coefficient of variation of ABA-responding genes (FC>2)
+aba_responding_genes = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% filter(abs(logFC_wt_aba_vs_wt_ctr) > 1)
+
+aba_responding_rpkm_cv = aba_results$rpkm %>% 
+  filter(gene_id %in% aba_responding_genes$Geneid) %>% 
+  pivot_longer(-gene_id) %>% 
+  mutate(group = gsub('.{2}$', '', name)) %>% 
+  group_by(gene_id, group) %>% 
+  summarize(cv = cv(value), .groups = "drop_last")
+
+data_summary = aba_responding_rpkm_cv %>% group_by(group) %>% summarize(cv_mean = mean(cv), cv_sd = sd(cv), max_cv = max(cv))
+
+# get compact letter display with emmeans (in case groups are not balanced)
+model_means_cld = lm(cv ~ group, data = aba_responding_rpkm_cv) %>% 
+  emmeans(specs = "group") %>% cld(adjust = "tukey", 
+                                   Letters = letters, 
+                                   alpha = 0.05)
+# format cld output for ggplot
+cld_labels = model_means_cld %>% 
+  as.data.frame() %>% rename(cld = ".group") %>% 
+  left_join(dplyr::select(data_summary, c(group, max_cv)), by = "group") %>% 
+  mutate(cld_label = trimws(cld))
+
+# plot data
+ggplot(aba_responding_rpkm_cv, aes(x = group, y = cv)) +
+  geom_boxplot() +
+  geom_text(data = cld_labels, 
+            aes(label = cld_label, y = max_cv),
+            vjust = -0.5)
+
+##### Coefficient of variation of ABA-responding genes (no FC cut)
+aba_responding_genes = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% filter(abs(logFC_wt_aba_vs_wt_ctr) > 0)
+
+aba_responding_rpkm_cv = aba_results$rpkm %>% 
+  filter(gene_id %in% aba_responding_genes$Geneid) %>% 
+  pivot_longer(-gene_id) %>% 
+  mutate(group = gsub('.{2}$', '', name)) %>% 
+  group_by(gene_id, group) %>% 
+  summarize(cv = cv(value), .groups = "drop_last")
+
+data_summary = aba_responding_rpkm_cv %>% group_by(group) %>% summarize(cv_mean = mean(cv), cv_sd = sd(cv), max_cv = max(cv))
+
+# get compact letter display with emmeans (in case groups are not balanced)
+model_means_cld = lm(cv ~ group, data = aba_responding_rpkm_cv) %>% 
+  emmeans(specs = "group") %>% cld(adjust = "tukey", 
+                                   Letters = letters, 
+                                   alpha = 0.05)
+# format cld output for ggplot
+cld_labels = model_means_cld %>% 
+  as.data.frame() %>% rename(cld = ".group") %>% 
+  left_join(dplyr::select(data_summary, c(group, max_cv)), by = "group") %>% 
+  mutate(cld_label = trimws(cld))
+
+# plot data
+ggplot(aba_responding_rpkm_cv, aes(x = group, y = cv)) +
+  geom_boxplot() +
+  geom_text(data = cld_labels, 
+            aes(label = cld_label, y = max_cv),
+            vjust = -0.5)
 
 
-# brc1_aba_treatment = select(aba_results$merged_tests, c(Geneid, logCPM_brc1_aba_vs_brc1_ctr,logFC_brc1_aba_vs_brc1_ctr)) %>% filter(Geneid %in% aba_responding_genes$Geneid)
-# 
-# ggplot(brc1_aba_treatment, aes(x= logCPM_brc1_aba_vs_brc1_ctr, y=logFC_brc1_aba_vs_brc1_ctr ))+
-#   geom_point()
+##### Coefficient of variation of all genes
+all_genes_rpkm_cv = aba_results$rpkm %>% 
+  pivot_longer(-gene_id) %>% 
+  mutate(group = gsub('.{2}$', '', name)) %>% 
+  group_by(gene_id, group) %>% 
+  summarize(cv = cv(value), .groups = "drop_last") %>% 
+  drop_na
 
+data_summary = all_genes_rpkm_cv %>% group_by(group) %>% summarize(cv_mean = mean(cv), cv_sd = sd(cv), max_cv = max(cv))
+
+# get compact letter display with emmeans (in case groups are not balanced)
+model_means_cld = lm(cv ~ group, data = all_genes_rpkm_cv) %>% 
+  emmeans(specs = "group") %>% cld(adjust = "tukey", 
+                                   Letters = letters, 
+                                   alpha = 0.05)
+# format cld output for ggplot
+cld_labels = model_means_cld %>% 
+  as.data.frame() %>% rename(cld = ".group") %>% 
+  left_join(dplyr::select(data_summary, c(group, max_cv)), by = "group") %>% 
+  mutate(cld_label = trimws(cld))
+
+# plot data
+ggplot(all_genes_rpkm_cv, aes(x = group, y = cv)) +
+  geom_boxplot() +
+  geom_text(data = cld_labels, 
+            aes(label = cld_label, y = max_cv),
+            vjust = -0.5)
 ```
 
 
@@ -542,7 +862,6 @@ GFP:BRC1 ChIP
 qval_filter = -log10(0.05)
 peak_max_width = 500
 peak_min_width = 10
-
 
 peak_files = list.files(path = "./input/", pattern = "^ChIP\\d_q1_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
 peak_file_names = str_match(peak_files, "ChIP\\d") %>% as.vector
@@ -565,20 +884,37 @@ hb_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, pea
 
 test = c(GRangesList(BRC1_peaks = brc1_peaks), hb_peaks)
 
-test2 = endoapply(test, function(x) plyranges::select(x, peak_name))
+test2 = endoapply(test, function(x) {plyranges::select(x, peak_name)})
+
+helper_func = function(x) {plyranges::mutate(x, peak_value = rep(1,length(x)))}
+
+test3 = endoapply(test2, helper_func)
 
 # Plot peak location respective of TSS. With "heatmap"
 # Create GRanges object with all arabidopsis genes from ensembl .gtf file
-# ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
-# ath_genes = ath_gtf %>% filter(type == "gene")
-# tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene")
+tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
 
-# 
-example = batch_enrichedheatmaps(test2, 
-                                 tss = tss, 
+#### Why scale is not the same as when done for hb_peaks only? 
+example = batch_enrichedheatmaps(test3[2:3], 
+                                 tss = tss,
+                                 value_column = "peak_value",
                                  anno_color = "black", 
-                                 show_heatmap_legend = TRUE)
+                                 show_heatmap_legend = TRUE) 
 
+
+example2 = batch_enrichedheatmaps(test3[1], 
+                                 tss = tss,
+                                 value_column = "peak_value",
+                                 anno_color = "black", 
+                                 show_heatmap_legend = TRUE) 
+
+###
+example + example2
+example2 + example
+
+############# CODE IN PROGRESS 
 figure_filename = paste0("./output/BRC1_HBs_peak_location.png")
 
 png(figure_filename, width = 30, height = 15, units = "cm", res = 300)
