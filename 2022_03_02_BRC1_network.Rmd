@@ -260,6 +260,10 @@ brc1_heatmap_qvalues =
           heatmap_legend_param = list(title = "log2(FC)")
           )
 
+### for Gema: to get DE genes for HBinds use:
+hb21ind_data = hbind_results$list_by_contrast$hb21i_vs_gus
+
+
 ### TO DO: hypergeometric test to check if BRC1ind up-regulated genes are statistically enriched in BRC1 peaks
 
 ```
