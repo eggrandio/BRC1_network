@@ -125,6 +125,146 @@ ggsave(volc_plot,
        width = 16.93, height = 12.21)
 ```
 
+BRC1 direct target analysis
+```{r}
+# Generate GRanges objects with information about gene coordinates
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene")
+tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+
+ext5 = 3000
+ext3 = 1000
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(ext5*2 - 1) %>%
+  anchor_5p %>% stretch(ext3-ext5) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+
+# Use MACS2-generated peak files with qvalue threshold 1, and then filter "manually" by qvalue < 0.05 and peak size 10-500 bp
+qval_filter = -log10(0.05)
+peak_max_width = 500
+peak_min_width = 10
+
+peak_files = list.files(path = "./input/", pattern = "^ChIP\\d_q1_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "ChIP\\d") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% 
+  endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+# Get "consensus peaks" (peaks that partially overlap in at least two replicates)
+brc1_peaks = filtered_peak_list %>% get_consensus_peaks_GRangesList()
+
+# Get direct target genes with BRC1ind differentially expressed genes and consensus peak files
+#BRC1ind_data = brc1ind_results$filtered_tests # run in previous section
+brc1_direct_targets = get_direct_targets(peak_file = brc1_peaks,
+                                         de_file = BRC1ind_data,
+                                         target_region = ath_3kup_1kdown,
+                                         output = "vector")
+
+# Generate input data for ComplexHeatmap. Check the ComplexHeatmap reference manual, it has lots of examples:
+# https://jokergoo.github.io/ComplexHeatmap-reference/book/
+# Input data has to be a matrix with gene ids as rownames (heatmap annotations are added by rowname)
+heatmap_input = BRC1ind_data %>% 
+  dplyr::select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% 
+  column_to_rownames("Geneid") %>% 
+  rename("GFP:BRC1ind" = logFC_GFP_BRC1ind_vs_brc1) %>% 
+  as.matrix()
+
+# Create heatmap annotation:
+# vector with 1/0 if BRC1 differentially expressed gene is a direct target
+annotation_data = (BRC1ind_data$Geneid %in% brc1_direct_targets) %>% as.numeric()
+# coloring function for the annotation:
+anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
+# generate the HeatmapAnnotation:
+ha = HeatmapAnnotation(brc1_dt = annotation_data,
+                       which = "row",
+                       annotation_name_gp = gpar(fontsize =6),
+                       annotation_label = "BRC1_ChIP",
+                       annotation_name_side="top",
+                       annotation_name_rot=45,
+                       show_legend = FALSE,
+                       col = list(brc1_dt = anno_col_fun))
+
+
+# Create heatmap with annotation. Check ComplexHeatmap for settings
+brc1_heatmap = 
+  Heatmap(heatmap_input,
+          clustering_method_rows = "ward.D2",
+          right_annotation = ha,
+          show_row_names = FALSE,
+          column_names_rot = 0,
+          column_names_centered = TRUE,
+          heatmap_legend_param = list(title = "log2(FC)")
+          )
+
+# If extreme FC values skew coloring function (a few genes are very highly up-/down-regulated),
+# you can create a custom coloring function for the heatmap
+custom_breaks = c(quantile(heatmap_input, .05), 0, quantile(heatmap_input, .95))
+col_fun = colorRamp2(custom_breaks, c("blue", "white","red")) 
+
+brc1_heatmap_custom_color_fun = 
+  Heatmap(heatmap_input,
+          col = col_fun,
+          clustering_method_rows = "ward.D2",
+          right_annotation = ha,
+          show_row_names = FALSE,
+          column_names_rot = 0,
+          column_names_centered = TRUE,
+          heatmap_legend_param = list(title = "log2(FC)")
+          )
+
+### To check if lower qvalues influence the direct target classification towards up-regulated genes
+qval_filter = -log10(0.01)
+brc1_peaks_0.01 = peak_list %>% 
+  endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width))) %>% 
+  get_consensus_peaks_GRangesList()
+
+qval_filter = -log10(0.001)
+brc1_peaks_0.001 = peak_list %>% 
+  endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width))) %>% 
+  get_consensus_peaks_GRangesList()
+
+brc1_peak_list = GRangesList("q0.05" = brc1_peaks,
+                             "q0.01" = brc1_peaks_0.01,
+                             "q0.001" = brc1_peaks_0.001)
+# this function generates a dataframe with a column for each peak file with 0/1 if genes are direct targets
+anno_df = make_anno_df(de_genes = BRC1ind_data,
+                       peak_list = brc1_peak_list,
+                       target_region = ath_3kup_1kdown,
+                       peak_name_column = "peak_name")
+
+# as we have three columns in the annotation, we have to generate a coloring function for each of them (we could use different colors)
+anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
+
+col_fun_list = list()
+for(i in colnames(anno_df)){
+  col_fun_list[[i]] = anno_col_fun
+}
+
+ha = HeatmapAnnotation(df = anno_df,
+                       which = "row",
+                       annotation_name_gp = gpar(fontsize =6),
+                       annotation_name_side="top",
+                       annotation_name_rot=45,
+                       show_legend = FALSE,
+                       col = col_fun_list)
+# create heatmap
+brc1_heatmap_qvalues = 
+  Heatmap(heatmap_input,
+          clustering_method_rows = "ward.D2",
+          right_annotation = ha,
+          show_row_names = FALSE,
+          column_names_rot = 0,
+          column_names_centered = TRUE,
+          heatmap_legend_param = list(title = "log2(FC)")
+          )
+
+### TO DO: hypergeometric test to check if BRC1ind up-regulated genes are statistically enriched in BRC1 peaks
+
+```
+
+
 HBind RNAseq
 ```{r}
 # Define parameters for differential expression statistical tests
@@ -383,7 +523,9 @@ ggsave(plot_upgenes, filename = "./output/HBind_top_x_genes.png",
        dpi = 600,
        units = "cm",
        width = 30, height = 20)
-###
+
+
+### Heatmap with DAPseq data 
 ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
 ath_genes = ath_gtf %>% filter(type == "gene")
 tss = ath_genes %>% resize(width=1, fix='start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
@@ -405,9 +547,9 @@ filtered_peak_list = peak_list %>% endoapply(function(x) plyranges::filter(x, qV
 hb_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
 
 
-anno_df = make_anno_df(hbind_results$filtered_tests,hb_peaks,
-                    target_region = ath_3kup_1kdown,
-                    peak_name_column = "peak_name")
+anno_df = make_anno_df(hbind_results$filtered_tests, hb_peaks,
+                       target_region = ath_3kup_1kdown,
+                       peak_name_column = "peak_name")
 
 ht_input = hbind_results$filtered_tests %>% 
   dplyr::select(c(Geneid, starts_with("logFC"))) %>% 
@@ -434,6 +576,8 @@ ha = HeatmapAnnotation(df = anno_df,
 custom_breaks = c(quantile(ht_input, .05), 0, quantile(ht_input, .95))
 
 col_fun = colorRamp2(custom_breaks, c("blue", "white","red")) 
+
+
 
 hbind_heatmap = 
   Heatmap(ht_input,
@@ -951,8 +1095,12 @@ dev.off()
 
 # Select genes with peak in their 3kb_up+1kb_dn of TSS ####
 # Retrieve 3kb upstream and 1kb downstream of TSS (using plyranges)
-ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(5999) %>%
-  anchor_5p %>% stretch(-2000) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+ext5 = 3000
+ext3 = 1000
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(ext5*2 - 1) %>%
+  anchor_5p %>% stretch(ext3-ext5) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+
+write_bed(ath_3kup_1kdown, "./output/test_bed_5k_2k.bed")
 
 #####
 # TO DO Make function to generate annotation_df from list of direct targets
