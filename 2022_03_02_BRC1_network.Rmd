@@ -51,6 +51,7 @@ library(WeightedCluster)
 library(GGally)
 library(ggsankey)
 library(ggupset)
+library(ggVennDiagram)
 
 # Load custom functions
 invisible(sapply(list.files(path = "./R/", pattern = "\\.R$", ignore.case = TRUE, full.names = TRUE), source, .GlobalEnv))
@@ -170,8 +171,9 @@ heatmap_input = BRC1ind_data %>%
   as.matrix()
 
 # Create heatmap annotation:
-# vector with 1/0 if BRC1 differentially expressed gene is a direct target
-annotation_data = (BRC1ind_data$Geneid %in% brc1_direct_targets) %>% as.numeric()
+# named vector with 1/0 if BRC1 differentially expressed gene is a direct target (Geneids as names)
+annotation_data = (BRC1ind_data$Geneid %in% brc1_direct_targets) %>% 
+  `names<-`(BRC1ind_data$Geneid) %>% as.numeric()
 # coloring function for the annotation:
 anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
 # generate the HeatmapAnnotation:
@@ -179,8 +181,8 @@ ha = HeatmapAnnotation(brc1_dt = annotation_data,
                        which = "row",
                        annotation_name_gp = gpar(fontsize =6),
                        annotation_label = "BRC1_ChIP",
-                       annotation_name_side="top",
-                       annotation_name_rot=45,
+                       annotation_name_side = "top",
+                       annotation_name_rot = 45,
                        show_legend = FALSE,
                        col = list(brc1_dt = anno_col_fun))
 
@@ -236,7 +238,7 @@ anno_df = make_anno_df(de_genes = BRC1ind_data,
 
 # as we have three columns in the annotation, we have to generate a coloring function for each of them (we could use different colors)
 anno_col_fun = colorRamp2(c(0, 1), c("white", "black")) 
-
+# make list with names of each column in df
 col_fun_list = list()
 for(i in colnames(anno_df)){
   col_fun_list[[i]] = anno_col_fun
@@ -245,8 +247,8 @@ for(i in colnames(anno_df)){
 ha = HeatmapAnnotation(df = anno_df,
                        which = "row",
                        annotation_name_gp = gpar(fontsize =6),
-                       annotation_name_side="top",
-                       annotation_name_rot=45,
+                       annotation_name_side = "top",
+                       annotation_name_rot = 45,
                        show_legend = FALSE,
                        col = col_fun_list)
 # create heatmap
@@ -264,10 +266,18 @@ brc1_heatmap_qvalues =
 hb21ind_data = hbind_results$list_by_contrast$hb21i_vs_gus
 
 
-### TO DO: hypergeometric test to check if BRC1ind up-regulated genes are statistically enriched in BRC1 peaks
+### TO DO: statistical test to check if BRC1ind up-regulated genes are enriched in BRC1 peaks
+# https://statsandr.com/blog/chi-square-test-of-independence-in-r/
+brc1_direct_targets
+brc1_diff_exp = BRC1ind_data$Geneid
+
+total_genes = data.frame("gene_id" = ath_genes$gene_id) %>% 
+  mutate(dt = ifelse(gene_id %in% brc1_direct_targets, 1, 0),
+         de = ifelse(gene_id %in% brc1_diff_exp, 1, 0))
+  
+
 
 ```
-
 
 HBind RNAseq
 ```{r}
@@ -438,16 +448,16 @@ ggsave(venn_dn, filename="./output/HBind_dn_venn.png",
 ### Sankey plot
 test = data.frame(gene_id = filtered_data %>% rownames) %>% 
   mutate(HB21ind = case_when(
-    gene_id %in% gene_list$`HB21ind up (1638)` ~ "up",
-    gene_id %in% gene_list$`HB21ind down   (725)` ~ "dn",
+    gene_id %in% gene_list$`HB21ind up (2005)` ~ "up",
+    gene_id %in% gene_list$`HB21ind down   (1116)` ~ "dn",
     TRUE ~ "ns")) %>% 
   mutate(HB40ind = case_when(
-    gene_id %in% gene_list$`HB40ind up   (567)` ~ "up",
-    gene_id %in% gene_list$`HB40ind down   (161)` ~ "dn",
+    gene_id %in% gene_list$`HB40ind up   (675)` ~ "up",
+    gene_id %in% gene_list$`HB40ind down   (254)` ~ "dn",
     TRUE ~ "ns")) %>% 
     mutate(HB53ind = case_when(
-    gene_id %in% gene_list$`HB53ind up   (564)` ~ "up",
-    gene_id %in% gene_list$`HB53ind down   (120)` ~ "dn",
+    gene_id %in% gene_list$`HB53ind up   (656)` ~ "up",
+    gene_id %in% gene_list$`HB53ind down   (209)` ~ "dn",
     TRUE ~ "ns"))
 
 df = test %>%
@@ -601,7 +611,6 @@ dev.off()
 
 ```
 
-
 ABA treatment RNAseq: wt, brc1, hb21hb40hb53; control/+ABA
 ```{r}
 # Define parameters for differential expression statistical tests
@@ -662,16 +671,17 @@ ggsave(mds_plot+theme(text = element_text(size=15)),
 # Volcano plot (with FC > 2 threshold)
 vp_input = aba_data_unfiltered
 comparisons = find_tests(vp_input)
-volc_plot_list = lapply(comparisons, volcano_plot, edger_merged_results = vp_input, logfc_threshold = 0)
+volc_plot_list = lapply(comparisons, volcano_plot, edger_merged_results = vp_input, logfc_threshold = 1)
 
 volc_plot1 = ggarrange(plotlist=volc_plot_list[1:2], ncol = 2)
+volc_plot2 = ggarrange(plotlist=volc_plot_list[3:5], ncol = 3)
+
 ggsave(volc_plot1, 
        filename = "./output/volc_plot_brc1_triple.png",
        dpi = 600,
        units = "cm",
        width = 16.93*(4/3), height = 12.21)
 
-volc_plot2 = ggarrange(plotlist=volc_plot_list[3:5], ncol = 3)
 ggsave(volc_plot2, 
        filename = "./output/volc_plot_ABA.png",
        dpi = 600,
