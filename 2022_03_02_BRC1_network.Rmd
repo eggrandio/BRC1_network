@@ -268,14 +268,17 @@ hb21ind_data = hbind_results$list_by_contrast$hb21i_vs_gus
 
 ### TO DO: statistical test to check if BRC1ind up-regulated genes are enriched in BRC1 peaks
 # https://statsandr.com/blog/chi-square-test-of-independence-in-r/
-brc1_direct_targets
+brc1_direct_targets = get_direct_targets(peak_file = brc1_peaks,
+                                         de_file = BRC1ind_data,
+                                         target_region = ath_3kup_1kdown,
+                                         output = "vector")
 brc1_diff_exp = BRC1ind_data$Geneid
 
 total_genes = data.frame("gene_id" = ath_genes$gene_id) %>% 
   mutate(dt = ifelse(gene_id %in% brc1_direct_targets, 1, 0),
          de = ifelse(gene_id %in% brc1_diff_exp, 1, 0))
   
-
+## TO DO Chi square test
 
 ```
 
