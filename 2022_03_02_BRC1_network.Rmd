@@ -640,7 +640,9 @@ aba_results = difexp_analysis(feature_counts=feature_counts,
                               sample_names=sample_names,
                               sample_groups=sample_groups,
                               design=design,
-                              my_contrasts=my_contrasts)
+                              my_contrasts=my_contrasts,
+                              filter_by = "RPKM_cutoff",
+                              RPKM_cutoff = 1)
 
 # Store results for downstream analyses
 aba_data_unfiltered = aba_results$merged_tests
