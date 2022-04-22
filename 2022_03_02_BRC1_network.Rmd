@@ -611,7 +611,7 @@ ath_genes = plyranges::read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
   filter(type == "gene") %>% as.data.frame() %>% 
   filter(seqnames %in% c(1,2,3,4,5)) %>% pull(gene_id)
 
-hb21_test_results = mapply(chisq_test, hbind_results$list_by_contrast, hb_peaks,
+hb_test_results = mapply(chisq_test, hbind_results$list_by_contrast, hb_peaks,
                            MoreArgs = list(target_region = ath_3kup_1kdown, 
                                            verbose = TRUE,
                                            total_genes = ath_genes), 
