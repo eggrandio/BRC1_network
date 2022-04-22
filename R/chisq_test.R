@@ -91,6 +91,8 @@ chisq_test = function(de_file,
     mutate(direction = case_when(observed > expected ~ "enriched",
                                  observed < expected ~ "depleted",
                                  observed == expected ~ "same"),
+           .after = observed) %>% 
+    mutate(fold_over_expected = round(observed/expected, 2),
            .after = observed)
   
   return(test_result)
