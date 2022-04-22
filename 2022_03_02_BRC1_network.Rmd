@@ -268,16 +268,10 @@ hb21ind_data = hbind_results$list_by_contrast$hb21i_vs_gus
 
 ### TO DO: statistical test to check if BRC1ind up-regulated genes are enriched in BRC1 peaks
 # https://statsandr.com/blog/chi-square-test-of-independence-in-r/
-test2 = chisq.test(table(total_genes$bound,total_genes$diff_exp))
-
-
-
-test_results = chisq_test(de_file = BRC1ind_data,
-                          peak_file = brc1_peaks,
-                          target_region = ath_3kup_1kdown,
-                          total_genes = ath_genes$gene_id)
-
-
+brc1_test_results = chisq_test(de_file = BRC1ind_data,
+                               peak_file = brc1_peaks,
+                               target_region = ath_3kup_1kdown,
+                               total_genes = ath_genes$gene_id)
 ```
 
 HBind RNAseq
@@ -609,6 +603,28 @@ hbind_heatmap =
 png("./output/HBind_heatmap.png", width = 15, height = 15, units = "cm", res = 600)
 draw(hbind_heatmap)
 dev.off()
+
+### Statistical analysis
+#hb_peaks
+#hbind_results$list_by_contrast
+ath_genes = plyranges::read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz") %>%
+  filter(type == "gene") %>% as.data.frame() %>% 
+  filter(seqnames %in% c(1,2,3,4,5)) %>% pull(gene_id)
+
+hb21_test_results = mapply(chisq_test, hbind_results$list_by_contrast, hb_peaks,
+                           MoreArgs = list(target_region = ath_3kup_1kdown, 
+                                           verbose = TRUE,
+                                           total_genes = ath_genes), 
+                           SIMPLIFY = FALSE)
+
+# random test
+# test_input = HBind_data_unfiltered %>% select(c(Geneid, logFC_hb21i_vs_gus))
+# chisq_test(test_input, hb_peaks$DAP_ATHB21, target_region = ath_3kup_1kdown,total_genes = ath_genes)
+# 
+# test_input2 = test_input[sample(nrow(test_input), 1000), ] %>% 
+#   mutate(logFC_hb21i_vs_gus = rnorm(nrow(.), sd = 3))
+# chisq_test(test_input2, hb_peaks$DAP_ATHB21, target_region = ath_3kup_1kdown,total_genes = ath_genes)
+
 
 ```
 
