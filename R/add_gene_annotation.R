@@ -1,4 +1,6 @@
-add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
+add_gene_annotation = function(edgeR_output,
+                               gene_id_column = "Geneid",
+                               tidy_output = TRUE) {
   # Load prerequisite libraries and generate ensemble plants biomaRt object 
   if(!exists("ensembl")){
     ensembl = biomaRt::useMart(biomart="plants_mart",
@@ -42,8 +44,7 @@ add_gene_annotation = function(edgeR_output,gene_id_column="Geneid") {
            long_description = long_description) %>%
     dplyr::left_join(short_description, by = setNames("tair_locus",all_of(gene_id_column))) %>%
     dplyr::relocate(short_description, .after = gene_symbol) %>%
-    dplyr::select(-c(Chr,Start,End,Strand,Length))
-  
+    { if(tidy_output == TRUE) dplyr::select(., -c(Chr,Start,End,Strand,Length)) else . }
   # Return output
   return(annotated_edgeR_output)
 }
