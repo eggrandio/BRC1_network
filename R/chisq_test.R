@@ -25,12 +25,11 @@ chisq_test = function(de_file,
   
   # obtain number of total genes if not provided
   if (is.null(total_genes)) {
-    total_genes = plyranges::read_gff(gtf) %>% filter(type == "gene") %>% as.data.frame() %>% pull(gene_id)
+    total_genes = plyranges::read_gff(gtf) %>% filter(type == "gene") %>% 
+      { if(only_nuclear == TRUE) dplyr::filter(seqnames(.) %in% c(1,2,3,4,5)) else . } %>% 
+      as.data.frame() %>% pull(gene_id)
     }
-  
-  if (only_nuclear == TRUE) {
-    total_genes = total_genes %>% filter(seqnames %in% c(1,2,3,4,5)) %>% pull(gene_id)
-  }
+
   # calculate which genes are bound (have a peak in their target_region)
   bound_genes = plyranges::find_overlaps(peak_file, target_region) %>% as.data.frame() %>% 
     pull(get(gene_id_column_in_target_region))
