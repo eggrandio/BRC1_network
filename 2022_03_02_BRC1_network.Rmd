@@ -1213,10 +1213,11 @@ HB53_direct_targets = get_direct_targets(peak_file = hb_peaks$DAP_ATHB53,
                                          output = "filtered")
 
 # ABA-related gene lists:
+# ABA-responding genes from Nemhauser et al., 2006 - doi: 10.1016/j.cell.2006.05.050
 ABA_genes_nemhauser = fread("./input/ABA-responding_genes_Nemhauser2006.txt") %>% mutate(gene_id = toupper(gene_id))
 
+# BRC1-dep ABA-responding genes from Gonzalez-Grandio et al., 2017 - oi.org/10.1073/pnas.1613199114
 BRC1_dep_ABA_GRN = fread("./input/BRC1-dep_ABA-GRN_PNAS2017.txt") %>% mutate(gene_id = toupper(gene_id))
-
 BRC1_dep_ABA_GRN_CORE = fread("./input/BRC1-dep_ABA-GRN_CORE_PNAS2017.txt")
 
 BRC1_dep_ABA_responding = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% 
@@ -1227,8 +1228,8 @@ BRC1_dep_ABA_responding = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>%
   data.table()
 # Maybe use BRC1_dep_ABA_responding without FC threshold?
 
-### Check igraph tutorial and build "test" network1
-# Use 26 ABA core and add direct target info
+### TO DO: Check igraph tutorial (https://kateto.net/networks-r-igraph) and build "test" network
+# Use 26 ABA core + BRC1, and add direct target info
 expand_matrix = function(m){
   un1 = unique(sort(c(colnames(m), rownames(m))))
   m2 = matrix(0, length(un1), length(un1), dimnames = list(un1, un1))
