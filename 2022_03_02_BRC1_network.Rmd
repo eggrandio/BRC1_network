@@ -52,6 +52,7 @@ library(GGally)
 library(ggsankey)
 library(ggupset)
 library(ggVennDiagram)
+library(igraph)
 
 # Load custom functions
 invisible(sapply(list.files(path = "./R/", pattern = "\\.R$", ignore.case = TRUE, full.names = TRUE), source, .GlobalEnv))
@@ -196,7 +197,7 @@ brc1_heatmap =
           column_names_rot = 0,
           column_names_centered = TRUE,
           heatmap_legend_param = list(title = "log2(FC)")
-          )
+  )
 
 # If extreme FC values skew coloring function (a few genes are very highly up-/down-regulated),
 # you can create a custom coloring function for the heatmap
@@ -212,7 +213,7 @@ brc1_heatmap_custom_color_fun =
           column_names_rot = 0,
           column_names_centered = TRUE,
           heatmap_legend_param = list(title = "log2(FC)")
-          )
+  )
 
 ### To check if lower qvalues influence the direct target classification towards up-regulated genes
 qval_filter = -log10(0.01)
@@ -260,13 +261,13 @@ brc1_heatmap_qvalues =
           column_names_rot = 0,
           column_names_centered = TRUE,
           heatmap_legend_param = list(title = "log2(FC)")
-          )
+  )
 
 ### for Gema: to get DE genes for HBinds use:
 hb21ind_data = hbind_results$list_by_contrast$hb21i_vs_gus
 
 
-### TO DO: statistical test to check if BRC1ind up-regulated genes are enriched in BRC1 peaks
+### Statistical test to check if BRC1ind up-regulated genes are enriched in BRC1 peaks
 # https://statsandr.com/blog/chi-square-test-of-independence-in-r/
 brc1_test_results = chisq_test(de_file = BRC1ind_data,
                                peak_file = brc1_peaks,
@@ -360,15 +361,15 @@ for(l in seq_along(hbind_results$list_by_contrast)) {
 }
 
 names(gene_list) = paste0(c("HB21ind up (",
-                       "HB21ind down   (",
-                       "HB40ind up   (",
-                       "HB40ind down   (",
-                       "HB53ind up   (",
-                       "HB53ind down   ("),
-                     sapply(gene_list,length),
-                     c(rep(")",6)))
+                            "HB21ind down   (",
+                            "HB40ind up   (",
+                            "HB40ind down   (",
+                            "HB53ind up   (",
+                            "HB53ind down   ("),
+                          sapply(gene_list,length),
+                          c(rep(")",6)))
 
-# reoder list
+# reorder list
 gene_list = gene_list[c(1,3,5,2,4,6)]
 
 ggupset_input = list_to_matrix(gene_list) %>% as.data.frame %>%
@@ -450,7 +451,7 @@ test = data.frame(gene_id = filtered_data %>% rownames) %>%
     gene_id %in% gene_list$`HB40ind up   (675)` ~ "up",
     gene_id %in% gene_list$`HB40ind down   (254)` ~ "dn",
     TRUE ~ "ns")) %>% 
-    mutate(HB53ind = case_when(
+  mutate(HB53ind = case_when(
     gene_id %in% gene_list$`HB53ind up   (656)` ~ "up",
     gene_id %in% gene_list$`HB53ind down   (209)` ~ "dn",
     TRUE ~ "ns"))
@@ -485,7 +486,7 @@ ggsave(hbind_sankey_plot, filename = "./output/HBind_sankeyplot.png",
        units = "cm",
        width = 12, height = 10)
 
-### Check if top up-regulated genes in HB21 are also top genes in other HBinds
+### Check if top up-regulated genes in HB21 are also top up-regulated genes in other HBinds
 test_func = function(n){
   gene_list = list()
   i = 1
@@ -507,7 +508,7 @@ test_func = function(n){
                        "HB40ind up",
                        #"HB40ind down",
                        "HB53ind up")
-                       #"HB53ind down")
+  #"HB53ind down")
   
   x = gene_list %>% lapply(function(x) pull(x,Geneid))
   
@@ -533,7 +534,6 @@ ggsave(plot_upgenes, filename = "./output/HBind_top_x_genes.png",
        units = "cm",
        width = 30, height = 20)
 
-
 ### Heatmap with DAPseq data 
 ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
 ath_genes = ath_gtf %>% filter(type == "gene")
@@ -554,7 +554,6 @@ filtered_peak_list = peak_list %>% endoapply(function(x) plyranges::filter(x, qV
   endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
 
 hb_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
-
 
 anno_df = make_anno_df(hbind_results$filtered_tests, hb_peaks,
                        target_region = ath_3kup_1kdown,
@@ -586,8 +585,6 @@ custom_breaks = c(quantile(ht_input, .05), 0, quantile(ht_input, .95))
 
 col_fun = colorRamp2(custom_breaks, c("blue", "white","red")) 
 
-
-
 hbind_heatmap = 
   Heatmap(ht_input,
           col = col_fun,
@@ -612,10 +609,10 @@ ath_genes = plyranges::read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
   filter(seqnames %in% c(1,2,3,4,5)) %>% pull(gene_id)
 
 hb_test_results = mapply(chisq_test, hbind_results$list_by_contrast, hb_peaks,
-                           MoreArgs = list(target_region = ath_3kup_1kdown, 
-                                           verbose = TRUE,
-                                           total_genes = ath_genes), 
-                           SIMPLIFY = FALSE)
+                         MoreArgs = list(target_region = ath_3kup_1kdown, 
+                                         verbose = TRUE,
+                                         total_genes = ath_genes), 
+                         SIMPLIFY = FALSE)
 
 # random test
 # test_input = HBind_data_unfiltered %>% select(c(Geneid, logFC_hb21i_vs_gus))
@@ -828,7 +825,7 @@ volcano_plot2 = function(edger_merged_results,
       (Geneid %in% aba_responding_genes$Geneid) ~ "aba_resp",
       TRUE ~ "non_s")) %>% 
     filter(vp_color == "aba_resp")
-
+  
   # generate the plot
   vplot = ggplot(vp_input, aes(x=get(logfc_column),y=log10_fdr,color=vp_color))+
     geom_point(shape=16, alpha = 0.5) +
@@ -1031,6 +1028,264 @@ ggplot(all_genes_rpkm_cv, aes(x = group, y = cv)) +
             vjust = -0.5)
 ```
 
+Integration of results into the BRC1-network
+
+```{r}
+### Find availabe data and tools to study ABA GRN
+# Import BRC1-dependent ABA_GRN from Gonzalez-Grandio et al., 2017 - https://doi.org/10.1073/pnas.1613199114
+ABA_GRN_CORE = fread("./input/BRC1-dep_ABA-GRN_CORE_PNAS2017.txt") %>% 
+  add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE)
+
+# Retrieve GO information about Transcription factors
+tx_factor_gos = AnnotationDbi::select(GO.db, 
+                                      keys=c("GO:0003700","GO:0140110","GO:0006355","GO:0010468"),
+                                      columns=c("GOID","TERM","DEFINITION"),
+                                      keytype="GOID")
+
+# Retrieve GO annotation for ABA_GRN genes (we will focus on DNA-binding transcription factors - GO:0003700)
+ABA_GRN_CORE_TFs = AnnotationDbi::select(org.At.tair.db, 
+                                         keys = ABA_GRN_CORE$gene_id,
+                                         columns = c("TAIR", "GOALL"),
+                                         keytype = "TAIR") %>% 
+  filter(GOALL %in% c("GO:0003700")) %>% dplyr::select(c("TAIR","GOALL")) %>% unique %>% 
+  rename("gene_id" = TAIR) %>% add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE) %>% 
+  dplyr::select(c("gene_id", "gene_symbol", "short_description"))
+
+# Check availability in TRANSPLANTA and DAPseq/Chip-seq:
+# Import available ChIP-seq experiments from Song et al., 2016 - https://doi.org/10.1126/science.aag1550
+Ecker_ChIPseq_symbols = fread("./input/aag1550_table_s3.txt", skip = 1) %>% 
+  pull(`#transgene`) %>% 
+  replace(. == "At5g04760", "DIV2") %>%
+  replace(. == "NFYB2", "NF-YB2") %>% 
+  replace(. == "NFYC2", "NF-YC2") %>% 
+  replace(. == "HB7", "HB-7") %>% 
+  replace(. == "ANAC032", "NAC032")
+
+Ecker_ChIPseq = AnnotationDbi::select(org.At.tair.db, 
+                                      keys = test,
+                                      columns = c("SYMBOL", "TAIR"),
+                                      keytype = "SYMBOL") %>% 
+  filter(!SYMBOL %in% c("DTAF1","DTAF2")) %>% 
+  rename("gene_id" = TAIR)
+
+# Import available DAP-seq experiments from O'Malley et al., 2016 - https://doi.org/10.1016/j.cell.2016.04.038
+Ecker_DAPseq = fread("./input/OMalley_S1D.txt") %>% 
+  dplyr::select(c("AT_ID", "Protein")) %>% 
+  rename("gene_id" = AT_ID)
+
+# Import TRANSPLANTA lines (Table S2 - TFs cloned in pER8GW vector) from Coego et al., 2014 - https://doi.org/10.1111/tpj.12443
+transplanta_TFs = fread("./input/TRANSPLANTA_S2.txt", skip = 1) %>% 
+  mutate(gene_id = gsub("\\..*","",`AGI code`) , 
+         .before = `AGI code`)
+
+transplanta_lines = fread("./input/TRANSPLANTA_S3.txt") %>% 
+  mutate(gene_id = paste0("AT",
+                          str_split(agi_code, "\\.", simplify = TRUE)[,1],
+                          "G",
+                          str_split(agi_code, "\\.", simplify = TRUE)[,2])) %>% 
+  dplyr::count(gene_id)
+
+#
+test5 = ABA_GRN_CORE_TFs %>% 
+  mutate(ChIPseq = ifelse((gene_id %in% Ecker_ChIPseq$gene_id), 1, 0),
+         DAPseq = ifelse((gene_id %in% Ecker_DAPseq$gene_id), 1, 0),
+         TRANSPLANTA_TFs = ifelse((gene_id %in% transplanta_TFs$gene_id), 1, 0)) %>% 
+  left_join(transplanta_lines, by = "gene_id") %>% rename("TRANSPLANTA_lines" = n) %>% 
+  mutate(TRANSPLANTA_lines = ifelse(is.na(TRANSPLANTA_lines), 0, TRANSPLANTA_lines))
+
+####
+
+test6 = AnnotationDbi::select(org.At.tair.db, 
+                              keys = BRC1_dependent_FR$gene_id,
+                              columns = c("TAIR", "GOALL"),
+                              keytype = "TAIR") %>% 
+  filter(GOALL %in% c("GO:0003700")) %>% dplyr::select(c("TAIR","GOALL")) %>% unique %>% 
+  rename("gene_id" = TAIR) %>% add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE) %>% 
+  dplyr::select(c("gene_id", "gene_symbol", "short_description"))
+
+test7 = test6 %>% filter(gene_id %in% BRC1_direct_targets$gene_id |
+                           gene_id %in% HB21_direct_targets$gene_id | 
+                           gene_id %in% HB40_direct_targets$gene_id | 
+                           gene_id %in% HB53_direct_targets$gene_id)
+  
+```
+
+
+```{r}
+##### Generate target_region to define target genes:
+ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
+ath_genes = ath_gtf %>% filter(type == "gene")
+tss = ath_genes %>% resize(width = 1, fix = 'start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
+
+ext5 = 3000
+ext3 = 1000
+ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(ext5*2 - 1) %>%
+  anchor_5p %>% stretch(ext3-ext5) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
+
+##### Generate peak files for BRC1 and HBs:
+# BRC1 peaks (ChIP-seq) "consensus peaks" (peaks that partially overlap in at least two replicates)
+qval_filter = -log10(0.05)
+peak_max_width = Inf # For now, do not filter peaks by size (waiting on JC Oliveros' MACS2 settings)
+peak_min_width = 10
+
+peak_files = list.files(path = "./input/", pattern = "^ChIP\\d_q1_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "ChIP\\d") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% 
+  endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+BRC1_peaks = filtered_peak_list %>% get_consensus_peaks_GRangesList()
+
+# HB peaks (DAP-seq)
+peak_files = list.files(path = "./input/", pattern = "^DAP_ATHB\\d{2}_q1_es200_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
+peak_file_names = str_match(peak_files, "DAP_ATHB\\d{2}") %>% as.vector
+peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
+
+filtered_peak_list = peak_list %>% 
+  endoapply(function(x) plyranges::filter(x, qValue > qval_filter)) %>% 
+  endoapply(function(x) plyranges::filter(x, (width > peak_min_width) & (width < peak_max_width)))
+
+HB_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
+
+##### Generate lists of genes and tidy data.frames:
+# BRC1-related gene lists:
+BRC1_dependent_FR = fread("./input/BRC1dep_PC2013.txt") %>% 
+  rename("gene_id" = Geneid) %>% 
+  mutate(gene_id = toupper(gene_id)) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down"))
+
+BRC1ind_diffexp = brc1ind_results$filtered_tests %>% 
+  dplyr::select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_GFP_BRC1ind_vs_brc1) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+
+BRC1_direct_targets = get_direct_targets(peak_file = BRC1_peaks,
+                                         de_file = BRC1ind_diffexp,
+                                         target_region = ath_3kup_1kdown,
+                                         gene_id_column_in_de_file = "gene_id",
+                                         output = "filtered")
+
+brc1_diffexp = aba_results$list_by_contrast$brc1_ctr_vs_wt_ctr %>% 
+  dplyr::select(c(Geneid, logFC_brc1_ctr_vs_wt_ctr)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_brc1_ctr_vs_wt_ctr) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+# Maybe use brc1_diff_exp without FC threshold?
+
+# HB-related gene lists:
+HB21ind_diffexp = hbind_results$list_by_contrast$hb21i_vs_gus %>% 
+  dplyr::select(c(Geneid, logFC_hb21i_vs_gus)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_hb21i_vs_gus) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+
+HB40ind_diffexp = hbind_results$list_by_contrast$hb40i_vs_gus %>% 
+  dplyr::select(c(Geneid, logFC_hb40i_vs_gus)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_hb40i_vs_gus) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+
+HB53ind_diffexp = hbind_results$list_by_contrast$hb53i_vs_gus %>% 
+  dplyr::select(c(Geneid, logFC_hb53i_vs_gus)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_hb53i_vs_gus) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+
+HB21_direct_targets = get_direct_targets(peak_file = hb_peaks$DAP_ATHB21,
+                                         de_file = HB21ind_diffexp,
+                                         target_region = ath_3kup_1kdown,
+                                         gene_id_column_in_de_file = "gene_id",
+                                         output = "filtered")
+
+HB40_direct_targets = get_direct_targets(peak_file = hb_peaks$DAP_ATHB40,
+                                         de_file = HB40ind_diffexp,
+                                         target_region = ath_3kup_1kdown,
+                                         gene_id_column_in_de_file = "gene_id",
+                                         output = "filtered")
+
+HB53_direct_targets = get_direct_targets(peak_file = hb_peaks$DAP_ATHB53,
+                                         de_file = HB53ind_diffexp,
+                                         target_region = ath_3kup_1kdown,
+                                         gene_id_column_in_de_file = "gene_id",
+                                         output = "filtered")
+
+# ABA-related gene lists:
+ABA_genes_nemhauser = fread("./input/ABA-responding_genes_Nemhauser2006.txt") %>% mutate(gene_id = toupper(gene_id))
+
+BRC1_dep_ABA_GRN = fread("./input/BRC1-dep_ABA-GRN_PNAS2017.txt") %>% mutate(gene_id = toupper(gene_id))
+
+BRC1_dep_ABA_GRN_CORE = fread("./input/BRC1-dep_ABA-GRN_CORE_PNAS2017.txt")
+
+BRC1_dep_ABA_responding = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% 
+  dplyr::select(c(Geneid, logFC_wt_aba_vs_wt_ctr)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_wt_aba_vs_wt_ctr) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  filter(!gene_id %in% aba_results$list_by_contrast$brc1_aba_vs_brc1_ctr$Geneid) %>% 
+  data.table()
+# Maybe use BRC1_dep_ABA_responding without FC threshold?
+
+### Check igraph tutorial and build "test" network1
+# Use 26 ABA core and add direct target info
+expand_matrix = function(m){
+  un1 = unique(sort(c(colnames(m), rownames(m))))
+  m2 = matrix(0, length(un1), length(un1), dimnames = list(un1, un1))
+  m2[row.names(m), colnames(m)] = m
+  m2
+}
+
+adjm = BRC1_dep_ABA_GRN_CORE %>% bind_rows(setNames("AT3G18550", "gene_id")) %>% 
+  mutate(AT3G18550 = ifelse((gene_id %in% BRC1_direct_targets$gene_id), 1, 0),
+         AT2G18550 = ifelse((gene_id %in% HB21_direct_targets$gene_id), 1, 0),
+         AT4G36740 = ifelse((gene_id %in% HB40_direct_targets$gene_id), 1, 0),
+         AT5G66700 = ifelse((gene_id %in% HB53_direct_targets$gene_id), 1, 0)) %>% 
+  column_to_rownames("gene_id") %>% as.matrix()
+
+adjm2 = expand_matrix(adjm) %>% t()
+
+g1 = graph_from_adjacency_matrix(adjm2)
+
+# To rearrange network nodes manually and save coordinates:
+tkid = tkplot(g1, edge.arrow.size=.4) # plot with tk and save the plot ID number (tkid) to retrieve coordinates
+
+l = tkplot.getcoords(tkid) # grab the coordinates from tkplot
+
+tk_close(tkid, window.close = T) # close tkplot window
+
+plot(g1, layout=l) # re-plot network with tk coordinates
+
+###
+adjm3 = BRC1_dep_ABA_GRN_CORE %>% bind_rows(setNames("AT3G18550", "gene_id")) %>% 
+  mutate(AT3G18550 = ifelse((gene_id %in% BRC1ind_diffexp$gene_id), 1, 0),
+         AT2G18550 = ifelse((gene_id %in% HB21ind_diffexp$gene_id), 1, 0),
+         AT4G36740 = ifelse((gene_id %in% HB40ind_diffexp$gene_id), 1, 0),
+         AT5G66700 = ifelse((gene_id %in% HB53ind_diffexp$gene_id), 1, 0)) %>% 
+  column_to_rownames("gene_id") %>% as.matrix()
+
+adjm4 = expand_matrix(adjm3) %>% t()
+
+g2 = graph_from_adjacency_matrix(adjm4)
+
+plot(g2)
+tkplot(g2)
+
+plot(g2,edge.arrow.size=.4)
+
+g2b = simplify(g2, 
+               #remove.multiple = F, 
+               remove.loops = T) 
+
+plot(g2b,edge.arrow.size=.4)#colnames(adjm) are node names
+
+### TO DO: check how to have two different type of edges and assign attributes
+### Generate adj matrix with direct and indirect targets
+### Change node names to gene symbol
+### Color edges/nodes with up- down- regulation?
+### Add node annotation for ABA-responsive ones? Or maybe add ABA as a node?
+```
+
 
 
 GFP:BRC1 ChIP
@@ -1082,10 +1337,10 @@ example = batch_enrichedheatmaps(test3[2:3],
 
 
 example2 = batch_enrichedheatmaps(test3[1], 
-                                 tss = tss,
-                                 value_column = "peak_value",
-                                 anno_color = "black", 
-                                 show_heatmap_legend = TRUE) 
+                                  tss = tss,
+                                  value_column = "peak_value",
+                                  anno_color = "black", 
+                                  show_heatmap_legend = TRUE) 
 
 ###
 example + example2

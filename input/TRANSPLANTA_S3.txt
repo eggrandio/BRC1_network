@@ -1,0 +1,1637 @@
+TPT_line	agi_code	Annotation
+TPT_1.01010.1E	1.01010.1E	ANAC001 AT1G01010.1 Hygromycin-resistant T4 seeds
+TPT_1.01010.1F	1.01010.1F	ANAC001 AT1G01010.1 Hygromycin-resistant T4 seeds
+TPT_1.01010.1G	1.01010.1G	ANAC001 AT1G01010.1 Hygromycin-resistant T4 seeds
+TPT_1.01030.1A	1.01030.1A	NGATHA3 (NGA3) AT1G01030.1 Hygromycin-resistant T4 seeds
+TPT_1.01030.1G	1.01030.1G	NGATHA3 (NGA3) AT1G01030.1 Hygromycin-resistant T4 seeds
+TPT_1.01250.1A	1.01250.1A	DREB subfamily A-4 of ERF/AP2 trans AT1G01250.1 Hygromycin-resistant T4 seeds
+TPT_1.01250.1F	1.01250.1F	DREB subfamily A-4 of ERF/AP2 trans AT1G01250.1 Hygromycin-resistant T4 seeds
+TPT_1.01260.2C	1.01260.2C	(bHLH) DNA-binding superfamily protAT1G01260.2 Hygromycin-resistant T4 seeds
+TPT_1.01260.2G	1.01260.2G	(bHLH) DNA-binding superfamily protAT1G01260.2 Hygromycin-resistant T4 seeds
+TPT_1.01260.2I	1.01260.2I	(bHLH) DNA-binding superfamily protAT1G01260.2 Hygromycin-resistant T4 seeds
+TPT_1.01520.1F	1.01520.1F	Homeodomain-like superfamily proteAT1G01520.1 Hygromycin-resistant T4 seeds
+TPT_1.01780.1B	1.01780.1B	PLIM2B AT1G01780.1 Hygromycin-resistant T4 seeds
+TPT_1.01780.1H	1.01780.1H	PLIM2B AT1G01780.1 Hygromycin-resistant T4 seeds
+TPT_1.03800.1A	1.03800.1A	ATERF10 AT1G03800.1 Hygromycin-resistant T4 seeds
+TPT_1.03800.1E	1.03800.1E	ATERF10 AT1G03800.1 Hygromycin-resistant T4 seeds
+TPT_1.03970.1B	1.03970.1B	GBF4 AT1G03970.1 Hygromycin-resistant T4 seeds
+TPT_1.03970.1E	1.03970.1E	GBF4 AT1G03970.1 Hygromycin-resistant T4 seeds
+TPT_1.03970.1I	1.03970.1I	GBF4 AT1G03970.1 Hygromycin-resistant T4 seeds
+TPT_1.04100.1G	1.04100.1G	IAA10 AT1G04100.1 Hygromycin-resistant T4 seeds
+TPT_1.04100.1H	1.04100.1H	IAA10 AT1G04100.1 Hygromycin-resistant T4 seeds
+TPT_1.04240.1B	1.04240.1B	IAA3/SHY2 AT1G04240.1 Hygromycin-resistant T4 seeds
+TPT_1.04240.1E	1.04240.1E	IAA3/SHY2 AT1G04240.1 Hygromycin-resistant T4 seeds
+TPT_1.04370.1E	1.04370.1E	ATERF14 AT1G04370.1 Hygromycin-resistant T4 seeds
+TPT_1.04370.1I	1.04370.1I	ATERF14 AT1G04370.1 Hygromycin-resistant T4 seeds
+TPT_1.04550.1G	1.04550.1G	BDL_IAA12 AT1G04550.1 Hygromycin-resistant T4 seeds
+TPT_1.05710.1C	1.05710.1C	basic helix-loop-helix (bHLH) DNA-bin AT1G05710.1 Hygromycin-resistant T4 seeds
+TPT_1.05710.1E	1.05710.1E	basic helix-loop-helix (bHLH) DNA-bin AT1G05710.1 Hygromycin-resistant T4 seeds
+TPT_1.05805.1C	1.05805.1C	(bHLH) DNA-binding superfamily protAT1G05805.1 Hygromycin-resistant T4 seeds
+TPT_1.05805.1E	1.05805.1E	(bHLH) DNA-binding superfamily protAT1G05805.1 Hygromycin-resistant T4 seeds
+TPT_1.05805.1H	1.05805.1H	(bHLH) DNA-binding superfamily protAT1G05805.1 Hygromycin-resistant T4 seeds
+TPT_1.06040.1C	1.06040.1C	STO__B-box zinc finger family proteinAT1G06040.1 Hygromycin-resistant T4 seeds
+TPT_1.06850.1B	1.06850.1B	AtbZIP52 AT1G06850.1 Hygromycin-resistant T4 seeds
+TPT_1.06850.1C	1.06850.1C	AtbZIP52 AT1G06850.1 Hygromycin-resistant T4 seeds
+TPT_1.06850.1G	1.06850.1G	AtbZIP52 AT1G06850.1 Hygromycin-resistant T4 seeds
+TPT_1.07530.1B	1.07530.1B	ATGRAS2_SCL14 AT1G07530.1 Hygromycin-resistant T4 seeds
+TPT_1.07530.1E	1.07530.1E	ATGRAS2_SCL14 AT1G07530.1 Hygromycin-resistant T4 seeds
+TPT_1.08010.2H	1.08010.2H	GATA11 AT1G08010.2 Hygromycin-resistant T4 seeds
+TPT_1.08320.1F	1.08320.1F	bZIP21_TGA9 AT1G08320.1 Hygromycin-resistant T4 seeds
+TPT_1.08320.1G	1.08320.1G	bZIP21_TGA9 AT1G08320.1 Hygromycin-resistant T4 seeds
+TPT_1.08320.1I	1.08320.1I	bZIP21_TGA9 AT1G08320.1 Hygromycin-resistant T4 seeds
+TPT_1.08465.1F	1.08465.1F	YABBY family AT1G08465.1 Hygromycin-resistant T4 seeds
+TPT_1.08465.1H	1.08465.1H	YABBY family AT1G08465.1 Hygromycin-resistant T4 seeds
+TPT_1.08465.1I	1.08465.1I	YABBY family AT1G08465.1 Hygromycin-resistant T4 seeds
+TPT_1.08780.1F	1.08780.1F	AIP3_PFD4 AT1G08780.1 Hygromycin-resistant T4 seeds
+TPT_1.08780.1I	1.08780.1I	AIP3_PFD4 AT1G08780.1 Hygromycin-resistant T4 seeds
+TPT_1.08810.1C	1.08810.1C	AtMYB60 AT1G08810.1 Hygromycin-resistant T4 seeds
+TPT_1.08810.1H	1.08810.1H	AtMYB60 AT1G08810.1 Hygromycin-resistant T4 seeds
+TPT_1.08970.2D	1.08970.2D	HAP5C_NF-YC9 AT1G08970.2 Hygromycin-resistant T4 seeds
+TPT_1.08970.2E	1.08970.2E	HAP5C_NF-YC9 AT1G08970.2 Hygromycin-resistant T4 seeds
+TPT_1.08970.2I	1.08970.2I	HAP5C_NF-YC9 AT1G08970.2 Hygromycin-resistant T4 seeds
+TPT_1.09030.1A	1.09030.1A	NF-YB4 AT1G09030.1 Hygromycin-resistant T4 seeds
+TPT_1.09030.1C	1.09030.1C	NF-YB4 AT1G09030.1 Hygromycin-resistant T4 seeds
+TPT_1.09030.1F	1.09030.1F	NF-YB4 AT1G09030.1 Hygromycin-resistant T4 seeds
+TPT_1.09530.1F	1.09530.1F	PAP3_PIF3_POC1 AT1G09530.1 Hygromycin-resistant T4 seeds
+TPT_1.09540.1B	1.09540.1B	ATMYB61 AT1G09540.1 Hygromycin-resistant T4 seeds
+TPT_1.09540.1D	1.09540.1D	ATMYB61 AT1G09540.1 Hygromycin-resistant T4 seeds
+TPT_1.09540.1F	1.09540.1F	ATMYB61 AT1G09540.1 Hygromycin-resistant T4 seeds
+TPT_1.09770.1B	1.09770.1B	ATCDC5 AT1G09770.1 Hygromycin-resistant T4 seeds
+TPT_1.09770.1G	1.09770.1G	ATCDC5 AT1G09770.1 Hygromycin-resistant T4 seeds
+TPT_1.09950.1B	1.09950.1B	RAS1 AT1G09950.1 Hygromycin-resistant T4 seeds
+TPT_1.09950.1G	1.09950.1G	RAS1 AT1G09950.1 Hygromycin-resistant T4 seeds
+TPT_1.12610.1B	1.12610.1B	DDF1__Integrase-type DNA-binding s AT1G12610.1 Hygromycin-resistant T4 seeds
+TPT_1.12610.1D	1.12610.1D	DDF1__Integrase-type DNA-binding s AT1G12610.1 Hygromycin-resistant T4 seeds
+TPT_1.12610.1E	1.12610.1E	DDF1__Integrase-type DNA-binding s AT1G12610.1 Hygromycin-resistant T4 seeds
+TPT_1.12880.1A	1.12880.1A	ATNUDT12 AT1G12880.1 Hygromycin-resistant T4 seeds
+TPT_1.12880.1B	1.12880.1B	ATNUDT12 AT1G12880.1 Hygromycin-resistant T4 seeds
+TPT_1.12880.1D	1.12880.1D	ATNUDT12 AT1G12880.1 Hygromycin-resistant T4 seeds
+TPT_1.12880.1E	1.12880.1E	ATNUDT12 AT1G12880.1 Hygromycin-resistant T4 seeds
+TPT_1.12890.1C	1.12890.1C	ERF (ethylene response factor) subfa AT1G12890.1 Hygromycin-resistant T4 seeds
+TPT_1.12890.1E	1.12890.1E	subfamily B-1 of ERF/AP2 transcriptio AT1G12890.1 Hygromycin-resistant T4 seeds
+TPT_1.12980.1C	1.12980.1C	DORNROSCHEN (DRN)/ESR1 AT1G12980.1 Hygromycin-resistant T4 seeds
+TPT_1.12980.1E	1.12980.1E	DORNROSCHEN (DRN)/ESR1 AT1G12980.1 Hygromycin-resistant T4 seeds
+TPT_1.12980.1I	1.12980.1I	DORNROSCHEN (DRN)/ESR1 AT1G12980.1 Hygromycin-resistant T4 seeds
+TPT_1.13300.1A	1.13300.1A	HRS1 AT1G13300.1 Hygromycin-resistant T4 seeds
+TPT_1.13300.1D	1.13300.1D	HRS1 AT1G13300.1 Hygromycin-resistant T4 seeds
+TPT_1.13300.1E	1.13300.1E	HRS1 AT1G13300.1 Hygromycin-resistant T4 seeds
+TPT_1.13600.1C	1.13600.1C	AtbZIP58 AT1G13600.1 Hygromycin-resistant T4 seeds
+TPT_1.13600.1G	1.13600.1G	AtbZIP58 AT1G13600.1 Hygromycin-resistant T4 seeds
+TPT_1.13600.1I	1.13600.1I	AtbZIP58 AT1G13600.1 Hygromycin-resistant T4 seeds
+TPT_1.14200.1C	1.14200.1C	RING/U-box superfamily protein AT1G14200.1 Hygromycin-resistant T4 seeds
+TPT_1.14200.1F	1.14200.1F	RING/U-box superfamily protein AT1G14200.1 Hygromycin-resistant T4 seeds
+TPT_1.14510.1E	1.14510.1E	ALFIN-LIKE 7 AT1G14510.1 Hygromycin-resistant T4 seeds
+TPT_1.14510.1F	1.14510.1F	ALFIN-LIKE 7 AT1G14510.1 Hygromycin-resistant T4 seeds
+TPT_1.14510.1I	1.14510.1I	ALFIN-LIKE 7 AT1G14510.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1B	1.14900.1B	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1C	1.14900.1C	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1D	1.14900.1D	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1G	1.14900.1G	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1H	1.14900.1H	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14900.1I	1.14900.1I	HMGA AT1G14900.1 Hygromycin-resistant T4 seeds
+TPT_1.14920.1I	1.14920.1I	GAI/RGA2 AT1G14920.1 Hygromycin-resistant T4 seeds
+TPT_1.15050.1C	1.15050.1C	IAA34 AT1G15050.1 Hygromycin-resistant T4 seeds
+TPT_1.17310.1A	1.17310.1A	MADS-box transcription factor family AT1G17310.1 Hygromycin-resistant T4 seeds
+TPT_1.17310.1F	1.17310.1F	MADS-box transcription factor family AT1G17310.1 Hygromycin-resistant T4 seeds
+TPT_1.17590.1B	1.17590.1B	NF-YA8 AT1G17590.1 Hygromycin-resistant T4 seeds
+TPT_1.17590.1F	1.17590.1F	NF-YA8 AT1G17590.1 Hygromycin-resistant T4 seeds
+TPT_1.17770.1B	1.17770.1B	SDG17_SUVH7 AT1G17770.1 Hygromycin-resistant T4 seeds
+TPT_1.17770.1H	1.17770.1H	SDG17_SUVH7 AT1G17770.1 Hygromycin-resistant T4 seeds
+TPT_1.17950.1B	1.17950.1B	ATMYB52 AT1G17950.1 Hygromycin-resistant T4 seeds
+TPT_1.17950.1D	1.17950.1D	ATMYB52 AT1G17950.1 Hygromycin-resistant T4 seeds
+TPT_1.18570.1F	1.18570.1F	AtMYB51 AT1G18570.1 Hygromycin-resistant T4 seeds
+TPT_1.18710.1A	1.18710.1A	AtMYB47 AT1G18710.1 Hygromycin-resistant T4 seeds
+TPT_1.18710.1E	1.18710.1E	AtMYB47 AT1G18710.1 Hygromycin-resistant T4 seeds
+TPT_1.19000.1B	1.19000.1B	Homeodomain-like superfamily proteAT1G19000.1 Hygromycin-resistant T4 seeds
+TPT_1.19000.1C	1.19000.1C	Homeodomain-like superfamily proteAT1G19000.1 Hygromycin-resistant T4 seeds
+TPT_1.19000.1H	1.19000.1H	Homeodomain-like superfamily proteAT1G19000.1 Hygromycin-resistant T4 seeds
+TPT_1.20693.1E	1.20693.1E	HMG BETA 1 AT1G20693.1 Hygromycin-resistant T4 seeds
+TPT_1.20693.1F	1.20693.1F	HMG BETA 1 AT1G20693.1 Hygromycin-resistant T4 seeds
+TPT_1.20693.1H	1.20693.1H	HMG BETA 1 AT1G20693.1 Hygromycin-resistant T4 seeds
+TPT_1.21450.1A	1.21450.1A	SCL1 AT1G21450.1 Hygromycin-resistant T4 seeds
+TPT_1.21450.1D	1.21450.1D	SCL1 AT1G21450.1 Hygromycin-resistant T4 seeds
+TPT_1.21450.1G	1.21450.1G	SCL1 AT1G21450.1 Hygromycin-resistant T4 seeds
+TPT_1.22130.1A	1.22130.1A	AGL104 AT1G22130.1 Hygromycin-resistant T4 seeds
+TPT_1.22130.1D	1.22130.1D	AGL104 AT1G22130.1 Hygromycin-resistant T4 seeds
+TPT_1.22190.1B	1.22190.1B	Integrase-type DNA-binding superfam AT1G22190.1 Hygromycin-resistant T4 seeds
+TPT_1.22190.1F	1.22190.1F	Integrase-type DNA-binding superfam AT1G22190.1 Hygromycin-resistant T4 seeds
+TPT_1.22190.1G	1.22190.1G	Integrase-type DNA-binding superfam AT1G22190.1 Hygromycin-resistant T4 seeds
+TPT_1.22190.1H	1.22190.1H	Integrase-type DNA-binding superfam AT1G22190.1 Hygromycin-resistant T4 seeds
+TPT_1.24625.1C	1.24625.1C	ZFP7 AT1G24625.1 Hygromycin-resistant T4 seeds
+TPT_1.24625.1D	1.24625.1D	ZFP7 AT1G24625.1 Hygromycin-resistant T4 seeds
+TPT_1.24625.1F	1.24625.1F	ZFP7 AT1G24625.1 Hygromycin-resistant T4 seeds
+TPT_1.25340.1D	1.25340.1D	AtMYB116 AT1G25340.1 Hygromycin-resistant T4 seeds
+TPT_1.25440.1B	1.25440.1B	B-box type zinc finger protein with CC AT1G25440.1 Hygromycin-resistant T4 seeds
+TPT_1.25440.1E	1.25440.1E	B-box type zinc finger protein with CC AT1G25440.1 Hygromycin-resistant T4 seeds
+TPT_1.25440.1H	1.25440.1H	B-box type zinc finger protein with CC AT1G25440.1 Hygromycin-resistant T4 seeds
+TPT_1.25550.1C	1.25550.1C	myb-like transcription factor family p AT1G25550.1 Hygromycin-resistant T4 seeds
+TPT_1.25550.1H	1.25550.1H	myb-like transcription factor family p AT1G25550.1 Hygromycin-resistant T4 seeds
+TPT_1.25560.1C	1.25560.1C	EDF1_TEM1 AT1G25560.1 Hygromycin-resistant T4 seeds
+TPT_1.25560.1F	1.25560.1F	EDF1_TEM1 AT1G25560.1 Hygromycin-resistant T4 seeds
+TPT_1.26780.1D	1.26780.1D	ATMYB117/LOF1 AT1G26780.1 Hygromycin-resistant T4 seeds
+TPT_1.26960.1A	1.26960.1A	AtHB23 AT1G26960.1 Hygromycin-resistant T4 seeds
+TPT_1.26960.1F	1.26960.1F	AtHB23 AT1G26960.1 Hygromycin-resistant T4 seeds
+TPT_1.26960.1H	1.26960.1H	AtHB23 AT1G26960.1 Hygromycin-resistant T4 seeds
+TPT_1.27360.1A	1.27360.1A	SPL11 AT1G27360.1 Hygromycin-resistant T4 seeds
+TPT_1.27360.1C	1.27360.1C	SQUAMOSA PROMOTER-LIKE 11 (SPLAT1G27360.1 Hygromycin-resistant T4 seeds
+TPT_1.27730.1E	1.27730.1E	STZ_ZAT10 AT1G27730.1 Hygromycin-resistant T4 seeds
+TPT_1.27730.1I	1.27730.1I	STZ_ZAT10 AT1G27730.1 Hygromycin-resistant T4 seeds
+TPT_1.28160.1H	1.28160.1H	ERF (ethylene response factor) subfa AT1G28160.1 Hygromycin-resistant T4 seeds
+TPT_1.28160.1I	1.28160.1I	ERF (ethylene response factor) subfa AT1G28160.1 Hygromycin-resistant T4 seeds
+TPT_1.28300.1B	1.28300.1B	LEC2 AT1G28300.1 Hygromycin-resistant T4 seeds
+TPT_1.28300.1C	1.28300.1C	LEC2 AT1G28300.1 Hygromycin-resistant T4 seeds
+TPT_1.28370.1D	1.28370.1D	ATERF11 AT1G28370.1 Hygromycin-resistant T4 seeds
+TPT_1.28370.1F	1.28370.1F	ATERF11 AT1G28370.1 Hygromycin-resistant T4 seeds
+TPT_1.28370.1G	1.28370.1G	ATERF11 AT1G28370.1 Hygromycin-resistant T4 seeds
+TPT_1.28520.1A	1.28520.1A	ATVOZ1 AT1G28520.1 Hygromycin-resistant T4 seeds
+TPT_1.28520.1D	1.28520.1D	ATVOZ2 AT1G28520.1 Hygromycin-resistant T4 seeds
+TPT_1.28520.1F	1.28520.1F	ATVOZ3 AT1G28520.1 Hygromycin-resistant T4 seeds
+TPT_1.29160.1B	1.29160.1B	Dof-type zinc finger DNA-binding fam AT1G29160.1 Hygromycin-resistant T4 seeds
+TPT_1.29160.1F	1.29160.1F	Dof-type zinc finger DNA-binding fam AT1G29160.1 Hygromycin-resistant T4 seeds
+TPT_1.29160.1G	1.29160.1G	Dof-type zinc finger DNA-binding fam AT1G29160.1 Hygromycin-resistant T4 seeds
+TPT_1.30210.1D	1.30210.1D	TCP24 AT1G30210.1 Hygromycin-resistant T4 seeds
+TPT_1.30210.1F	1.30210.1F	TCP24 AT1G30210.1 Hygromycin-resistant T4 seeds
+TPT_1.31140.1B	1.31140.1B	GORDITA (GOA)/AGL63 AT1G31140.1 Hygromycin-resistant T4 seeds
+TPT_1.31630.1B	1.31630.1B	AGL86 AT1G31630.1 Hygromycin-resistant T4 seeds
+TPT_1.31630.1D	1.31630.1D	AGL86 AT1G31630.1 Hygromycin-resistant T4 seeds
+TPT_1.31630.1F	1.31630.1F	AGL86 AT1G31630.1 Hygromycin-resistant T4 seeds
+TPT_1.33760.1I	1.33760.1I	Integrase-type DNA-binding superfam AT1G33760.1 Hygromycin-resistant T4 seeds
+TPT_1.34650.1A	1.34650.1A	HOMEODOMAIN GLABROUS 10 (HDGAT1G34650.1 Hygromycin-resistant T4 seeds
+TPT_1.34650.1E	1.34650.1E	HOMEODOMAIN GLABROUS 10 (HDGAT1G34650.1 Hygromycin-resistant T4 seeds
+TPT_1.34650.1F	1.34650.1F	HOMEODOMAIN GLABROUS 10 (HDGAT1G34650.1 Hygromycin-resistant T4 seeds
+TPT_1.35515.1B	1.35515.1B	HOS10, MYB8 At1g35515.1 Hygromycin-resistant T4 seeds
+TPT_1.35560.1C	1.35560.1C	TCP family transcription factor AT1G35560.1 Hygromycin-resistant T4 seeds
+TPT_1.35560.1F	1.35560.1F	TCP family transcription factor AT1G35560.1 Hygromycin-resistant T4 seeds
+TPT_1.35560.1G	1.35560.1G	TCP family transcription factor AT1G35560.1 Hygromycin-resistant T4 seeds
+TPT_1.36060.1E	1.36060.1E	Integrase-type DNA-binding superfam AT1G36060.1 Hygromycin-resistant T4 seeds
+TPT_1.36060.1F	1.36060.1F	Integrase-type DNA-binding superfam AT1G36060.1 Hygromycin-resistant T4 seeds
+TPT_1.42990.1A	1.42990.1A	ATBZIP60 AT1G42990.1 Hygromycin-resistant T4 seeds
+TPT_1.42990.1D	1.42990.1D	ATBZIP60 AT1G42990.1 Hygromycin-resistant T4 seeds
+TPT_1.43160.1E	1.43160.1E	RAP2.6 AT1G43160.1 Hygromycin-resistant T4 seeds
+TPT_1.43160.1H	1.43160.1H	RAP2.6 AT1G43160.1 Hygromycin-resistant T4 seeds
+TPT_1.43160.1I	1.43160.1I	RAP2.6 AT1G43160.1 Hygromycin-resistant T4 seeds
+TPT_1.43640.1A	1.43640.1A	ATTLP5 AT1G43640.1 Hygromycin-resistant T4 seeds
+TPT_1.43640.1H	1.43640.1H	ATTLP5 AT1G43640.1 Hygromycin-resistant T4 seeds
+TPT_1.43640.1I	1.43640.1I	ATTLP5 AT1G43640.1 Hygromycin-resistant T4 seeds
+TPT_1.44830.1A	1.44830.1A	Integrase-type DNA-binding superfam AT1G44830.1 Hygromycin-resistant T4 seeds
+TPT_1.44830.1F	1.44830.1F	Integrase-type DNA-binding superfam AT1G44830.1 Hygromycin-resistant T4 seeds
+TPT_1.44830.1G	1.44830.1G	Integrase-type DNA-binding superfam AT1G44830.1 Hygromycin-resistant T4 seeds
+TPT_1.47760.1D	1.47760.1D	AGL102 AT1G47760.1 Hygromycin-resistant T4 seeds
+TPT_1.47760.1E	1.47760.1E	AGL102 AT1G47760.1 Hygromycin-resistant T4 seeds
+TPT_1.47760.1H	1.47760.1H	AGL102 AT1G47760.1 Hygromycin-resistant T4 seeds
+TPT_1.48000.2B	1.48000.2B	AtMYB112 AT1G48000.2 Hygromycin-resistant T4 seeds
+TPT_1.48000.2C	1.48000.2C	AtMYB112 AT1G48000.2 Hygromycin-resistant T4 seeds
+TPT_1.48000.2H	1.48000.2H	AtMYB112 AT1G48000.2 Hygromycin-resistant T4 seeds
+TPT_1.49120.1A	1.49120.1A	CRF9 AT1G49120.1 Hygromycin-resistant T4 seeds
+TPT_1.49120.1B	1.49120.1B	CRF9 AT1G49120.1 Hygromycin-resistant T4 seeds
+TPT_1.49120.1D	1.49120.1D	CRF9 AT1G49120.1 Hygromycin-resistant T4 seeds
+TPT_1.49480.1B	1.49480.1B	RELATED TO VERNALIZATION1 1 (RTVAT1G49480.1 Hygromycin-resistant T4 seeds
+TPT_1.49480.1C	1.49480.1C	RELATED TO VERNALIZATION1 1 (RTVAT1G49480.1 Hygromycin-resistant T4 seeds
+TPT_1.49480.1F	1.49480.1F	RELATED TO VERNALIZATION1 1 (RTVAT1G49480.1 Hygromycin-resistant T4 seeds
+TPT_1.49560.1D	1.49560.1D	Homeodomain-like superfamily proteAT1G49560.1 Hygromycin-resistant T4 seeds
+TPT_1.49560.1E	1.49560.1E	Homeodomain-like superfamily proteAT1G49560.1 Hygromycin-resistant T4 seeds
+TPT_1.49560.1G	1.49560.1G	Homeodomain-like superfamily proteAT1G49560.1 Hygromycin-resistant T4 seeds
+TPT_1.49720.1A	1.49720.1A	ABF1 AT1G49720.1 Hygromycin-resistant T4 seeds
+TPT_1.49720.1B	1.49720.1B	ABF1 AT1G49720.1 Hygromycin-resistant T4 seeds
+TPT_1.49720.1C	1.49720.1C	ABF1 AT1G49720.1 Hygromycin-resistant T4 seeds
+TPT_1.50420.1A	1.50420.1A	SCL3 AT1G50420.1 Hygromycin-resistant T4 seeds
+TPT_1.50420.1E	1.50420.1E	SCL3 AT1G50420.1 Hygromycin-resistant T4 seeds
+TPT_1.50680.1B	1.50680.1B	AP2/B3 transcription factor family pr AT1G50680.1 Hygromycin-resistant T4 seeds
+TPT_1.50680.1D	1.50680.1D	AP2/B3 transcription factor family pr AT1G50680.1 Hygromycin-resistant T4 seeds
+TPT_1.50680.1H	1.50680.1H	AP2/B3 transcription factor family pr AT1G50680.1 Hygromycin-resistant T4 seeds
+TPT_1.51120.1F	1.51120.1F	AP2/B3 transcription factor family pr AT1G51120.1 Hygromycin-resistant T4 seeds
+TPT_1.51140.1D	1.51140.1D	FLOWERING BHLH 3 AT1G51140.1 Hygromycin-resistant T4 seeds
+TPT_1.51140.1E	1.51140.1E	FLOWERING BHLH 3 AT1G51140.1 Hygromycin-resistant T4 seeds
+TPT_1.51140.1G	1.51140.1G	FLOWERING BHLH 3 AT1G51140.1 Hygromycin-resistant T4 seeds
+TPT_1.51600.2B	1.51600.2B	GATA28_TIFY2A_ZML2 AT1G51600.2 Hygromycin-resistant T4 seeds
+TPT_1.51600.2E	1.51600.2E	GATA28_TIFY2A_ZML2 AT1G51600.2 Hygromycin-resistant T4 seeds
+TPT_1.51600.2G	1.51600.2G	GATA28_TIFY2A_ZML2 AT1G51600.2 Hygromycin-resistant T4 seeds
+TPT_1.51950.1A	1.51950.1A	IAA18 AT1G51950.1 Hygromycin-resistant T4 seeds
+TPT_1.51950.1B	1.51950.1B	IAA18 AT1G51950.1 Hygromycin-resistant T4 seeds
+TPT_1.52150.1B	1.52150.1B	ATHB-15/ICU4 AT1G52150.1 Hygromycin-resistant T4 seeds
+TPT_1.52150.1D	1.52150.1D	ATHB-15/ICU4 AT1G52150.1 Hygromycin-resistant T4 seeds
+TPT_1.52150.1E	1.52150.1E	ATHB-15/ICU4 AT1G52150.1 Hygromycin-resistant T4 seeds
+TPT_1.52150.1F	1.52150.1F	ATHB-15/ICU4 AT1G52150.1 Hygromycin-resistant T4 seeds
+TPT_1.52890.1B	1.52890.1B	NAC019 AT1G52890.1 Hygromycin-resistant T4 seeds
+TPT_1.52890.1H	1.52890.1H	NAC019 AT1G52890.1 Hygromycin-resistant T4 seeds
+TPT_1.53910.1A	1.53910.1A	RAP2.12 AT1G53910.1 Hygromycin-resistant T4 seeds
+TPT_1.53910.1B	1.53910.1B	RAP2.12 AT1G53910.1 Hygromycin-resistant T4 seeds
+TPT_1.53910.1I	1.53910.1I	RAP2.12 AT1G53910.1 Hygromycin-resistant T4 seeds
+TPT_1.54140.1D	1.54140.1D	TAF9_TAFII21 AT1G54140.1 Hygromycin-resistant T4 seeds
+TPT_1.54140.1E	1.54140.1E	TAF9_TAFII21 AT1G54140.1 Hygromycin-resistant T4 seeds
+TPT_1.54330.1A	1.54330.1A	ANAC020 AT1G54330.1 Hygromycin-resistant T4 seeds
+TPT_1.54330.1C	1.54330.1C	ANAC020 AT1G54330.1 Hygromycin-resistant T4 seeds
+TPT_1.54330.1I	1.54330.1I	ANAC020 AT1G54330.1 Hygromycin-resistant T4 seeds
+TPT_1.55520.2A	1.55520.2A	ATTBP2 AT1G55520.2 Hygromycin-resistant T4 seeds
+TPT_1.55520.2D	1.55520.2D	ATTBP2 AT1G55520.2 Hygromycin-resistant T4 seeds
+TPT_1.55580.1A	1.55580.1A	LAS_SCL18 AT1G55580.1 Hygromycin-resistant T4 seeds
+TPT_1.55580.1D	1.55580.1D	LAS_SCL18 AT1G55580.1 Hygromycin-resistant T4 seeds
+TPT_1.55760.1A	1.55760.1A	BTB/POZ domain-containing protein AT1G55760.1 Hygromycin-resistant T4 seeds
+TPT_1.55760.1C	1.55760.1C	BTB/POZ domain-containing protein AT1G55760.1 Hygromycin-resistant T4 seeds
+TPT_1.55760.1E	1.55760.1E	BTB/POZ domain-containing protein AT1G55760.1 Hygromycin-resistant T4 seeds
+TPT_1.56160.1B	1.56160.1B	ATMYB72 AT1G56160.1 Hygromycin-resistant T4 seeds
+TPT_1.56160.1C	1.56160.1C	ATMYB72 AT1G56160.1 Hygromycin-resistant T4 seeds
+TPT_1.56160.1E	1.56160.1E	ATMYB72 AT1G56160.1 Hygromycin-resistant T4 seeds
+TPT_1.56160.1G	1.56160.1G	ATMYB72 AT1G56160.1 Hygromycin-resistant T4 seeds
+TPT_1.56170.1C	1.56170.1C	ATHAP5B_NF-YC2 AT1G56170.1 Hygromycin-resistant T4 seeds
+TPT_1.56170.1F	1.56170.1F	ATHAP5B_NF-YC2 AT1G56170.1 Hygromycin-resistant T4 seeds
+TPT_1.56170.1H	1.56170.1H	ATHAP5B_NF-YC2 AT1G56170.1 Hygromycin-resistant T4 seeds
+TPT_1.56650.1C	1.56650.1C	ATMYB75 AT1G56650.1 Hygromycin-resistant T4 seeds
+TPT_1.56650.1H	1.56650.1H	ATMYB75 AT1G56650.1 Hygromycin-resistant T4 seeds
+TPT_1.58100.1D	1.58100.1D	TCP family transcription factor AT1G58100.1 Hygromycin-resistant T4 seeds
+TPT_1.58100.1G	1.58100.1G	TCP family transcription factor AT1G58100.1 Hygromycin-resistant T4 seeds
+TPT_1.59530.1B	1.59530.1B	ATBZIP4 AT1G59530.1 Hygromycin-resistant T4 seeds
+TPT_1.59530.1E	1.59530.1E	ATBZIP4 AT1G59530.1 Hygromycin-resistant T4 seeds
+TPT_1.59530.1G	1.59530.1G	ATBZIP4 AT1G59530.1 Hygromycin-resistant T4 seeds
+TPT_1.59640.1E	1.59640.1E	BPE AT1G59640.1 Hygromycin-resistant T4 seeds
+TPT_1.59640.1F	1.59640.1F	BPE AT1G59640.1 Hygromycin-resistant T4 seeds
+TPT_1.59640.1G	1.59640.1G	BPE AT1G59640.1 Hygromycin-resistant T4 seeds
+TPT_1.59750.1B	1.59750.1B	ARF1 AT1G59750.1 Hygromycin-resistant T4 seeds
+TPT_1.59750.1C	1.59750.1C	ARF1 AT1G59750.1 Hygromycin-resistant T4 seeds
+TPT_1.59810.1D	1.59810.1D	AGL50 AT1G59810.1 Hygromycin-resistant T4 seeds
+TPT_1.60250.1A	1.60250.1A	B-box zinc finger family protein AT1G60250.1 Hygromycin-resistant T4 seeds
+TPT_1.60250.1C	1.60250.1C	B-box zinc finger family protein AT1G60250.1 Hygromycin-resistant T4 seeds
+TPT_1.60250.1H	1.60250.1H	B-box zinc finger family protein AT1G60250.1 Hygromycin-resistant T4 seeds
+TPT_1.60920.1C	1.60920.1C	AGL55 AT1G60920.1 Hygromycin-resistant T4 seeds
+TPT_1.60920.1G	1.60920.1G	AGL55 AT1G60920.1 Hygromycin-resistant T4 seeds
+TPT_1.61660.1B	1.61660.1B	basic helix-loop-helix (bHLH) DNA-bin AT1G61660.1 Hygromycin-resistant T4 seeds
+TPT_1.61660.1I	1.61660.1I	basic helix-loop-helix (bHLH) DNA-bin AT1G61660.1 Hygromycin-resistant T4 seeds
+TPT_1.62360.1F	1.62360.1F	SHOOT MERISTEMLESS (STM)/BUM1 AT1G62360.1 Hygromycin-resistant T4 seeds
+TPT_1.62360.1G	1.62360.1G	SHOOT MERISTEMLESS (STM)/BUM1 AT1G62360.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1A	1.62975.1A	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1B	1.62975.1B	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1D	1.62975.1D	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1F	1.62975.1F	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1H	1.62975.1H	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.62975.1I	1.62975.1I	(bHLH) DNA-binding superfamily protAT1G62975.1 Hygromycin-resistant T4 seeds
+TPT_1.63040.1B	1.63040.1B	DREB subfamily A-4 of ERF/AP2 trans AT1G63040.1 Hygromycin-resistant T4 seeds
+TPT_1.63040.1C	1.63040.1C	DREB subfamily A-4 of ERF/AP2 trans AT1G63040.1 Hygromycin-resistant T4 seeds
+TPT_1.63040.1E	1.63040.1E	DREB subfamily A-4 of ERF/AP2 trans AT1G63040.1 Hygromycin-resistant T4 seeds
+TPT_1.63100.1B	1.63100.1B	GRAS family transcription factor AT1G63100.1 Hygromycin-resistant T4 seeds
+TPT_1.63100.1C	1.63100.1C	GRAS family transcription factor AT1G63100.1 Hygromycin-resistant T4 seeds
+TPT_1.63100.1F	1.63100.1F	GRAS family transcription factor AT1G63100.1 Hygromycin-resistant T4 seeds
+TPT_1.63650.1A	1.63650.1A	ENHANCER OF GLABRA 3 (EGL3)/ATMAT1G63650.1 Hygromycin-resistant T4 seeds
+TPT_1.63650.1C	1.63650.1C	ENHANCER OF GLABRA 3 (EGL3)/ATMAT1G63650.1 Hygromycin-resistant T4 seeds
+TPT_1.63650.1D	1.63650.1D	ENHANCER OF GLABRA 3 (EGL3)/ATMAT1G63650.1 Hygromycin-resistant T4 seeds
+TPT_1.63840.1E	1.63840.1E	RING/U-box superfamily protein AT1G63840.1 Hygromycin-resistant T4 seeds
+TPT_1.63840.1I	1.63840.1I	RING/U-box superfamily protein AT1G63840.1 Hygromycin-resistant T4 seeds
+TPT_1.64000.1B	1.64000.1B	ATWRKY56 AT1G64000.1 Hygromycin-resistant T4 seeds
+TPT_1.64000.1C	1.64000.1C	ATWRKY56 AT1G64000.1 Hygromycin-resistant T4 seeds
+TPT_1.64530.1A	1.64530.1A	Plant regulator RWP-RK family protei AT1G64530.1 Hygromycin-resistant T4 seeds
+TPT_1.64530.1E	1.64530.1E	Plant regulator RWP-RK family protei AT1G64530.1 Hygromycin-resistant T4 seeds
+TPT_1.64530.1G	1.64530.1G	Plant regulator RWP-RK family protei AT1G64530.1 Hygromycin-resistant T4 seeds
+TPT_1.65360.1A	1.65360.1A	AGL23 AT1G65360.1 Hygromycin-resistant T4 seeds
+TPT_1.65360.1G	1.65360.1G	AGL23 AT1G65360.1 Hygromycin-resistant T4 seeds
+TPT_1.65360.1H	1.65360.1H	AGL23 AT1G65360.1 Hygromycin-resistant T4 seeds
+TPT_1.66230.1C	1.66230.1C	AtMYB20 AT1G66230.1 Hygromycin-resistant T4 seeds
+TPT_1.66230.1G	1.66230.1G	AtMYB20 AT1G66230.1 Hygromycin-resistant T4 seeds
+TPT_1.66350.1A	1.66350.1A	RGL1 AT1G66350.1 Hygromycin-resistant T4 seeds
+TPT_1.66350.1E	1.66350.1E	RGL1 AT1G66350.1 Hygromycin-resistant T4 seeds
+TPT_1.66350.1F	1.66350.1F	RGL1 AT1G66350.1 Hygromycin-resistant T4 seeds
+TPT_1.66380.1C	1.66380.1C	ATMYB114 AT1G66380.1 Hygromycin-resistant T4 seeds
+TPT_1.66470.1C	1.66470.1C	ATRHD6 AT1G66470.1 Hygromycin-resistant T4 seeds
+TPT_1.66470.1E	1.66470.1E	ATRHD6 AT1G66470.1 Hygromycin-resistant T4 seeds
+TPT_1.66470.1G	1.66470.1G	ATRHD6 AT1G66470.1 Hygromycin-resistant T4 seeds
+TPT_1.66470.1I	1.66470.1I	ATRHD6 AT1G66470.1 Hygromycin-resistant T4 seeds
+TPT_1.66600.1F	1.66600.1F	ATWRKY63 AT1G66600.1 Hygromycin-resistant T4 seeds
+TPT_1.66600.1G	1.66600.1G	ATWRKY63 AT1G66600.1 Hygromycin-resistant T4 seeds
+TPT_1.67180.1A	1.67180.1A	Zinc finger (C3HC4-type RING finger) AT1G67180.1 Hygromycin-resistant T4 seeds
+TPT_1.67180.1F	1.67180.1F	Zinc finger (C3HC4-type RING finger) AT1G67180.1 Hygromycin-resistant T4 seeds
+TPT_1.67260.1B	1.67260.1B	TCP (TB1,CYC,PCF) domain protein AT1G67260.1 Hygromycin-resistant T4 seeds
+TPT_1.67260.1C	1.67260.1C	TCP (TB1,CYC,PCF) domain protein AT1G67260.1 Hygromycin-resistant T4 seeds
+TPT_1.67260.1D	1.67260.1D	TCP (TB1,CYC,PCF) domain protein AT1G67260.1 Hygromycin-resistant T4 seeds
+TPT_1.67710.1C	1.67710.1C	ARR11 AT1G67710.1 Hygromycin-resistant T4 seeds
+TPT_1.67710.1D	1.67710.1D	ARR11 AT1G67710.1 Hygromycin-resistant T4 seeds
+TPT_1.67710.1H	1.67710.1H	ARR11 AT1G67710.1 Hygromycin-resistant T4 seeds
+TPT_1.67970.1B	1.67970.1B	AT-HSFA8 AT1G67970.1 Hygromycin-resistant T4 seeds
+TPT_1.67970.1E	1.67970.1E	AT-HSFA8 AT1G67970.1 Hygromycin-resistant T4 seeds
+TPT_1.67970.1F	1.67970.1F	AT-HSFA8 AT1G67970.1 Hygromycin-resistant T4 seeds
+TPT_1.68130.1A	1.68130.1A	ATIDD14 AT1G68130.1 Hygromycin-resistant T4 seeds
+TPT_1.68130.1C	1.68130.1C	ATIDD14 AT1G68130.1 Hygromycin-resistant T4 seeds
+TPT_1.68130.1E	1.68130.1E	ATIDD14 AT1G68130.1 Hygromycin-resistant T4 seeds
+TPT_1.68190.1D	1.68190.1D	B-box zinc finger family protein AT1G68190.1 Hygromycin-resistant T4 seeds
+TPT_1.68520.1H	1.68520.1H	B-box type zinc finger protein with CC AT1G68520.1 Hygromycin-resistant T4 seeds
+TPT_1.68640.1E	1.68640.1E	PAN__bZIP transcription factor family AT1G68640.1 Hygromycin-resistant T4 seeds
+TPT_1.68640.1F	1.68640.1F	PAN__bZIP transcription factor family AT1G68640.1 Hygromycin-resistant T4 seeds
+TPT_1.68840.1B	1.68840.1B	EDF2_RAP2.8_RAV2_TEM2 AT1G68840.1 Hygromycin-resistant T4 seeds
+TPT_1.68840.1D	1.68840.1D	EDF2_RAP2.8_RAV2_TEM2 AT1G68840.1 Hygromycin-resistant T4 seeds
+TPT_1.68880.1A	1.68880.1A	AtbZIP8 AT1G68880.1 Hygromycin-resistant T4 seeds
+TPT_1.68880.1G	1.68880.1G	AtbZIP8 AT1G68880.1 Hygromycin-resistant T4 seeds
+TPT_1.68920.2A	1.68920.2A	(bHLH) DNA-binding superfamily protAT1G68920.2 Hygromycin-resistant T4 seeds
+TPT_1.68920.2F	1.68920.2F	(bHLH) DNA-binding superfamily protAT1G68920.2 Hygromycin-resistant T4 seeds
+TPT_1.69120.1B	1.69120.1B	AGL7_AP1 AT1G69120.1 Hygromycin-resistant T4 seeds
+TPT_1.69120.1D	1.69120.1D	AGL7_AP1 AT1G69120.1 Hygromycin-resistant T4 seeds
+TPT_1.69180.1G	1.69180.1G	CRC AT1G69180.1 Hygromycin-resistant T4 seeds
+TPT_1.69180.1I	1.69180.1I	CRC AT1G69180.1 Hygromycin-resistant T4 seeds
+TPT_1.69490.1A	1.69490.1A	ANAC029 AT1G69490.1 Hygromycin-resistant T4 seeds
+TPT_1.69490.1B	1.69490.1B	ANAC029 AT1G69490.1 Hygromycin-resistant T4 seeds
+TPT_1.69490.1C	1.69490.1C	ANAC029 AT1G69490.1 Hygromycin-resistant T4 seeds
+TPT_1.69490.1H	1.69490.1H	ANAC029 AT1G69490.1 Hygromycin-resistant T4 seeds
+TPT_1.69580.1C	1.69580.1C	Homeodomain-like superfamily proteAT1G69580.1 Hygromycin-resistant T4 seeds
+TPT_1.69580.1E	1.69580.1E	Homeodomain-like superfamily proteAT1G69580.1 Hygromycin-resistant T4 seeds
+TPT_1.69580.1F	1.69580.1F	Homeodomain-like superfamily proteAT1G69580.1 Hygromycin-resistant T4 seeds
+TPT_1.69690.1A	1.69690.1A	TCP family transcription factor AT1G69690.1 Hygromycin-resistant T4 seeds
+TPT_1.69690.1B	1.69690.1B	TCP family transcription factor AT1G69690.1 Hygromycin-resistant T4 seeds
+TPT_1.69690.1C	1.69690.1C	TCP family transcription factor AT1G69690.1 Hygromycin-resistant T4 seeds
+TPT_1.69780.1D	1.69780.1D	ATHB13 AT1G69780.1 Hygromycin-resistant T4 seeds
+TPT_1.69780.1F	1.69780.1F	ATHB13 AT1G69780.1 Hygromycin-resistant T4 seeds
+TPT_1.69780.1H	1.69780.1H	ATHB13 AT1G69780.1 Hygromycin-resistant T4 seeds
+TPT_1.70000.1C	1.70000.1C	myb-like transcription factor family p AT1G70000.1 Hygromycin-resistant T4 seeds
+TPT_1.70000.1E	1.70000.1E	myb-like transcription factor family p AT1G70000.1 Hygromycin-resistant T4 seeds
+TPT_1.70000.1G	1.70000.1G	myb-like transcription factor family p AT1G70000.1 Hygromycin-resistant T4 seeds
+TPT_1.70510.1B	1.70510.1B	ATK1_KNAT2 AT1G70510.1 Hygromycin-resistant T4 seeds
+TPT_1.70510.1E	1.70510.1E	ATK1_KNAT2 AT1G70510.1 Hygromycin-resistant T4 seeds
+TPT_1.70510.1F	1.70510.1F	ATK1_KNAT2 AT1G70510.1 Hygromycin-resistant T4 seeds
+TPT_1.71030.1C	1.71030.1C	ATMYBL2 AT1G71030.1 Hygromycin-resistant T4 seeds
+TPT_1.71030.1H	1.71030.1H	ATMYBL2 AT1G71030.1 Hygromycin-resistant T4 seeds
+TPT_1.71130.1C	1.71130.1C	Integrase-type DNA-binding superfam AT1G71130.1 Hygromycin-resistant T4 seeds
+TPT_1.71130.1F	1.71130.1F	Integrase-type DNA-binding superfam AT1G71130.1 Hygromycin-resistant T4 seeds
+TPT_1.71130.1H	1.71130.1H	Integrase-type DNA-binding superfam AT1G71130.1 Hygromycin-resistant T4 seeds
+TPT_1.71450.1B	1.71450.1B	Integrase-type DNA-binding superfam AT1G71450.1 Hygromycin-resistant T4 seeds
+TPT_1.71450.1D	1.71450.1D	Integrase-type DNA-binding superfam AT1G71450.1 Hygromycin-resistant T4 seeds
+TPT_1.71450.1E	1.71450.1E	Integrase-type DNA-binding superfam AT1G71450.1 Hygromycin-resistant T4 seeds
+TPT_1.71450.1I	1.71450.1I	Integrase-type DNA-binding superfam AT1G71450.1 Hygromycin-resistant T4 seeds
+TPT_1.71450.1J	1.71450.1J	Integrase-type DNA-binding superfam AT1G71450.1 Hygromycin-resistant T4 seeds
+TPT_1.71520.1A	1.71520.1A	DREB subfamily A-5 of ERF/AP2 trans AT1G71520.1 Hygromycin-resistant T4 seeds
+TPT_1.71930.1B	1.71930.1B	ANAC030_VND7 AT1G71930.1 Hygromycin-resistant T4 seeds
+TPT_1.71930.1C	1.71930.1C	ANAC030_VND7 AT1G71930.1 Hygromycin-resistant T4 seeds
+TPT_1.71930.1F	1.71930.1F	ANAC030_VND7 AT1G71930.1 Hygromycin-resistant T4 seeds
+TPT_1.72010.1D	1.72010.1D	TCP family transcription factor AT1G72010.1 Hygromycin-resistant T4 seeds
+TPT_1.72010.1G	1.72010.1G	TCP family transcription factor AT1G72010.1 Hygromycin-resistant T4 seeds
+TPT_1.72350.1E	1.72350.1E	MADS-box transcription factor family AT1G72350.1 Hygromycin-resistant T4 seeds
+TPT_1.72350.1G	1.72350.1G	MADS-box transcription factor family AT1G72350.1 Hygromycin-resistant T4 seeds
+TPT_1.73100.1C	1.73100.1C	SDG19_SUVH3 AT1G73100.1 Hygromycin-resistant T4 seeds
+TPT_1.73100.1E	1.73100.1E	SDG19_SUVH3 AT1G73100.1 Hygromycin-resistant T4 seeds
+TPT_1.73100.1H	1.73100.1H	SDG19_SUVH3 AT1G73100.1 Hygromycin-resistant T4 seeds
+TPT_1.73410.1G	1.73410.1G	ATMYB54 AT1G73410.1 Hygromycin-resistant T4 seeds
+TPT_1.73410.1H	1.73410.1H	ATMYB54 AT1G73410.1 Hygromycin-resistant T4 seeds
+TPT_1.74930.1E	1.74930.1E	ORA47 AT1G74930.1 Hygromycin-resistant T4 seeds
+TPT_1.74930.1F	1.74930.1F	ORA47 AT1G74930.1 Hygromycin-resistant T4 seeds
+TPT_1.74930.1H	1.74930.1H	ORA47 AT1G74930.1 Hygromycin-resistant T4 seeds
+TPT_1.75388.1A	1.75388.1A	CPuORF5 AT1G75388.1 Hygromycin-resistant T4 seeds
+TPT_1.75388.1D	1.75388.1D	CPuORF5 AT1G75388.1 Hygromycin-resistant T4 seeds
+TPT_1.75388.1H	1.75388.1H	CPuORF5 AT1G75388.1 Hygromycin-resistant T4 seeds
+TPT_1.75410.2B	1.75410.2B	BLH3 AT1G75410.2 Hygromycin-resistant T4 seeds
+TPT_1.75410.2C	1.75410.2C	BLH3 AT1G75410.2 Hygromycin-resistant T4 seeds
+TPT_1.75410.2D	1.75410.2D	BLH3 AT1G75410.2 Hygromycin-resistant T4 seeds
+TPT_1.75490.1B	1.75490.1B	Integrase-type DNA-binding superfam AT1G75490.1 Hygromycin-resistant T4 seeds
+TPT_1.75510.1B	1.75510.1B	Transcription initiation factor IIF, beta AT1G75510.1 Hygromycin-resistant T4 seeds
+TPT_1.75510.1C	1.75510.1C	Transcription initiation factor IIF, beta AT1G75510.1 Hygromycin-resistant T4 seeds
+TPT_1.75510.1E	1.75510.1E	Transcription initiation factor IIF, beta AT1G75510.1 Hygromycin-resistant T4 seeds
+TPT_1.75510.1G	1.75510.1G	Transcription initiation factor IIF, beta AT1G75510.1 Hygromycin-resistant T4 seeds
+TPT_1.76710.1C	1.76710.1C	ASHH1 AT1G76710.1 Hygromycin-resistant T4 seeds
+TPT_1.76710.1H	1.76710.1H	ASHH1 AT1G76710.1 Hygromycin-resistant T4 seeds
+TPT_1.77200.1C	1.77200.1C	Integrase-type DNA-binding superfam AT1G77200.1 Hygromycin-resistant T4 seeds
+TPT_1.77200.1H	1.77200.1H	Integrase-type DNA-binding superfam AT1G77200.1 Hygromycin-resistant T4 seeds
+TPT_1.77450.1A	1.77450.1A	anac032 AT1G77450.1 Hygromycin-resistant T4 seeds
+TPT_1.77450.1H	1.77450.1H	anac032 AT1G77450.1 Hygromycin-resistant T4 seeds
+TPT_1.77640.1B	1.77640.1B	DREB subfamily A-5 of ERF/AP2 trans AT1G77640.1 Hygromycin-resistant T4 seeds
+TPT_1.77640.1E	1.77640.1E	DREB subfamily A-5 of ERF/AP2 trans AT1G77640.1 Hygromycin-resistant T4 seeds
+TPT_1.77640.1H	1.77640.1H	DREB subfamily A-5 of ERF/AP2 trans AT1G77640.1 Hygromycin-resistant T4 seeds
+TPT_1.77850.1A	1.77850.1A	ARF17 AT1G77850.1 Hygromycin-resistant T4 seeds
+TPT_1.77850.1G	1.77850.1G	ARF17 AT1G77850.1 Hygromycin-resistant T4 seeds
+TPT_1.77850.1I	1.77850.1I	ARF17 AT1G77850.1 Hygromycin-resistant T4 seeds
+TPT_1.77920.1B	1.77920.1B	bZIP transcription factor family prote AT1G77920.1 Hygromycin-resistant T4 seeds
+TPT_1.77920.1E	1.77920.1E	bZIP transcription factor family prote AT1G77920.1 Hygromycin-resistant T4 seeds
+TPT_1.77920.1G	1.77920.1G	bZIP transcription factor family prote AT1G77920.1 Hygromycin-resistant T4 seeds
+TPT_1.77920.1H	1.77920.1H	bZIP transcription factor family prote AT1G77920.1 Hygromycin-resistant T4 seeds
+TPT_1.78070.1C	1.78070.1C	Transducin/WD40 repeat-like superfa AT1G78070.1 Hygromycin-resistant T4 seeds
+TPT_1.78070.1I	1.78070.1I	Transducin/WD40 repeat-like superfa AT1G78070.1 Hygromycin-resistant T4 seeds
+TPT_1.78600.1D	1.78600.1D	DBB3_LZF1_STH3 AT1G78600.1 Hygromycin-resistant T4 seeds
+TPT_1.78600.1E	1.78600.1E	DBB3_LZF1_STH3 AT1G78600.1 Hygromycin-resistant T4 seeds
+TPT_1.78600.1F	1.78600.1F	DBB3_LZF1_STH3 AT1G78600.1 Hygromycin-resistant T4 seeds
+TPT_1.79180.1E	1.79180.1E	ATMYB63 AT1G79180.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1A	1.79430.1A	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1C	1.79430.1C	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1D	1.79430.1D	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1F	1.79430.1F	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1G	1.79430.1G	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1H	1.79430.1H	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79430.1I	1.79430.1I	WOODY (WDY) AT1G79430.1 Hygromycin-resistant T4 seeds
+TPT_1.79700.1C	1.79700.1C	WRINKLED 4 (WRI4) AT1G79700.1 Hygromycin-resistant T4 seeds
+TPT_1.79700.1F	1.79700.1F	WRINKLED 4 (WRI4) AT1G79700.1 Hygromycin-resistant T4 seeds
+TPT_1.79700.1G	1.79700.1G	WRINKLED 4 (WRI4) AT1G79700.1 Hygromycin-resistant T4 seeds
+TPT_1.80400.1A	1.80400.1A	RING/U-box superfamily protein AT1G80400.1 Hygromycin-resistant T4 seeds
+TPT_1.80400.1G	1.80400.1G	RING/U-box superfamily protein AT1G80400.1 Hygromycin-resistant T4 seeds
+TPT_1.80400.1H	1.80400.1H	RING/U-box superfamily protein AT1G80400.1 Hygromycin-resistant T4 seeds
+TPT_1.80730.1C	1.80730.1C	ATZFP1 AT1G80730.1 Hygromycin-resistant T4 seeds
+TPT_1.80730.1D	1.80730.1D	ATZFP1 AT1G80730.1 Hygromycin-resistant T4 seeds
+TPT_1.80730.1G	1.80730.1G	ATZFP1 AT1G80730.1 Hygromycin-resistant T4 seeds
+TPT_1.80730.1H	1.80730.1H	ATZFP1 AT1G80730.1 Hygromycin-resistant T4 seeds
+TPT_2.01060.1A	2.01060.1A	myb-like HTH transcriptional regulato AT2G01060.1 Hygromycin-resistant T4 seeds
+TPT_2.01060.1F	2.01060.1F	myb-like HTH transcriptional regulato AT2G01060.1 Hygromycin-resistant T4 seeds
+TPT_2.01060.1G	2.01060.1G	myb-like HTH transcriptional regulato AT2G01060.1 Hygromycin-resistant T4 seeds
+TPT_2.01150.1A	2.01150.1A	RHA2B AT2G01150.1 Hygromycin-resistant T4 seeds
+TPT_2.01150.1C	2.01150.1C	RHA2B AT2G01150.1 Hygromycin-resistant T4 seeds
+TPT_2.01760.1E	2.01760.1E	ARR14 AT2G01760.1 Hygromycin-resistant T4 seeds
+TPT_2.01760.1I	2.01760.1I	ARR14 AT2G01760.1 Hygromycin-resistant T4 seeds
+TPT_2.02060.1D	2.02060.1D	Homeodomain-like superfamily proteAT2G02060.1 Hygromycin-resistant T4 seeds
+TPT_2.03710.1A	2.03710.1A	AGL3_SEP4 AT2G03710.1 Hygromycin-resistant T4 seeds
+TPT_2.03710.1E	2.03710.1E	AGL3_SEP4 AT2G03710.1 Hygromycin-resistant T4 seeds
+TPT_2.03710.1G	2.03710.1G	AGL3_SEP4 AT2G03710.1 Hygromycin-resistant T4 seeds
+TPT_2.04038.1C	2.04038.1C	AtbZIP48 AT2G04038.1 Hygromycin-resistant T4 seeds
+TPT_2.04038.1F	2.04038.1F	AtbZIP48 AT2G04038.1 Hygromycin-resistant T4 seeds
+TPT_2.04880.1E	2.04880.1E	ATWRKY1 AT2G04880.1 Hygromycin-resistant T4 seeds
+TPT_2.04880.1G	2.04880.1G	ATWRKY1 AT2G04880.1 Hygromycin-resistant T4 seeds
+TPT_2.13570.1A	2.13570.1A	NF-YB7 AT2G13570.1 Hygromycin-resistant T4 seeds
+TPT_2.13570.1C	2.13570.1C	NF-YB7 AT2G13570.1 Hygromycin-resistant T4 seeds
+TPT_2.13570.1I	2.13570.1I	NF-YB7 AT2G13570.1 Hygromycin-resistant T4 seeds
+TPT_2.16210.1E	2.16210.1E	Transcriptional factor B3 family proteAT2G16210.1 Hygromycin-resistant T4 seeds
+TPT_2.16210.1H	2.16210.1H	Transcriptional factor B3 family proteAT2G16210.1 Hygromycin-resistant T4 seeds
+TPT_2.16210.1I	2.16210.1I	Transcriptional factor B3 family proteAT2G16210.1 Hygromycin-resistant T4 seeds
+TPT_2.16720.1A	2.16720.1A	ATMYB7 AT2G16720.1 Hygromycin-resistant T4 seeds
+TPT_2.16720.1B	2.16720.1B	ATMYB7 AT2G16720.1 Hygromycin-resistant T4 seeds
+TPT_2.16720.1C	2.16720.1C	ATMYB7 AT2G16720.1 Hygromycin-resistant T4 seeds
+TPT_2.17180.1E	2.17180.1E	C2H2-type zinc finger family protein AT2G17180.1 Hygromycin-resistant T4 seeds
+TPT_2.17180.1F	2.17180.1F	C2H2-type zinc finger family protein AT2G17180.1 Hygromycin-resistant T4 seeds
+TPT_2.17180.1H	2.17180.1H	C2H2-type zinc finger family protein AT2G17180.1 Hygromycin-resistant T4 seeds
+TPT_2.17770.1F	2.17770.1F	ATBZIP27 AT2G17770.1 Hygromycin-resistant T4 seeds
+TPT_2.17770.1G	2.17770.1G	ATBZIP27 AT2G17770.1 Hygromycin-resistant T4 seeds
+TPT_2.18160.1E	2.18160.1E	ATBZIP2 AT2G18160.1 Hygromycin-resistant T4 seeds
+TPT_2.18160.1G	2.18160.1G	ATBZIP2 AT2G18160.1 Hygromycin-resistant T4 seeds
+TPT_2.18300.1B	2.18300.1B	(bHLH) DNA-binding superfamily protAT2G18300.1 Hygromycin-resistant T4 seeds
+TPT_2.18300.1C	2.18300.1C	(bHLH) DNA-binding superfamily protAT2G18300.1 Hygromycin-resistant T4 seeds
+TPT_2.18300.1I	2.18300.1I	(bHLH) DNA-binding superfamily protAT2G18300.1 Hygromycin-resistant T4 seeds
+TPT_2.18550.1C	2.18550.1C	ATHB21 AT2G18550.1 Hygromycin-resistant T4 seeds
+TPT_2.18550.1E	2.18550.1E	ATHB21 AT2G18550.1 Hygromycin-resistant T4 seeds
+TPT_2.18550.1I	2.18550.1I	ATHB21 AT2G18550.1 Hygromycin-resistant T4 seeds
+TPT_2.18670.1A	2.18670.1A	RING/U-box superfamily protein AT2G18670.1 Hygromycin-resistant T4 seeds
+TPT_2.18670.1B	2.18670.1B	RING/U-box superfamily protein AT2G18670.1 Hygromycin-resistant T4 seeds
+TPT_2.18670.1E	2.18670.1E	RING/U-box superfamily protein AT2G18670.1 Hygromycin-resistant T4 seeds
+TPT_2.18670.1I	2.18670.1I	RING/U-box superfamily protein AT2G18670.1 Hygromycin-resistant T4 seeds
+TPT_2.20180.1D	2.20180.1D	PIF1_PIL5 AT2G20180.1 Hygromycin-resistant T4 seeds
+TPT_2.20180.1F	2.20180.1F	PIF1_PIL5 AT2G20180.1 Hygromycin-resistant T4 seeds
+TPT_2.20180.1G	2.20180.1G	PIF1_PIL5 AT2G20180.1 Hygromycin-resistant T4 seeds
+TPT_2.20400.1B	2.20400.1B	myb-like HTH transcriptional regulato AT2G20400.1 Hygromycin-resistant T4 seeds
+TPT_2.20400.1C	2.20400.1C	myb-like HTH transcriptional regulato AT2G20400.1 Hygromycin-resistant T4 seeds
+TPT_2.20400.1I	2.20400.1I	myb-like HTH transcriptional regulato AT2G20400.1 Hygromycin-resistant T4 seeds
+TPT_2.20570.1B	2.20570.1B	ATGLK1 AT2G20570.1 Hygromycin-resistant T4 seeds
+TPT_2.22200.1B	2.22200.1B	Integrase-type DNA-binding superfam AT2G22200.1 Hygromycin-resistant T4 seeds
+TPT_2.22200.1E	2.22200.1E	Integrase-type DNA-binding superfam AT2G22200.1 Hygromycin-resistant T4 seeds
+TPT_2.22200.1G	2.22200.1G	Integrase-type DNA-binding superfam AT2G22200.1 Hygromycin-resistant T4 seeds
+TPT_2.22630.1A	2.22630.1A	AGL17 AT2G22630.1 Hygromycin-resistant T4 seeds
+TPT_2.22630.1C	2.22630.1C	AGL17 AT2G22630.1 Hygromycin-resistant T4 seeds
+TPT_2.22630.1G	2.22630.1G	AGL17 AT2G22630.1 Hygromycin-resistant T4 seeds
+TPT_2.22630.1H	2.22630.1H	AGL17 AT2G22630.1 Hygromycin-resistant T4 seeds
+TPT_2.22740.1C	2.22740.1C	SDG23/SUVH6 AT2G22740.1 Hygromycin-resistant T4 seeds
+TPT_2.22740.1E	2.22740.1E	SDG23/SUVH6 AT2G22740.1 Hygromycin-resistant T4 seeds
+TPT_2.22750.2G	2.22750.2G	(bHLH) DNA-binding superfamily protAT2G22750.2 Hygromycin-resistant T4 seeds
+TPT_2.22800.1A	2.22800.1A	HAT9 AT2G22800.1 Hygromycin-resistant T4 seeds
+TPT_2.22800.1B	2.22800.1B	HAT9 AT2G22800.1 Hygromycin-resistant T4 seeds
+TPT_2.22800.1D	2.22800.1D	HAT9 AT2G22800.1 Hygromycin-resistant T4 seeds
+TPT_2.22800.1G	2.22800.1G	HAT9 AT2G22800.1 Hygromycin-resistant T4 seeds
+TPT_2.22850.1A	2.22850.1A	AtbZIP6 AT2G22850.1 Hygromycin-resistant T4 seeds
+TPT_2.22850.1E	2.22850.1E	AtbZIP6 AT2G22850.1 Hygromycin-resistant T4 seeds
+TPT_2.22850.1F	2.22850.1F	AtbZIP6 AT2G22850.1 Hygromycin-resistant T4 seeds
+TPT_2.22850.1H	2.22850.1H	AtbZIP6 AT2G22850.1 Hygromycin-resistant T4 seeds
+TPT_2.23340.1A	2.23340.1A	DEAR3 AT2G23340.1 Hygromycin-resistant T4 seeds
+TPT_2.23340.1E	2.23340.1E	DEAR3 AT2G23340.1 Hygromycin-resistant T4 seeds
+TPT_2.23340.1F	2.23340.1F	DEAR3 AT2G23340.1 Hygromycin-resistant T4 seeds
+TPT_2.24260.1E	2.24260.1E	LRL1 AT2G24260.1 Hygromycin-resistant T4 seeds
+TPT_2.24260.1G	2.24260.1G	LRL1 AT2G24260.1 Hygromycin-resistant T4 seeds
+TPT_2.24430.1D	2.24430.1D	ANAC038 AT2G24430.1 Hygromycin-resistant T4 seeds
+TPT_2.24430.1E	2.24430.1E	ANAC038 AT2G24430.1 Hygromycin-resistant T4 seeds
+TPT_2.24430.1G	2.24430.1G	ANAC038 AT2G24430.1 Hygromycin-resistant T4 seeds
+TPT_2.24790.1A	2.24790.1A	ATCOL3 AT2G24790.1 Hygromycin-resistant T4 seeds
+TPT_2.24790.1H	2.24790.1H	ATCOL3 AT2G24790.1 Hygromycin-resistant T4 seeds
+TPT_2.25000.1C	2.25000.1C	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_2.25000.1D	2.25000.1D	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_2.25000.1E	2.25000.1E	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_2.25000.1H	2.25000.1H	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_2.26580.1B	2.26580.1B	YAB5 AT2G26580.1 Hygromycin-resistant T4 seeds
+TPT_2.27300.1B	2.27300.1B	ANAC040 AT2G27300.1 Hygromycin-resistant T4 seeds
+TPT_2.27300.1D	2.27300.1D	ANAC040 AT2G27300.1 Hygromycin-resistant T4 seeds
+TPT_2.27300.1G	2.27300.1G	ANAC040 AT2G27300.1 Hygromycin-resistant T4 seeds
+TPT_2.27470.1A	2.27470.1A	NF-YB11 AT2G27470.1 Hygromycin-resistant T4 seeds
+TPT_2.27470.1D	2.27470.1D	NF-YB11 AT2G27470.1 Hygromycin-resistant T4 seeds
+TPT_2.28200.1I	2.28200.1I	C2H2-type zinc finger family protein AT2G28200.1 Hygromycin-resistant T4 seeds
+TPT_2.28510.1B	2.28510.1B	Dof-type zinc finger DNA-binding fam AT2G28510.1 Hygromycin-resistant T4 seeds
+TPT_2.28510.1E	2.28510.1E	Dof-type zinc finger DNA-binding fam AT2G28510.1 Hygromycin-resistant T4 seeds
+TPT_2.28910.1C	2.28910.1C	CXIP4 AT2G28910.1 Hygromycin-resistant T4 seeds
+TPT_2.28910.1D	2.28910.1D	CXIP4 AT2G28910.1 Hygromycin-resistant T4 seeds
+TPT_2.28910.1E	2.28910.1E	CXIP4 AT2G28910.1 Hygromycin-resistant T4 seeds
+TPT_2.29660.1B	2.29660.1B	zinc finger (C2H2 type) family proteinAT2G29660.1 Hygromycin-resistant T4 seeds
+TPT_2.29660.1E	2.29660.1E	zinc finger (C2H2 type) family proteinAT2G29660.1 Hygromycin-resistant T4 seeds
+TPT_2.30250.1C	2.30250.1C	ATWRKY25 AT2G30250.1 Hygromycin-resistant T4 seeds
+TPT_2.30250.1D	2.30250.1D	ATWRKY25 AT2G30250.1 Hygromycin-resistant T4 seeds
+TPT_2.30250.1F	2.30250.1F	ATWRKY25 AT2G30250.1 Hygromycin-resistant T4 seeds
+TPT_2.30590.1C	2.30590.1C	ATWRKY21 AT2G30590.1 Hygromycin-resistant T4 seeds
+TPT_2.31180.1A	2.31180.1A	ATMYB14 AT2G31180.1 Hygromycin-resistant T4 seeds
+TPT_2.31180.1D	2.31180.1D	ATMYB14 AT2G31180.1 Hygromycin-resistant T4 seeds
+TPT_2.31180.1G	2.31180.1G	ATMYB14 AT2G31180.1 Hygromycin-resistant T4 seeds
+TPT_2.31220.1A	2.31220.1A	basic helix-loop-helix (bHLH) DNA-bin AT2G31220.1 Hygromycin-resistant T4 seeds
+TPT_2.31220.1G	2.31220.1G	basic helix-loop-helix (bHLH) DNA-bin AT2G31220.1 Hygromycin-resistant T4 seeds
+TPT_2.31220.1H	2.31220.1H	basic helix-loop-helix (bHLH) DNA-bin AT2G31220.1 Hygromycin-resistant T4 seeds
+TPT_2.31370.1B	2.31370.1B	(bZIP) transcription factor family protAT2G31370.1 Hygromycin-resistant T4 seeds
+TPT_2.31370.1D	2.31370.1D	(bZIP) transcription factor family protAT2G31370.1 Hygromycin-resistant T4 seeds
+TPT_2.31380.1A	2.31380.1A	STH__salt tolerance homologue AT2G31380.1 Hygromycin-resistant T4 seeds
+TPT_2.31380.1B	2.31380.1B	STH__salt tolerance homologue AT2G31380.1 Hygromycin-resistant T4 seeds
+TPT_2.31380.1F	2.31380.1F	STH__salt tolerance homologue AT2G31380.1 Hygromycin-resistant T4 seeds
+TPT_2.31720.1A	2.31720.1A	Domain of unknown function (DUF31AT2G31720.1 Hygromycin-resistant T4 seeds
+TPT_2.31720.1B	2.31720.1B	Domain of unknown function (DUF31AT2G31720.1 Hygromycin-resistant T4 seeds
+TPT_2.31720.1C	2.31720.1C	Domain of unknown function (DUF31AT2G31720.1 Hygromycin-resistant T4 seeds
+TPT_2.31720.1D	2.31720.1D	Domain of unknown function (DUF31AT2G31720.1 Hygromycin-resistant T4 seeds
+TPT_2.31720.1G	2.31720.1G	Domain of unknown function (DUF31AT2G31720.1 Hygromycin-resistant T4 seeds
+TPT_2.32460.1F	2.32460.1F	ATMYB101 AT2G32460.1 Hygromycin-resistant T4 seeds
+TPT_2.33290.1A	2.33290.1A	ATSUVH2_SDG3 AT2G33290.1 Hygromycin-resistant T4 seeds
+TPT_2.33290.1G	2.33290.1G	ATSUVH2_SDG3 AT2G33290.1 Hygromycin-resistant T4 seeds
+TPT_2.33290.1H	2.33290.1H	ATSUVH2_SDG3 AT2G33290.1 Hygromycin-resistant T4 seeds
+TPT_2.33310.1C	2.33310.1C	IAA13 AT2G33310.1 Hygromycin-resistant T4 seeds
+TPT_2.33310.1D	2.33310.1D	IAA13 AT2G33310.1 Hygromycin-resistant T4 seeds
+TPT_2.33310.1F	2.33310.1F	IAA13 AT2G33310.1 Hygromycin-resistant T4 seeds
+TPT_2.33310.1H	2.33310.1H	IAA13 AT2G33310.1 Hygromycin-resistant T4 seeds
+TPT_2.33480.1G	2.33480.1G	ANAC041 AT2G33480.1 Hygromycin-resistant T4 seeds
+TPT_2.33480.1H	2.33480.1H	ANAC041 AT2G33480.1 Hygromycin-resistant T4 seeds
+TPT_2.33710.1C	2.33710.1C	Integrase-type DNA-binding superfam AT2G33710.1 Hygromycin-resistant T4 seeds
+TPT_2.33710.1E	2.33710.1E	Integrase-type DNA-binding superfam AT2G33710.1 Hygromycin-resistant T4 seeds
+TPT_2.33710.1G	2.33710.1G	Integrase-type DNA-binding superfam AT2G33710.1 Hygromycin-resistant T4 seeds
+TPT_2.33710.1H	2.33710.1H	Integrase-type DNA-binding superfam AT2G33710.1 Hygromycin-resistant T4 seeds
+TPT_2.33880.1A	2.33880.1A	HB-3_STIP_WOX9 AT2G33880.1 Hygromycin-resistant T4 seeds
+TPT_2.33880.1C	2.33880.1C	HB-3_STIP_WOX9 AT2G33880.1 Hygromycin-resistant T4 seeds
+TPT_2.33880.1E	2.33880.1E	HB-3_STIP_WOX9 AT2G33880.1 Hygromycin-resistant T4 seeds
+TPT_2.34000.1A	2.34000.1A	RING/U-box superfamily protein AT2G34000.1 Hygromycin-resistant T4 seeds
+TPT_2.34000.1H	2.34000.1H	RING/U-box superfamily protein AT2G34000.1 Hygromycin-resistant T4 seeds
+TPT_2.34140.1C	2.34140.1C	Dof-type zinc finger DNA-binding fam AT2G34140.1 Hygromycin-resistant T4 seeds
+TPT_2.34140.1D	2.34140.1D	Dof-type zinc finger DNA-binding fam AT2G34140.1 Hygromycin-resistant T4 seeds
+TPT_2.34140.1G	2.34140.1G	Dof-type zinc finger DNA-binding fam AT2G34140.1 Hygromycin-resistant T4 seeds
+TPT_2.34140.1H	2.34140.1H	Dof-type zinc finger DNA-binding fam AT2G34140.1 Hygromycin-resistant T4 seeds
+TPT_2.34440.1A	2.34440.1A	AGL29 AT2G34440.1 Hygromycin-resistant T4 seeds
+TPT_2.34440.1B	2.34440.1B	AGL29 AT2G34440.1 Hygromycin-resistant T4 seeds
+TPT_2.34440.1C	2.34440.1C	AGL29 AT2G34440.1 Hygromycin-resistant T4 seeds
+TPT_2.34830.1B	2.34830.1B	ATWRKY35 AT2G34830.1 Hygromycin-resistant T4 seeds
+TPT_2.34830.1E	2.34830.1E	ATWRKY35 AT2G34830.1 Hygromycin-resistant T4 seeds
+TPT_2.34830.1F	2.34830.1F	ATWRKY35 AT2G34830.1 Hygromycin-resistant T4 seeds
+TPT_2.36270.1A	2.36270.1A	ABI5_GIA1 AT2G36270.1 Hygromycin-resistant T4 seeds
+TPT_2.36270.1C	2.36270.1C	ABI5_GIA1 AT2G36270.1 Hygromycin-resistant T4 seeds
+TPT_2.36270.1G	2.36270.1G	ABI5_GIA1 AT2G36270.1 Hygromycin-resistant T4 seeds
+TPT_2.36450.1E	2.36450.1E	HRD__Integrase-type DNA-binding su AT2G36450.1 Hygromycin-resistant T4 seeds
+TPT_2.36450.1G	2.36450.1G	HRD__Integrase-type DNA-binding su AT2G36450.1 Hygromycin-resistant T4 seeds
+TPT_2.36610.1E	2.36610.1E	ATHB22 AT2G36610.1 Hygromycin-resistant T4 seeds
+TPT_2.36610.1F	2.36610.1F	ATHB22 AT2G36610.1 Hygromycin-resistant T4 seeds
+TPT_2.36610.1H	2.36610.1H	ATHB22 AT2G36610.1 Hygromycin-resistant T4 seeds
+TPT_2.36890.1G	2.36890.1G	ATMYB38_BIT1 AT2G36890.1 Hygromycin-resistant T4 seeds
+TPT_2.37000.1A	2.37000.1A	TCP family transcription factor AT2G37000.1 Hygromycin-resistant T4 seeds
+TPT_2.37000.1B	2.37000.1B	TCP family transcription factor AT2G37000.1 Hygromycin-resistant T4 seeds
+TPT_2.37430.1D	2.37430.1D	C2H2 and C2HC zinc fingers superfam AT2G37430.1 Hygromycin-resistant T4 seeds
+TPT_2.37430.1E	2.37430.1E	C2H2 and C2HC zinc fingers superfam AT2G37430.1 Hygromycin-resistant T4 seeds
+TPT_2.37430.1F	2.37430.1F	C2H2 and C2HC zinc fingers superfam AT2G37430.1 Hygromycin-resistant T4 seeds
+TPT_2.37740.1A	2.37740.1A	ATZFP10 AT2G37740.1 Hygromycin-resistant T4 seeds
+TPT_2.37740.1H	2.37740.1H	ATZFP10 AT2G37740.1 Hygromycin-resistant T4 seeds
+TPT_2.38300.1B	2.38300.1B	myb-like HTH transcriptional regulato AT2G38300.1 Hygromycin-resistant T4 seeds
+TPT_2.38300.1D	2.38300.1D	myb-like HTH transcriptional regulato AT2G38300.1 Hygromycin-resistant T4 seeds
+TPT_2.38340.1B	2.38340.1B	Integrase-type DNA-binding superfam AT2G38340.1 Hygromycin-resistant T4 seeds
+TPT_2.38340.1I	2.38340.1I	Integrase-type DNA-binding superfam AT2G38340.1 Hygromycin-resistant T4 seeds
+TPT_2.38950.1D	2.38950.1D	Transcription factor jumonji (jmj) fam AT2G38950.1 Hygromycin-resistant T4 seeds
+TPT_2.38950.1I	2.38950.1I	Transcription factor jumonji (jmj) fam AT2G38950.1 Hygromycin-resistant T4 seeds
+TPT_2.39900.1D	2.39900.1D	WLIM2A AT2G39900.1 Hygromycin-resistant T4 seeds
+TPT_2.39900.1G	2.39900.1G	WLIM2A AT2G39900.1 Hygromycin-resistant T4 seeds
+TPT_2.39900.1I	2.39900.1I	WLIM2A AT2G39900.1 Hygromycin-resistant T4 seeds
+TPT_2.40340.1H	2.40340.1H	AtERF48_DREB2C AT2G40340.1 Hygromycin-resistant T4 seeds
+TPT_2.40620.1E	2.40620.1E	Basic-leucine zipper (bZIP) transcripti AT2G40620.1 Hygromycin-resistant T4 seeds
+TPT_2.40620.1G	2.40620.1G	Basic-leucine zipper (bZIP) transcripti AT2G40620.1 Hygromycin-resistant T4 seeds
+TPT_2.40950.1A	2.40950.1A	BZIP17 AT2G40950.1 Hygromycin-resistant T4 seeds
+TPT_2.40950.1F	2.40950.1F	BZIP17 AT2G40950.1 Hygromycin-resistant T4 seeds
+TPT_2.40950.1H	2.40950.1H	BZIP17 AT2G40950.1 Hygromycin-resistant T4 seeds
+TPT_2.40970.1F	2.40970.1F	MYBC1 AT2G40970.1 Hygromycin-resistant T4 seeds
+TPT_2.40970.1H	2.40970.1H	MYBC1 AT2G40970.1 Hygromycin-resistant T4 seeds
+TPT_2.41070.1A	2.41070.1A	ATBZIP12 AT2G41070.1 Hygromycin-resistant T4 seeds
+TPT_2.41070.1B	2.41070.1B	ATBZIP12 AT2G41070.1 Hygromycin-resistant T4 seeds
+TPT_2.41070.1G	2.41070.1G	ATBZIP12 AT2G41070.1 Hygromycin-resistant T4 seeds
+TPT_2.42200.1F	2.42200.1F	SPL9 AT2G42200.1 Hygromycin-resistant T4 seeds
+TPT_2.42200.1H	2.42200.1H	SPL9 AT2G42200.1 Hygromycin-resistant T4 seeds
+TPT_2.42280.1E	2.42280.1E	FLOWERING BHLH 4 (FBH4) AT2G42280.1 Hygromycin-resistant T4 seeds
+TPT_2.42280.1F	2.42280.1F	FLOWERING BHLH 4 (FBH4) AT2G42280.1 Hygromycin-resistant T4 seeds
+TPT_2.42360.1A	2.42360.1A	zinc finger (C3HC4-type RING finger)AT2G42360.1 Hygromycin-resistant T4 seeds
+TPT_2.42360.1D	2.42360.1D	zinc finger (C3HC4-type RING finger)AT2G42360.1 Hygromycin-resistant T4 seeds
+TPT_2.42360.1H	2.42360.1H	zinc finger (C3HC4-type RING finger)AT2G42360.1 Hygromycin-resistant T4 seeds
+TPT_2.42400.1D	2.42400.1D	ATVOZ2 AT2G42400.1 Hygromycin-resistant T4 seeds
+TPT_2.42400.1H	2.42400.1H	ATVOZ2 AT2G42400.1 Hygromycin-resistant T4 seeds
+TPT_2.42400.1I	2.42400.1I	ATVOZ2 AT2G42400.1 Hygromycin-resistant T4 seeds
+TPT_2.43000.1D	2.43000.1D	NAC042 AT2G43000.1 Hygromycin-resistant T4 seeds
+TPT_2.43000.1H	2.43000.1H	NAC042 AT2G43000.1 Hygromycin-resistant T4 seeds
+TPT_2.43000.1I	2.43000.1I	NAC042 AT2G43000.1 Hygromycin-resistant T4 seeds
+TPT_2.43010.1B	2.43010.1B	PIF4_SRL2 AT2G43010.1 Hygromycin-resistant T4 seeds
+TPT_2.43010.1C	2.43010.1C	PIF4_SRL2 AT2G43010.1 Hygromycin-resistant T4 seeds
+TPT_2.43010.1H	2.43010.1H	PIF4_SRL2 AT2G43010.1 Hygromycin-resistant T4 seeds
+TPT_2.43060.1B	2.43060.1B	IBH1 AT2G43060.1 Hygromycin-resistant T4 seeds
+TPT_2.43060.1C	2.43060.1C	IBH1 AT2G43060.1 Hygromycin-resistant T4 seeds
+TPT_2.43060.1I	2.43060.1I	IBH1 AT2G43060.1 Hygromycin-resistant T4 seeds
+TPT_2.43220.1B	2.43220.1B	Cysteine/Histidine-rich C1 domain fam AT2G43220.1 Hygromycin-resistant T4 seeds
+TPT_2.43220.1G	2.43220.1G	Cysteine/Histidine-rich C1 domain fam AT2G43220.1 Hygromycin-resistant T4 seeds
+TPT_2.43220.1H	2.43220.1H	Cysteine/Histidine-rich C1 domain fam AT2G43220.1 Hygromycin-resistant T4 seeds
+TPT_2.44150.1B	2.44150.1B	SDG7__ASHH3 (HISTONE-LYSINE AT2G44150.1 Hygromycin-resistant T4 seeds
+TPT_2.44150.1F	2.44150.1F	SDG7__ASHH3 (HISTONE-LYSINE AT2G44150.1 Hygromycin-resistant T4 seeds
+TPT_2.44150.1H	2.44150.1H	SDG7__ASHH3 (HISTONE-LYSINE AT2G44150.1 Hygromycin-resistant T4 seeds
+TPT_2.44910.1A	2.44910.1A	ATHB-4 AT2G44910.1 Hygromycin-resistant T4 seeds
+TPT_2.44910.1C	2.44910.1C	ATHB-4 AT2G44910.1 Hygromycin-resistant T4 seeds
+TPT_2.44910.1G	2.44910.1G	ATHB-4 AT2G44910.1 Hygromycin-resistant T4 seeds
+TPT_2.44940.1A	2.44940.1A	Integrase-type DNA-binding superfam AT2G44940.1 Hygromycin-resistant T4 seeds
+TPT_2.44940.1B	2.44940.1B	Integrase-type DNA-binding superfam AT2G44940.1 Hygromycin-resistant T4 seeds
+TPT_2.44940.1E	2.44940.1E	Integrase-type DNA-binding superfam AT2G44940.1 Hygromycin-resistant T4 seeds
+TPT_2.44940.1F	2.44940.1F	Integrase-type DNA-binding superfam AT2G44940.1 Hygromycin-resistant T4 seeds
+TPT_2.44940.1G	2.44940.1G	Integrase-type DNA-binding superfam AT2G44940.1 Hygromycin-resistant T4 seeds
+TPT_2.45050.1A	2.45050.1A	GATA2 AT2G45050.1 Hygromycin-resistant T4 seeds
+TPT_2.45050.1D	2.45050.1D	GATA2 AT2G45050.1 Hygromycin-resistant T4 seeds
+TPT_2.45050.1G	2.45050.1G	GATA2 AT2G45050.1 Hygromycin-resistant T4 seeds
+TPT_2.45050.1I	2.45050.1I	GATA2 AT2G45050.1 Hygromycin-resistant T4 seeds
+TPT_2.45190.1C	2.45190.1C	AFO_FIL_YAB1 AT2G45190.1 Hygromycin-resistant T4 seeds
+TPT_2.45190.1F	2.45190.1F	AFO_FIL_YAB1 AT2G45190.1 Hygromycin-resistant T4 seeds
+TPT_2.45660.1I	2.45660.1I	AGL20_ATSOC1 AT2G45660.1 Hygromycin-resistant T4 seeds
+TPT_2.45680.1A	2.45680.1A	TCP family transcription factor AT2G45680.1 Hygromycin-resistant T4 seeds
+TPT_2.45680.1D	2.45680.1D	TCP family transcription factor AT2G45680.1 Hygromycin-resistant T4 seeds
+TPT_2.46040.1A	2.46040.1A	ARID/BRIGHT DNA-binding domain;E AT2G46040.1 Hygromycin-resistant T4 seeds
+TPT_2.46040.1D	2.46040.1D	ARID/BRIGHT DNA-binding domain;E AT2G46040.1 Hygromycin-resistant T4 seeds
+TPT_2.46270.1B	2.46270.1B	GBF3 AT2G46270.1 Hygromycin-resistant T4 seeds
+TPT_2.46270.1E	2.46270.1E	GBF3 AT2G46270.1 Hygromycin-resistant T4 seeds
+TPT_2.46590.1A	2.46590.1A	DOF AFFECTING GERMINATION 2 (DAAT2G46590.1 Hygromycin-resistant T4 seeds
+TPT_2.46590.1D	2.46590.1D	DOF AFFECTING GERMINATION 2 (DAAT2G46590.1 Hygromycin-resistant T4 seeds
+TPT_2.46830.2D	2.46830.2D	CCA1 AT2G46830.2 Hygromycin-resistant T4 seeds
+TPT_2.46830.2E	2.46830.2E	CCA1 AT2G46830.2 Hygromycin-resistant T4 seeds
+TPT_2.46830.2F	2.46830.2F	CCA1 AT2G46830.2 Hygromycin-resistant T4 seeds
+TPT_2.46960.1B	2.46960.1B	CYP709B1 AT2G46960.1 Hygromycin-resistant T4 seeds
+TPT_2.46960.1I	2.46960.1I	CYP709B1 AT2G46960.1 Hygromycin-resistant T4 seeds
+TPT_2.46960.1K	2.46960.1K	CYP709B1 AT2G46960.1 Hygromycin-resistant T4 seeds
+TPT_2.46990.1D	2.46990.1D	IAA20 AT2G46990.1 Hygromycin-resistant T4 seeds
+TPT_2.47190.1H	2.47190.1H	ATMYB2 AT2G47190.1 Hygromycin-resistant T4 seeds
+TPT_2.47210.1A	2.47210.1A	myb-like transcription factor family p AT2G47210.1 Hygromycin-resistant T4 seeds
+TPT_2.47210.1C	2.47210.1C	myb-like transcription factor family p AT2G47210.1 Hygromycin-resistant T4 seeds
+TPT_2.47210.1I	2.47210.1I	myb-like transcription factor family p AT2G47210.1 Hygromycin-resistant T4 seeds
+TPT_2.47270.1F	2.47270.1F	UPBEAT1 AT2G47270.1 Hygromycin-resistant T4 seeds
+TPT_2.47700.1E	2.47700.1E	RFI2__RING/U-box superfamily proteAT2G47700.1 Hygromycin-resistant T4 seeds
+TPT_2.47700.1G	2.47700.1G	RFI2__RING/U-box superfamily proteAT2G47700.1 Hygromycin-resistant T4 seeds
+TPT_2.47700.1I	2.47700.1I	RFI2__RING/U-box superfamily proteAT2G47700.1 Hygromycin-resistant T4 seeds
+TPT_2.47810.1A	2.47810.1A	NF-YB5 AT2G47810.1 Hygromycin-resistant T4 seeds
+TPT_2.47810.1B	2.47810.1B	NF-YB5 AT2G47810.1 Hygromycin-resistant T4 seeds
+TPT_2.47810.1C	2.47810.1C	NF-YB5 AT2G47810.1 Hygromycin-resistant T4 seeds
+TPT_2.47890.1C	2.47890.1C	B-box type zinc finger protein with CC AT2G47890.1 Hygromycin-resistant T4 seeds
+TPT_2.47890.1F	2.47890.1F	B-box type zinc finger protein with CC AT2G47890.1 Hygromycin-resistant T4 seeds
+TPT_2.47890.1I	2.47890.1I	B-box type zinc finger protein with CC AT2G47890.1 Hygromycin-resistant T4 seeds
+TPT_3.01220.1D	3.01220.1D	ATHB20 AT3G01220.1 Hygromycin-resistant T4 seeds
+TPT_3.01220.1E	3.01220.1E	ATHB20 AT3G01220.1 Hygromycin-resistant T4 seeds
+TPT_3.01220.1I	3.01220.1I	ATHB20 AT3G01220.1 Hygromycin-resistant T4 seeds
+TPT_3.01970.1C	3.01970.1C	ATWRKY45 AT3G01970.1 Hygromycin-resistant T4 seeds
+TPT_3.01970.1D	3.01970.1D	ATWRKY45 AT3G01970.1 Hygromycin-resistant T4 seeds
+TPT_3.01970.1F	3.01970.1F	ATWRKY45 AT3G01970.1 Hygromycin-resistant T4 seeds
+TPT_3.02150.1E	3.02150.1E	TCP13 AT3G02150.1 Hygromycin-resistant T4 seeds
+TPT_3.02150.1I	3.02150.1I	TCP13 AT3G02150.1 Hygromycin-resistant T4 seeds
+TPT_3.02310.1E	3.02310.1E	AGL4_SEP2 AT3G02310.1 Hygromycin-resistant T4 seeds
+TPT_3.02310.1F	3.02310.1F	AGL4_SEP2 AT3G02310.1 Hygromycin-resistant T4 seeds
+TPT_3.02310.1H	3.02310.1H	AGL4_SEP2 AT3G02310.1 Hygromycin-resistant T4 seeds
+TPT_3.02380.1B	3.02380.1B	ATCOL2 AT3G02380.1 Hygromycin-resistant T4 seeds
+TPT_3.02380.1C	3.02380.1C	ATCOL2 AT3G02380.1 Hygromycin-resistant T4 seeds
+TPT_3.03200.1A	3.03200.1A	ANAC045 AT3G03200.1 Hygromycin-resistant T4 seeds
+TPT_3.03200.1C	3.03200.1C	ANAC045 AT3G03200.1 Hygromycin-resistant T4 seeds
+TPT_3.03200.1G	3.03200.1G	ANAC045 AT3G03200.1 Hygromycin-resistant T4 seeds
+TPT_3.03450.1C	3.03450.1C	RGL2 AT3G03450.1 Hygromycin-resistant T4 seeds
+TPT_3.03450.1F	3.03450.1F	RGL2 AT3G03450.1 Hygromycin-resistant T4 seeds
+TPT_3.03450.1H	3.03450.1H	RGL2 AT3G03450.1 Hygromycin-resistant T4 seeds
+TPT_3.03550.1B	3.03550.1B	RING/U-box superfamily protein AT3G03550.1 Hygromycin-resistant T4 seeds
+TPT_3.03750.1B	3.03750.1B	SDG20_SUVR3 AT3G03750.1 Hygromycin-resistant T4 seeds
+TPT_3.03750.1C	3.03750.1C	SDG20_SUVR3 AT3G03750.1 Hygromycin-resistant T4 seeds
+TPT_3.03750.1E	3.03750.1E	SDG20_SUVR3 AT3G03750.1 Hygromycin-resistant T4 seeds
+TPT_3.03750.1H	3.03750.1H	SDG20_SUVR3 AT3G03750.1 Hygromycin-resistant T4 seeds
+TPT_3.04030.3C	3.04030.3C	Homeodomain-like superfamily proteAT3G04030.3 Hygromycin-resistant T4 seeds
+TPT_3.04030.3D	3.04030.3D	Homeodomain-like superfamily proteAT3G04030.3 Hygromycin-resistant T4 seeds
+TPT_3.04030.3F	3.04030.3F	Homeodomain-like superfamily proteAT3G04030.3 Hygromycin-resistant T4 seeds
+TPT_3.04060.1A	3.04060.1A	ANAC046 AT3G04060.1 Hygromycin-resistant T4 seeds
+TPT_3.04060.1B	3.04060.1B	NAC046 AT3G04060.1 Hygromycin-resistant T4 seeds
+TPT_3.04060.1D	3.04060.1D	NAC046 AT3G04060.1 Hygromycin-resistant T4 seeds
+TPT_3.04060.1E	3.04060.1E	ANAC046 AT3G04060.1 Hygromycin-resistant T4 seeds
+TPT_3.04060.1F	3.04060.1F	ANAC046 AT3G04060.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1A	3.04070.1A	ANAC047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1B	3.04070.1B	ANAC047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1C	3.04070.1C	anac047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1D	3.04070.1D	anac047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1G	3.04070.1G	anac047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04070.1I	3.04070.1I	ANAC047 AT3G04070.1 Hygromycin-resistant T4 seeds
+TPT_3.04100.1E	3.04100.1E	AGL57 AT3G04100.1 Hygromycin-resistant T4 seeds
+TPT_3.04100.1G	3.04100.1G	AGL57 AT3G04100.1 Hygromycin-resistant T4 seeds
+TPT_3.04100.1H	3.04100.1H	AGL57 AT3G04100.1 Hygromycin-resistant T4 seeds
+TPT_3.04450.1C	3.04450.1C	Homeodomain-like superfamily proteAT3G04450.1 Hygromycin-resistant T4 seeds
+TPT_3.04450.1F	3.04450.1F	Homeodomain-like superfamily proteAT3G04450.1 Hygromycin-resistant T4 seeds
+TPT_3.04590.1A	3.04590.1A	AT hook motif DNA-binding family pr AT3G04590.1 Hygromycin-resistant T4 seeds
+TPT_3.04590.1F	3.04590.1F	AT hook motif DNA-binding family pr AT3G04590.1 Hygromycin-resistant T4 seeds
+TPT_3.04730.1A	3.04730.1A	IAA16 AT3G04730.1 Hygromycin-resistant T4 seeds
+TPT_3.04730.1B	3.04730.1B	IAA16 AT3G04730.1 Hygromycin-resistant T4 seeds
+TPT_3.04730.1D	3.04730.1D	IAA16 AT3G04730.1 Hygromycin-resistant T4 seeds
+TPT_3.05200.1B	3.05200.1B	ATL6 AT3G05200.1 Hygromycin-resistant T4 seeds
+TPT_3.05200.1D	3.05200.1D	ATL6 AT3G05200.1 Hygromycin-resistant T4 seeds
+TPT_3.05200.1J	3.05200.1J	ATL6 AT3G05200.1 Hygromycin-resistant T4 seeds
+TPT_3.05200.1K	3.05200.1K	ATL6 AT3G05200.1 Hygromycin-resistant T4 seeds
+TPT_3.05200.1L	3.05200.1L	ATL6 AT3G05200.1 Hygromycin-resistant T4 seeds
+TPT_3.05700.1D	3.05700.1D	Drought-responsive family protein AT3G05700.1 Hygromycin-resistant T4 seeds
+TPT_3.05700.1E	3.05700.1E	Drought-responsive family protein AT3G05700.1 Hygromycin-resistant T4 seeds
+TPT_3.05700.1F	3.05700.1F	Drought-responsive family protein AT3G05700.1 Hygromycin-resistant T4 seeds
+TPT_3.05700.1G	3.05700.1G	Drought-responsive family protein AT3G05700.1 Hygromycin-resistant T4 seeds
+TPT_3.06120.1C	3.06120.1C	MUTE AT3G06120.1 Hygromycin-resistant T4 seeds
+TPT_3.06120.1E	3.06120.1E	MUTE AT3G06120.1 Hygromycin-resistant T4 seeds
+TPT_3.06490.1A	3.06490.1A	AtMYB108_BOS1 AT3G06490.1 Hygromycin-resistant T4 seeds
+TPT_3.06490.1E	3.06490.1E	AtMYB108_BOS1 AT3G06490.1 Hygromycin-resistant T4 seeds
+TPT_3.07650.1D	3.07650.1D	COL9 AT3G07650.1 Hygromycin-resistant T4 seeds
+TPT_3.07650.1F	3.07650.1F	COL9 AT3G07650.1 Hygromycin-resistant T4 seeds
+TPT_3.09600.2A	3.09600.2A	REVEILLE 8 (RVE8) AT3G09600.2 Hygromycin-resistant T4 seeds
+TPT_3.09600.2C	3.09600.2C	REVEILLE 8 (RVE8) AT3G09600.2 Hygromycin-resistant T4 seeds
+TPT_3.09600.2E	3.09600.2E	REVEILLE 8 (RVE8) AT3G09600.2 Hygromycin-resistant T4 seeds
+TPT_3.10030.1C	3.10030.1C	aspartate/glutamate/uridylate kinase AT3G10030.1 Hygromycin-resistant T4 seeds
+TPT_3.10030.1E	3.10030.1E	aspartate/glutamate/uridylate kinase AT3G10030.1 Hygromycin-resistant T4 seeds
+TPT_3.10030.1I	3.10030.1I	aspartate/glutamate/uridylate kinase AT3G10030.1 Hygromycin-resistant T4 seeds
+TPT_3.10480.1D	3.10480.1D	ANAC050 AT3G10480.1 Hygromycin-resistant T4 seeds
+TPT_3.10480.1E	3.10480.1E	ANAC050 AT3G10480.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1A	3.10490.1A	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1C	3.10490.1C	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1D	3.10490.1D	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1E	3.10490.1E	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1F	3.10490.1F	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10490.1H	3.10490.1H	ANAC051_ANAC052 AT3G10490.1 Hygromycin-resistant T4 seeds
+TPT_3.10500.1G	3.10500.1G	ANAC053 AT3G10500.1 Hygromycin-resistant T4 seeds
+TPT_3.10590.1F	3.10590.1F	Duplicated homeodomain-like superf AT3G10590.1 Hygromycin-resistant T4 seeds
+TPT_3.10590.1I	3.10590.1I	Duplicated homeodomain-like superf AT3G10590.1 Hygromycin-resistant T4 seeds
+TPT_3.10760.1C	3.10760.1C	Homeodomain-like superfamily proteAT3G10760.1 Hygromycin-resistant T4 seeds
+TPT_3.10760.1D	3.10760.1D	Homeodomain-like superfamily proteAT3G10760.1 Hygromycin-resistant T4 seeds
+TPT_3.10760.1E	3.10760.1E	Homeodomain-like superfamily proteAT3G10760.1 Hygromycin-resistant T4 seeds
+TPT_3.11260.1A	3.11260.1A	WOX5B AT3G11260.1 Hygromycin-resistant T4 seeds
+TPT_3.11260.1B	3.11260.1B	WOX5B AT3G11260.1 Hygromycin-resistant T4 seeds
+TPT_3.11260.1E	3.11260.1E	WOX5B AT3G11260.1 Hygromycin-resistant T4 seeds
+TPT_3.11280.1F	3.11280.1F	Putative myb transcription factors int AT3G11280.1 Hygromycin-resistant T4 seeds
+TPT_3.11440.1E	3.11440.1E	ATMYB65 AT3G11440.1 Hygromycin-resistant T4 seeds
+TPT_3.11440.1I	3.11440.1I	ATMYB65 AT3G11440.1 Hygromycin-resistant T4 seeds
+TPT_3.11580.1A	3.11580.1A	AP2/B3-like transcriptional factor fam AT3G11580.1 Hygromycin-resistant T4 seeds
+TPT_3.11580.1E	3.11580.1E	AP2/B3-like transcriptional factor fam AT3G11580.1 Hygromycin-resistant T4 seeds
+TPT_3.12480.1A	3.12480.1A	NF-YC11 AT3G12480.1 Hygromycin-resistant T4 seeds
+TPT_3.12730.1D	3.12730.1D	Homeodomain-like superfamily proteAT3G12730.1 Hygromycin-resistant T4 seeds
+TPT_3.12730.1E	3.12730.1E	Homeodomain-like superfamily proteAT3G12730.1 Hygromycin-resistant T4 seeds
+TPT_3.12730.1F	3.12730.1F	Homeodomain-like superfamily proteAT3G12730.1 Hygromycin-resistant T4 seeds
+TPT_3.12820.1A	3.12820.1A	AtMYB10 AT3G12820.1 Hygromycin-resistant T4 seeds
+TPT_3.12820.1G	3.12820.1G	AtMYB10 AT3G12820.1 Hygromycin-resistant T4 seeds
+TPT_3.12820.1H	3.12820.1H	AtMYB10 AT3G12820.1 Hygromycin-resistant T4 seeds
+TPT_3.12890.1A	3.12890.1A	ASML2_ACTIVATOR OF SPOMIN::LUC AT3G12890.1 Hygromycin-resistant T4 seeds
+TPT_3.12890.1D	3.12890.1D	ASML2_ACTIVATOR OF SPOMIN::LUC AT3G12890.2 Hygromycin-resistant T4 seeds
+TPT_3.12890.1I	3.12890.1I	ASML2_ACTIVATOR OF SPOMIN::LUC AT3G12890.3 Hygromycin-resistant T4 seeds
+TPT_3.13350.1B	3.13350.1B	HMG (high mobility group) box prote AT3G13350.1 Hygromycin-resistant T4 seeds
+TPT_3.13350.1C	3.13350.1C	HMG (high mobility group) box prote AT3G13350.1 Hygromycin-resistant T4 seeds
+TPT_3.13350.1D	3.13350.1D	HMG (high mobility group) box prote AT3G13350.1 Hygromycin-resistant T4 seeds
+TPT_3.13350.1G	3.13350.1G	HMG (high mobility group) box prote AT3G13350.1 Hygromycin-resistant T4 seeds
+TPT_3.13445.1A	3.13445.1A	TBP1_TFIID-1 AT3G13445.1 Hygromycin-resistant T4 seeds
+TPT_3.13445.1D	3.13445.1D	TBP1_TFIID-1 AT3G13445.1 Hygromycin-resistant T4 seeds
+TPT_3.13445.1F	3.13445.1F	TBP1_TFIID-1 AT3G13445.1 Hygromycin-resistant T4 seeds
+TPT_3.13540.1B	3.13540.1B	ATMYB5 AT3G13540.1 Hygromycin-resistant T4 seeds
+TPT_3.13540.1D	3.13540.1D	ATMYB5 AT3G13540.1 Hygromycin-resistant T4 seeds
+TPT_3.13540.1F	3.13540.1F	ATMYB5 AT3G13540.1 Hygromycin-resistant T4 seeds
+TPT_3.13890.1E	3.13890.1E	ATMYB26 AT3G13890.1 Hygromycin-resistant T4 seeds
+TPT_3.13890.1G	3.13890.1G	ATMYB26 AT3G13890.1 Hygromycin-resistant T4 seeds
+TPT_3.14180.1D	3.14180.1D	ASIL2 AT3G14180.1 Hygromycin-resistant T4 seeds
+TPT_3.14180.1E	3.14180.1E	ASIL2 AT3G14180.1 Hygromycin-resistant T4 seeds
+TPT_3.14230.1A	3.14230.1A	RAP2.2 AT3G14230.1 Hygromycin-resistant T4 seeds
+TPT_3.15170.1B	3.15170.1B	ANAC054 AT3G15170.1 Hygromycin-resistant T4 seeds
+TPT_3.15170.1C	3.15170.1C	ANAC054 AT3G15170.1 Hygromycin-resistant T4 seeds
+TPT_3.15170.1G	3.15170.1G	ANAC054 AT3G15170.1 Hygromycin-resistant T4 seeds
+TPT_3.15210.1A	3.15210.1A	ATERF4_RAP2.5 AT3G15210.1 Hygromycin-resistant T4 seeds
+TPT_3.15210.1B	3.15210.1B	ATERF4_RAP2.5 AT3G15210.1 Hygromycin-resistant T4 seeds
+TPT_3.15500.1A	3.15500.1A	ANAC055_ATNAC3 AT3G15500.1 Hygromycin-resistant T4 seeds
+TPT_3.16280.1A	3.16280.1A	Integrase-type DNA-binding superfam AT3G16280.1 Hygromycin-resistant T4 seeds
+TPT_3.16280.1B	3.16280.1B	Integrase-type DNA-binding superfam AT3G16280.1 Hygromycin-resistant T4 seeds
+TPT_3.16350.1B	3.16350.1B	Homeodomain-like superfamily proteAT3G16350.1 Hygromycin-resistant T4 seeds
+TPT_3.16350.1C	3.16350.1C	Homeodomain-like superfamily proteAT3G16350.1 Hygromycin-resistant T4 seeds
+TPT_3.16350.1D	3.16350.1D	Homeodomain-like superfamily proteAT3G16350.1 Hygromycin-resistant T4 seeds
+TPT_3.16350.1E	3.16350.1E	Homeodomain-like superfamily proteAT3G16350.1 Hygromycin-resistant T4 seeds
+TPT_3.16500.1A	3.16500.1A	IAA26_PAP1 AT3G16500.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1A	3.16770.1A	ATEBP_ERF72_RAP2.3 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1B	3.16770.1B	RAP2.3/EBP/ATERF72 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1C	3.16770.1C	ATEBP_ERF72_RAP2.3 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1D	3.16770.1D	ATEBP_ERF72_RAP2.3 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1G	3.16770.1G	RAP2.3/EBP/ATERF72 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16770.1H	3.16770.1H	RAP2.3/EBP/ATERF72 AT3G16770.1 Hygromycin-resistant T4 seeds
+TPT_3.16870.1F	3.16870.1F	GATA17 AT3G16870.1 Hygromycin-resistant T4 seeds
+TPT_3.16870.1H	3.16870.1H	GATA17 AT3G16870.1 Hygromycin-resistant T4 seeds
+TPT_3.17100.2E	3.17100.2E	sequence-specific DNA binding transc AT3G17100.2 Hygromycin-resistant T4 seeds
+TPT_3.17100.2I	3.17100.2I	sequence-specific DNA binding transc AT3G17100.2 Hygromycin-resistant T4 seeds
+TPT_3.17730.1D	3.17730.1D	ANAC057 AT3G17730.1 Hygromycin-resistant T4 seeds
+TPT_3.17730.1H	3.17730.1H	ANAC057 AT3G17730.1 Hygromycin-resistant T4 seeds
+TPT_3.18400.1D	3.18400.1D	NAC058 AT3G18400.1 Hygromycin-resistant T4 seeds
+TPT_3.18400.1G	3.18400.1G	NAC058 AT3G18400.1 Hygromycin-resistant T4 seeds
+TPT_3.18550.1A	3.18550.1A	ATBRC1/ATTCP18 AT3G18550.1 Hygromycin-resistant T4 seeds
+TPT_3.18550.1D	3.18550.1D	ATBRC1/ATTCP18 AT3G18550.1 Hygromycin-resistant T4 seeds
+TPT_3.18550.1F	3.18550.1F	ATBRC1/ATTCP18 AT3G18550.1 Hygromycin-resistant T4 seeds
+TPT_3.18960.1G	3.18960.1G	AP2/B3-like transcriptional factor fam AT3G18960.1 Hygromycin-resistant T4 seeds
+TPT_3.18960.1I	3.18960.1I	AP2/B3-like transcriptional factor fam AT3G18960.1 Hygromycin-resistant T4 seeds
+TPT_3.18990.1A	3.18990.1A	REM39_VRN1 AT3G18990.1 Hygromycin-resistant T4 seeds
+TPT_3.18990.1C	3.18990.1C	REM39_VRN1 AT3G18990.1 Hygromycin-resistant T4 seeds
+TPT_3.18990.1H	3.18990.1H	REM39_VRN1 AT3G18990.1 Hygromycin-resistant T4 seeds
+TPT_3.19580.1A	3.19580.1A	AZF2 AT3G19580.1 Hygromycin-resistant T4 seeds
+TPT_3.20310.1A	3.20310.1A	ATERF-7 AT3G20310.1 Hygromycin-resistant T4 seeds
+TPT_3.20310.1E	3.20310.1E	ATERF-7 AT3G20310.1 Hygromycin-resistant T4 seeds
+TPT_3.20310.1G	3.20310.1G	ATERF-7 AT3G20310.1 Hygromycin-resistant T4 seeds
+TPT_3.20640.1A	3.20640.1A	basic helix-loop-helix (bHLH) DNA-bin AT3G20640.1 Hygromycin-resistant T4 seeds
+TPT_3.20640.1B	3.20640.1B	basic helix-loop-helix (bHLH) DNA-bin AT3G20640.1 Hygromycin-resistant T4 seeds
+TPT_3.20640.1C	3.20640.1C	basic helix-loop-helix (bHLH) DNA-bin AT3G20640.1 Hygromycin-resistant T4 seeds
+TPT_3.21270.1H	3.21270.1H	ADOF2 AT3G21270.1 Hygromycin-resistant T4 seeds
+TPT_3.21270.1I	3.21270.1I	ADOF2 AT3G21270.1 Hygromycin-resistant T4 seeds
+TPT_3.21880.1A	3.21880.1A	B-box type zinc finger protein with CC AT3G21880.1 Hygromycin-resistant T4 seeds
+TPT_3.21880.1E	3.21880.1E	B-box type zinc finger protein with CC AT3G21880.1 Hygromycin-resistant T4 seeds
+TPT_3.21890.1A	3.21890.1A	B-box type zinc finger family protein AT3G21890.1 Hygromycin-resistant T4 seeds
+TPT_3.21890.1B	3.21890.1B	B-box type zinc finger family protein AT3G21890.1 Hygromycin-resistant T4 seeds
+TPT_3.21890.1H	3.21890.1H	B-box type zinc finger family protein AT3G21890.1 Hygromycin-resistant T4 seeds
+TPT_3.22830.1B	3.22830.1B	AT-HSFA6B AT3G22830.1 Hygromycin-resistant T4 seeds
+TPT_3.22830.1E	3.22830.1E	AT-HSFA6B AT3G22830.1 Hygromycin-resistant T4 seeds
+TPT_3.22830.1I	3.22830.1I	AT-HSFA6B AT3G22830.1 Hygromycin-resistant T4 seeds
+TPT_3.23050.1H	3.23050.1H	AXR2_IAA7 AT3G23050.1 Hygromycin-resistant T4 seeds
+TPT_3.23050.1I	3.23050.1I	AXR2_IAA7 AT3G23050.1 Hygromycin-resistant T4 seeds
+TPT_3.23230.1I	3.23230.1I	ATERF98 AT3G23230.1 Hygromycin-resistant T4 seeds
+TPT_3.23240.1D	3.23240.1D	ATERF1 AT3G23240.1 Hygromycin-resistant T4 seeds
+TPT_3.23240.1I	3.23240.1I	ATERF1 AT3G23240.1 Hygromycin-resistant T4 seeds
+TPT_3.24050.1E	3.24050.1E	GATA1 AT3G24050.1 Hygromycin-resistant T4 seeds
+TPT_3.24050.1G	3.24050.1G	GATA1 AT3G24050.1 Hygromycin-resistant T4 seeds
+TPT_3.24120.1C	3.24120.1C	Homeodomain-like superfamily proteAT3G24120.1 Hygromycin-resistant T4 seeds
+TPT_3.24120.1I	3.24120.1I	Homeodomain-like superfamily proteAT3G24120.1 Hygromycin-resistant T4 seeds
+TPT_3.24140.1A	3.24140.1A	FAMA AT3G24140.1 Hygromycin-resistant T4 seeds
+TPT_3.24310.1D	3.24310.1D	ATMYB71_MYB305 AT3G24310.1 Hygromycin-resistant T4 seeds
+TPT_3.24310.1E	3.24310.1E	ATMYB71_MYB305 AT3G24310.1 Hygromycin-resistant T4 seeds
+TPT_3.25730.1A	3.25730.1A	EDF3 AT3G25730.1 Hygromycin-resistant T4 seeds
+TPT_3.25730.1G	3.25730.1G	EDF3 AT3G25730.1 Hygromycin-resistant T4 seeds
+TPT_3.25890.1A	3.25890.1A	CRF11 AT3G25890.1 Hygromycin-resistant T4 seeds
+TPT_3.25890.1F	3.25890.1F	CRF11 AT3G25890.1 Hygromycin-resistant T4 seeds
+TPT_3.25890.1H	3.25890.1H	CRF11 AT3G25890.1 Hygromycin-resistant T4 seeds
+TPT_3.27010.1A	3.27010.1A	TCP20 AT3G27010.1 Hygromycin-resistant T4 seeds
+TPT_3.27010.1E	3.27010.1E	TCP20 AT3G27010.1 Hygromycin-resistant T4 seeds
+TPT_3.27010.1F	3.27010.1F	TCP20 AT3G27010.1 Hygromycin-resistant T4 seeds
+TPT_3.27010.1G	3.27010.1G	TCP20 AT3G27010.1 Hygromycin-resistant T4 seeds
+TPT_3.27785.1C	3.27785.1C	ATMYB118 AT3G27785.1 Hygromycin-resistant T4 seeds
+TPT_3.27785.1E	3.27785.1E	ATMYB118 AT3G27785.1 Hygromycin-resistant T4 seeds
+TPT_3.27785.1F	3.27785.1F	ATMYB118 AT3G27785.1 Hygromycin-resistant T4 seeds
+TPT_3.28470.1B	3.28470.1B	ATMYB35_TDF1 AT3G28470.1 Hygromycin-resistant T4 seeds
+TPT_3.28470.1C	3.28470.1C	ATMYB35_TDF1 AT3G28470.1 Hygromycin-resistant T4 seeds
+TPT_3.28910.1C	3.28910.1C	ATMYB30 AT3G28910.1 Hygromycin-resistant T4 seeds
+TPT_3.28910.1E	3.28910.1E	ATMYB30 AT3G28910.1 Hygromycin-resistant T4 seeds
+TPT_3.29035.1C	3.29035.1C	ANAC059_ATNAC3 AT3G29035.1 Hygromycin-resistant T4 seeds
+TPT_3.29035.1D	3.29035.1D	ANAC059_ATNAC3 AT3G29035.1 Hygromycin-resistant T4 seeds
+TPT_3.29035.1H	3.29035.1H	ANAC059_ATNAC3 AT3G29035.1 Hygromycin-resistant T4 seeds
+TPT_3.29035.1I	3.29035.1I	ANAC059_ATNAC3 AT3G29035.1 Hygromycin-resistant T4 seeds
+TPT_3.30260.1B	3.30260.1B	AGL79 AT3G30260.1 Hygromycin-resistant T4 seeds
+TPT_3.30260.1E	3.30260.1E	AGL79 AT3G30260.1 Hygromycin-resistant T4 seeds
+TPT_3.30260.1H	3.30260.1H	AGL79 AT3G30260.1 Hygromycin-resistant T4 seeds
+TPT_3.30530.1C	3.30530.1C	ATBZIP42 AT3G30530.1 Hygromycin-resistant T4 seeds
+TPT_3.30530.1E	3.30530.1E	ATBZIP42 AT3G30530.1 Hygromycin-resistant T4 seeds
+TPT_3.44350.1B	3.44350.1B	anac061 AT3G44350.1 Hygromycin-resistant T4 seeds
+TPT_3.44350.1G	3.44350.1G	anac061 AT3G44350.1 Hygromycin-resistant T4 seeds
+TPT_3.45150.1B	3.45150.1B	TCP16 AT3G45150.1 Hygromycin-resistant T4 seeds
+TPT_3.45150.1I	3.45150.1I	TCP16 AT3G45150.1 Hygromycin-resistant T4 seeds
+TPT_3.46090.1B	3.46090.1B	ZAT7 AT3G46090.1 Hygromycin-resistant T4 seeds
+TPT_3.46090.1E	3.46090.1E	ZAT7 AT3G46090.1 Hygromycin-resistant T4 seeds
+TPT_3.46090.1H	3.46090.1H	ZAT7 AT3G46090.1 Hygromycin-resistant T4 seeds
+TPT_3.46090.1I	3.46090.1I	ZAT7 AT3G46090.1 Hygromycin-resistant T4 seeds
+TPT_3.46600.1C	3.46600.1C	GRAS family transcription factor AT3G46600.1 Hygromycin-resistant T4 seeds
+TPT_3.46600.1D	3.46600.1D	GRAS family transcription factor AT3G46600.1 Hygromycin-resistant T4 seeds
+TPT_3.46600.1F	3.46600.1F	GRAS family transcription factor AT3G46600.1 Hygromycin-resistant T4 seeds
+TPT_3.46600.1G	3.46600.1G	GRAS family transcription factor AT3G46600.1 Hygromycin-resistant T4 seeds
+TPT_3.46640.1C	3.46640.1C	LUX_PCL1 AT3G46640.1 Hygromycin-resistant T4 seeds
+TPT_3.46640.1D	3.46640.1D	LUX_PCL1 AT3G46640.1 Hygromycin-resistant T4 seeds
+TPT_3.46640.1G	3.46640.1G	LUX_PCL1 AT3G46640.1 Hygromycin-resistant T4 seeds
+TPT_3.47120.1B	3.47120.1B	RNA recognition motif (RRM)-contain AT3G47120.1 Hygromycin-resistant T4 seeds
+TPT_3.47120.1F	3.47120.1F	RNA recognition motif (RRM)-contain AT3G47120.1 Hygromycin-resistant T4 seeds
+TPT_3.47620.1D	3.47620.1D	AtTCP14 AT3G47620.1 Hygromycin-resistant T4 seeds
+TPT_3.47620.1E	3.47620.1E	AtTCP14 AT3G47620.1 Hygromycin-resistant T4 seeds
+TPT_3.47640.1F	3.47640.1F	POPEYE (PYE) AT3G47640.1 Hygromycin-resistant T4 seeds
+TPT_3.47640.1H	3.47640.1H	POPEYE (PYE) AT3G47640.1 Hygromycin-resistant T4 seeds
+TPT_3.47640.1I	3.47640.1I	POPEYE (PYE) AT3G47640.1 Hygromycin-resistant T4 seeds
+TPT_3.48160.1D	3.48160.1D	DP-E2F-LIKE 1 (DEL1) AT3G48160.1 Hygromycin-resistant T4 seeds
+TPT_3.48160.1H	3.48160.1H	DP-E2F-LIKE 1 (DEL1) AT3G48160.1 Hygromycin-resistant T4 seeds
+TPT_3.48920.1C	3.48920.1C	AtMYB45 AT3G48920.1 Hygromycin-resistant T4 seeds
+TPT_3.48920.1G	3.48920.1G	AtMYB45 AT3G48920.1 Hygromycin-resistant T4 seeds
+TPT_3.49530.1C	3.49530.1C	ANAC062 AT3G49530.1 Hygromycin-resistant T4 seeds
+TPT_3.49530.1E	3.49530.1E	ANAC062 AT3G49530.1 Hygromycin-resistant T4 seeds
+TPT_3.49530.1H	3.49530.1H	ANAC062 AT3G49530.1 Hygromycin-resistant T4 seeds
+TPT_3.49690.1A	3.49690.1A	ATMYB84 AT3G49690.1 Hygromycin-resistant T4 seeds
+TPT_3.49950.1F	3.49950.1F	GRAS family transcription factor AT3G49950.1 Hygromycin-resistant T4 seeds
+TPT_3.50330.1B	3.50330.1B	HECATE 2 (HEC2) AT3G50330.1 Hygromycin-resistant T4 seeds
+TPT_3.50330.1H	3.50330.1H	HECATE 2 (HEC2) AT3G50330.1 Hygromycin-resistant T4 seeds
+TPT_3.50330.1I	3.50330.1I	HECATE 2 (HEC2) AT3G50330.1 Hygromycin-resistant T4 seeds
+TPT_3.50650.1A	3.50650.1A	GRAS family transcription factor AT3G50650.1 Hygromycin-resistant T4 seeds
+TPT_3.50650.1B	3.50650.1B	GRAS family transcription factor AT3G50650.1 Hygromycin-resistant T4 seeds
+TPT_3.50650.1E	3.50650.1E	GRAS family transcription factor AT3G50650.1 Hygromycin-resistant T4 seeds
+TPT_3.50650.1I	3.50650.1I	GRAS family transcription factor AT3G50650.1 Hygromycin-resistant T4 seeds
+TPT_3.50700.1B	3.50700.1B	ATIDD2 AT3G50700.1 Hygromycin-resistant T4 seeds
+TPT_3.50700.1E	3.50700.1E	ATIDD2 AT3G50700.1 Hygromycin-resistant T4 seeds
+TPT_3.52270.1F	3.52270.1F	Transcription initiation factor IIF, beta AT3G52270.1 Hygromycin-resistant T4 seeds
+TPT_3.52270.1H	3.52270.1H	Transcription initiation factor IIF, beta AT3G52270.1 Hygromycin-resistant T4 seeds
+TPT_3.52270.1I	3.52270.1I	Transcription initiation factor IIF, beta AT3G52270.1 Hygromycin-resistant T4 seeds
+TPT_3.52440.1B	3.52440.1B	Dof-type zinc finger DNA-binding fam AT3G52440.1 Hygromycin-resistant T4 seeds
+TPT_3.52440.1D	3.52440.1D	Dof-type zinc finger DNA-binding fam AT3G52440.1 Hygromycin-resistant T4 seeds
+TPT_3.52440.1I	3.52440.1I	Dof-type zinc finger DNA-binding fam AT3G52440.1 Hygromycin-resistant T4 seeds
+TPT_3.53200.1F	3.53200.1F	AtMYB27 AT3G53200.1 Hygromycin-resistant T4 seeds
+TPT_3.53310.1C	3.53310.1C	AP2/B3-like transcriptional factor fam AT3G53310.1 Hygromycin-resistant T4 seeds
+TPT_3.53310.1D	3.53310.1D	AP2/B3-like transcriptional factor fam AT3G53310.1 Hygromycin-resistant T4 seeds
+TPT_3.53310.1H	3.53310.1H	AP2/B3-like transcriptional factor fam AT3G53310.1 Hygromycin-resistant T4 seeds
+TPT_3.54340.1C	3.54340.1C	APETALA 3 (AP3) AT3G54340.1 Hygromycin-resistant T4 seeds
+TPT_3.54340.1D	3.54340.1D	APETALA 3 (AP3) AT3G54340.1 Hygromycin-resistant T4 seeds
+TPT_3.54340.1F	3.54340.1F	APETALA 3 (AP3) AT3G54340.1 Hygromycin-resistant T4 seeds
+TPT_3.55730.1A	3.55730.1A	AtMYB109 AT3G55730.1 Hygromycin-resistant T4 seeds
+TPT_3.55730.1F	3.55730.1F	AtMYB109 AT3G55730.1 Hygromycin-resistant T4 seeds
+TPT_3.55730.1G	3.55730.1G	AtMYB109 AT3G55730.1 Hygromycin-resistant T4 seeds
+TPT_3.56400.1F	3.56400.1F	ATWRKY70 AT3G56400.1 Hygromycin-resistant T4 seeds
+TPT_3.56400.1H	3.56400.1H	ATWRKY70 AT3G56400.1 Hygromycin-resistant T4 seeds
+TPT_3.56530.1C	3.56530.1C	anac064 AT3G56530.1 Hygromycin-resistant T4 seeds
+TPT_3.56530.1E	3.56530.1E	anac064 AT3G56530.1 Hygromycin-resistant T4 seeds
+TPT_3.56530.1F	3.56530.1F	anac064 AT3G56530.1 Hygromycin-resistant T4 seeds
+TPT_3.56850.1F	3.56850.1F	AREB3 AT3G56850.1 Hygromycin-resistant T4 seeds
+TPT_3.56850.1G	3.56850.1G	AREB3 AT3G56850.1 Hygromycin-resistant T4 seeds
+TPT_3.56970.1D	3.56970.1D	BHLH038 AT3G56970.1 Hygromycin-resistant T4 seeds
+TPT_3.56970.1E	3.56970.1E	BHLH038 AT3G56970.1 Hygromycin-resistant T4 seeds
+TPT_3.56970.1G	3.56970.1G	BHLH038 AT3G56970.1 Hygromycin-resistant T4 seeds
+TPT_3.56970.1H	3.56970.1H	BHLH038 AT3G56970.1 Hygromycin-resistant T4 seeds
+TPT_3.57150.1D	3.57150.1D	ATCBF5/ATNAP57 AT3G57150.1 Hygromycin-resistant T4 seeds
+TPT_3.57150.1E	3.57150.1E	ATCBF5/ATNAP57 AT3G57150.1 Hygromycin-resistant T4 seeds
+TPT_3.57150.1G	3.57150.1G	ATCBF5/ATNAP57 AT3G57150.1 Hygromycin-resistant T4 seeds
+TPT_3.57230.1A	3.57230.1A	AGL16 AT3G57230.1 Hygromycin-resistant T4 seeds
+TPT_3.57230.1C	3.57230.1C	AGL16 AT3G57230.1 Hygromycin-resistant T4 seeds
+TPT_3.57480.1C	3.57480.1C	zinc finger (C2H2 type, AN1-like) fam AT3G57480.1 Hygromycin-resistant T4 seeds
+TPT_3.57480.1D	3.57480.1D	zinc finger (C2H2 type, AN1-like) fam AT3G57480.1 Hygromycin-resistant T4 seeds
+TPT_3.57480.1I	3.57480.1I	zinc finger (C2H2 type, AN1-like) fam AT3G57480.1 Hygromycin-resistant T4 seeds
+TPT_3.57800.2A	3.57800.2A	basic helix-loop-helix (bHLH) DNA-bin AT3G57800.2 Hygromycin-resistant T4 seeds
+TPT_3.57800.2G	3.57800.2G	basic helix-loop-helix (bHLH) DNA-bin AT3G57800.2 Hygromycin-resistant T4 seeds
+TPT_3.58120.1A	3.58120.1A	ATBZIP61 AT3G58120.1 Hygromycin-resistant T4 seeds
+TPT_3.58120.1B	3.58120.1B	ATBZIP61 AT3G58120.1 Hygromycin-resistant T4 seeds
+TPT_3.58120.1F	3.58120.1F	ATBZIP61 AT3G58120.1 Hygromycin-resistant T4 seeds
+TPT_3.59580.1B	3.59580.1B	Plant regulator RWP-RK family protei AT3G59580.1 Hygromycin-resistant T4 seeds
+TPT_3.59580.1I	3.59580.1I	Plant regulator RWP-RK family protei AT3G59580.1 Hygromycin-resistant T4 seeds
+TPT_3.60030.1A	3.60030.1H	SQUAMOSA PROMOTER-BINDING PR AT3G60030.1 Hygromycin-resistant T4 seeds
+TPT_3.60030.1B	3.60030.1H	SQUAMOSA PROMOTER-BINDING PR AT3G60030.1 Hygromycin-resistant T4 seeds
+TPT_3.60030.1D	3.60030.1H	SQUAMOSA PROMOTER-BINDING PR AT3G60030.1 Hygromycin-resistant T4 seeds
+TPT_3.60030.1H	3.60030.1H	SQUAMOSA PROMOTER-BINDING PR AT3G60030.1 Hygromycin-resistant T4 seeds
+TPT_3.60490.1A	3.60490.1A	DREB subfamily A-4 of ERF/AP2 trans AT3G60490.1 Hygromycin-resistant T4 seeds
+TPT_3.60490.1F	3.60490.1F	DREB subfamily A-4 of ERF/AP2 trans AT3G60490.1 Hygromycin-resistant T4 seeds
+TPT_3.60530.1A	3.60530.1A	GATA4 AT3G60530.1 Hygromycin-resistant T4 seeds
+TPT_3.60530.1G	3.60530.1G	GATA4 AT3G60530.1 Hygromycin-resistant T4 seeds
+TPT_3.60630.1B	3.60630.1B	ATHAM2_GRAS family transcription fAT3G60630.1 Hygromycin-resistant T4 seeds
+TPT_3.60630.1C	3.60630.1C	ATHAM2_GRAS family transcription fAT3G60630.1 Hygromycin-resistant T4 seeds
+TPT_3.60630.1E	3.60630.1E	ATHAM2_GRAS family transcription fAT3G60630.1 Hygromycin-resistant T4 seeds
+TPT_3.61150.1A	3.61150.1A	HD-GL2-1_HDG1 AT3G61150.1 Hygromycin-resistant T4 seeds
+TPT_3.61150.1B	3.61150.1B	HD-GL2-1_HDG1 AT3G61150.1 Hygromycin-resistant T4 seeds
+TPT_3.61150.1D	3.61150.1D	HD-GL2-1_HDG1 AT3G61150.1 Hygromycin-resistant T4 seeds
+TPT_3.61250.1A	3.61250.1A	AtMYB17 AT3G61250.1 Hygromycin-resistant T4 seeds
+TPT_3.61250.1F	3.61250.1F	AtMYB17 AT3G61250.1 Hygromycin-resistant T4 seeds
+TPT_3.61250.1G	3.61250.1G	AtMYB17 AT3G61250.1 Hygromycin-resistant T4 seeds
+TPT_3.61250.1I	3.61250.1I	AtMYB17 AT3G61250.1 Hygromycin-resistant T4 seeds
+TPT_3.61460.1E	3.61460.1E	BRH1 AT3G61460.1 Hygromycin-resistant T4 seeds
+TPT_3.61460.1G	3.61460.1G	BRH1 AT3G61460.1 Hygromycin-resistant T4 seeds
+TPT_3.61460.1H	3.61460.1H	BRH1 AT3G61460.1 Hygromycin-resistant T4 seeds
+TPT_3.61890.1A	3.61890.1A	ATHB12 AT3G61890.1 Hygromycin-resistant T4 seeds
+TPT_3.61890.1B	3.61890.1B	ATHB12 AT3G61890.1 Hygromycin-resistant T4 seeds
+TPT_3.61910.1B	3.61910.1B	ANAC066 AT3G61910.1 Hygromycin-resistant T4 seeds
+TPT_3.61910.1H	3.61910.1H	ANAC066 AT3G61910.1 Hygromycin-resistant T4 seeds
+TPT_3.61910.1I	3.61910.1I	ANAC066 AT3G61910.1 Hygromycin-resistant T4 seeds
+TPT_3.62090.1B	3.62090.1B	PIF6/PIL2 AT3G62090.1 Hygromycin-resistant T4 seeds
+TPT_3.62090.1I	3.62090.1I	PIF6/PIL2 AT3G62090.1 Hygromycin-resistant T4 seeds
+TPT_3.62240.1A	3.62240.1A	RING/U-box superfamily protein AT3G62240.1 Hygromycin-resistant T4 seeds
+TPT_3.62240.1C	3.62240.1C	RING/U-box superfamily protein AT3G62240.1 Hygromycin-resistant T4 seeds
+TPT_3.62260.1D	3.62260.1D	ATDBP2 reassigned to Protein phosp AT3G62260.1 Hygromycin-resistant T4 seeds
+TPT_3.62550.1A	3.62550.1A	Adenine nucleotide alpha hydrolases AT3G62550.1 Hygromycin-resistant T4 seeds
+TPT_3.62550.1C	3.62550.1C	Adenine nucleotide alpha hydrolases AT3G62550.1 Hygromycin-resistant T4 seeds
+TPT_3.62690.1F	3.62690.1F	ATL5 AT3G62690.1 Hygromycin-resistant T4 seeds
+TPT_3.62690.1K	3.62690.1K	ATL5 AT3G62690.1 Hygromycin-resistant T4 seeds
+TPT_3.62690.1Q	3.62690.1Q	ATL5 AT3G62690.1 Hygromycin-resistant T4 seeds
+TPT_4.00050.1F	4.00050.1F	UNE10__(bHLH) DNA-binding superfa AT4G00050.1 Hygromycin-resistant T4 seeds
+TPT_4.00050.1G	4.00050.1G	UNE10__(bHLH) DNA-binding superfa AT4G00050.1 Hygromycin-resistant T4 seeds
+TPT_4.00050.1J	4.00050.1J	UNE10__(bHLH) DNA-binding superfa AT4G00050.1 Hygromycin-resistant T4 seeds
+TPT_4.01120.1E	4.01120.1E	ATBZIP54 AT4G01120.1 Hygromycin-resistant T4 seeds
+TPT_4.01120.1F	4.01120.1F	ATBZIP54 AT4G01120.1 Hygromycin-resistant T4 seeds
+TPT_4.01120.1G	4.01120.1G	ATBZIP54 AT4G01120.1 Hygromycin-resistant T4 seeds
+TPT_4.01250.1C	4.01250.1C	AtWRKY22 AT4G01250.1 Hygromycin-resistant T4 seeds
+TPT_4.01250.1E	4.01250.1E	AtWRKY22 AT4G01250.1 Hygromycin-resistant T4 seeds
+TPT_4.01250.1F	4.01250.1F	AtWRKY22 AT4G01250.1 Hygromycin-resistant T4 seeds
+TPT_4.02200.1A	4.02200.1A	Drought-responsive family protein AT4G02200.1 Hygromycin-resistant T4 seeds
+TPT_4.02200.1C	4.02200.1C	Drought-responsive family protein AT4G02200.1 Hygromycin-resistant T4 seeds
+TPT_4.02220.1C	4.02220.1C	zinc finger (MYND type) family protei AT4G02220.1 Hygromycin-resistant T4 seeds
+TPT_4.02220.1E	4.02220.1E	zinc finger (MYND type) family protei AT4G02220.1 Hygromycin-resistant T4 seeds
+TPT_4.02220.1G	4.02220.1G	zinc finger (MYND type) family protei AT4G02220.1 Hygromycin-resistant T4 seeds
+TPT_4.02220.1H	4.02220.1H	zinc finger (MYND type) family protei AT4G02220.1 Hygromycin-resistant T4 seeds
+TPT_4.02590.1G	4.02590.1G	UNE12 AT4G02590.1 Hygromycin-resistant T4 seeds
+TPT_4.02590.1I	4.02590.1I	UNE12 AT4G02590.1 Hygromycin-resistant T4 seeds
+TPT_4.02640.1D	4.02640.1D	ATBZIP10 AT4G02640.1 Hygromycin-resistant T4 seeds
+TPT_4.02640.1E	4.02640.1E	ATBZIP10 AT4G02640.1 Hygromycin-resistant T4 seeds
+TPT_4.02640.1F	4.02640.1F	ATBZIP10 AT4G02640.1 Hygromycin-resistant T4 seeds
+TPT_4.03510.1H	4.03510.1H	ATRMA1 AT4G03510.1 Hygromycin-resistant T4 seeds
+TPT_4.03510.1I	4.03510.1I	ATRMA1 AT4G03510.1 Hygromycin-resistant T4 seeds
+TPT_4.05100.1D	4.05100.1D	AtMYB74 AT4G05100.1 Hygromycin-resistant T4 seeds
+TPT_4.05100.1H	4.05100.1H	AtMYB74 AT4G05100.1 Hygromycin-resistant T4 seeds
+TPT_4.06746.1A	4.06746.1A	RAP2.9/DEAR5 AT4G06746.1 Hygromycin-resistant T4 seeds
+TPT_4.06746.1B	4.06746.1B	RAP2.9/DEAR5 AT4G06746.1 Hygromycin-resistant T4 seeds
+TPT_4.06746.1C	4.06746.1C	RAP2.9/DEAR5 AT4G06746.1 Hygromycin-resistant T4 seeds
+TPT_4.08150.1A	4.08150.1A	BP1_KNAT1 AT4G08150.1 Hygromycin-resistant T4 seeds
+TPT_4.08150.1E	4.08150.1E	BP1_KNAT1 AT4G08150.1 Hygromycin-resistant T4 seeds
+TPT_4.08150.1F	4.08150.1F	BP1_KNAT1 AT4G08150.1 Hygromycin-resistant T4 seeds
+TPT_4.08150.1G	4.08150.1G	BP1_KNAT1 AT4G08150.1 Hygromycin-resistant T4 seeds
+TPT_4.08250.1B	4.08250.1B	GRAS family transcription factor AT4G08250.1 Hygromycin-resistant T4 seeds
+TPT_4.08250.1C	4.08250.1C	GRAS family transcription factor AT4G08250.1 Hygromycin-resistant T4 seeds
+TPT_4.08250.1G	4.08250.1G	GRAS family transcription factor AT4G08250.1 Hygromycin-resistant T4 seeds
+TPT_4.08250.1H	4.08250.1H	GRAS family transcription factor AT4G08250.1 Hygromycin-resistant T4 seeds
+TPT_4.09180.1B	4.09180.1B	(bHLH) DNA-binding superfamily protAT4G09180.1 Hygromycin-resistant T4 seeds
+TPT_4.09180.1C	4.09180.1C	(bHLH) DNA-binding superfamily protAT4G09180.1 Hygromycin-resistant T4 seeds
+TPT_4.09450.1E	4.09450.1E	Duplicated homeodomain-like superf AT4G09450.1 Hygromycin-resistant T4 seeds
+TPT_4.09450.1G	4.09450.1G	Duplicated homeodomain-like superf AT4G09450.1 Hygromycin-resistant T4 seeds
+TPT_4.09460.1A	4.09460.1A	AtMYB6 AT4G09460.1 Hygromycin-resistant T4 seeds
+TPT_4.09460.1D	4.09460.1D	AtMYB6 AT4G09460.1 Hygromycin-resistant T4 seeds
+TPT_4.09460.1G	4.09460.1G	AtMYB6 AT4G09460.1 Hygromycin-resistant T4 seeds
+TPT_4.10240.1B	4.10240.1B	B-BOX DOMAIN PROTEIN 23 (BBX23) AT4G10240.1 Hygromycin-resistant T4 seeds
+TPT_4.10240.1D	4.10240.1D	B-BOX DOMAIN PROTEIN 23 (BBX23) AT4G10240.1 Hygromycin-resistant T4 seeds
+TPT_4.10350.1F	4.10350.1F	ANAC070/BEARSKIN 2 AT4G10350.1 Hygromycin-resistant T4 seeds
+TPT_4.10480.1D	4.10480.1D	Nascent polypeptide-associated com AT4G10480.1 Hygromycin-resistant T4 seeds
+TPT_4.10480.1E	4.10480.1E	Nascent polypeptide-associated com AT4G10480.1 Hygromycin-resistant T4 seeds
+TPT_4.10480.1I	4.10480.1I	Nascent polypeptide-associated com AT4G10480.1 Hygromycin-resistant T4 seeds
+TPT_4.11070.1C	4.11070.1C	ATWRKY41 AT4G11070.1 Hygromycin-resistant T4 seeds
+TPT_4.11080.1B	4.11080.1B	HMG AT4G11080.1 Hygromycin-resistant T4 seeds
+TPT_4.11080.1D	4.11080.1D	HMG AT4G11080.1 Hygromycin-resistant T4 seeds
+TPT_4.11080.1F	4.11080.1F	HMG AT4G11080.1 Hygromycin-resistant T4 seeds
+TPT_4.11680.1F	4.11680.1F	C3HC4 type (RING Zn finger) family p AT4G11680.1 Hygromycin-resistant T4 seeds
+TPT_4.11680.1G	4.11680.1G	C3HC4 type (RING Zn finger) family p AT4G11680.1 Hygromycin-resistant T4 seeds
+TPT_4.11680.1I	4.11680.1I	C3HC4 type (RING Zn finger) family p AT4G11680.1 Hygromycin-resistant T4 seeds
+TPT_4.11880.1D	4.11880.1D	AGL14 AT4G11880.1 Hygromycin-resistant T4 seeds
+TPT_4.11880.1H	4.11880.1H	AGL14 AT4G11880.1 Hygromycin-resistant T4 seeds
+TPT_4.12210.1A	4.12210.1A	RING/U-box superfamily protein AT4G12210.1 Hygromycin-resistant T4 seeds
+TPT_4.12210.1D	4.12210.1D	RING/U-box superfamily protein AT4G12210.1 Hygromycin-resistant T4 seeds
+TPT_4.12210.1G	4.12210.1G	RING/U-box superfamily protein AT4G12210.1 Hygromycin-resistant T4 seeds
+TPT_4.12350.1A	4.12350.1A	ATMYB42 AT4G12350.1 Hygromycin-resistant T4 seeds
+TPT_4.12350.1C	4.12350.1C	ATMYB42 AT4G12350.1 Hygromycin-resistant T4 seeds
+TPT_4.12350.1F	4.12350.1F	ATMYB42 AT4G12350.1 Hygromycin-resistant T4 seeds
+TPT_4.13620.1B	4.13620.1B	DREB subfamily A-6 of ERF/AP2 trans AT4G13620.1 Hygromycin-resistant T4 seeds
+TPT_4.13620.1D	4.13620.1D	DREB subfamily A-6 of ERF/AP2 trans AT4G13620.1 Hygromycin-resistant T4 seeds
+TPT_4.13640.1C	4.13640.1C	UNE16 AT4G13640.1 Hygromycin-resistant T4 seeds
+TPT_4.13640.1D	4.13640.1D	UNE16 AT4G13640.1 Hygromycin-resistant T4 seeds
+TPT_4.13640.1G	4.13640.1G	UNE16 AT4G13640.1 Hygromycin-resistant T4 seeds
+TPT_4.13640.1I	4.13640.1I	UNE16 AT4G13640.1 Hygromycin-resistant T4 seeds
+TPT_4.14465.1D	4.14465.1D	AT-HOOK MOTIF NUCLEAR-LOCALIZE AT4G14465.1 Hygromycin-resistant T4 seeds
+TPT_4.14465.1F	4.14465.1F	AT-HOOK MOTIF NUCLEAR-LOCALIZE AT4G14465.1 Hygromycin-resistant T4 seeds
+TPT_4.14465.1G	4.14465.1G	AT-HOOK MOTIF NUCLEAR-LOCALIZE AT4G14465.1 Hygromycin-resistant T4 seeds
+TPT_4.14540.1A	4.14540.1A	NF-YB3 AT4G14540.1 Hygromycin-resistant T4 seeds
+TPT_4.14540.1C	4.14540.1C	NF-YB3 AT4G14540.1 Hygromycin-resistant T4 seeds
+TPT_4.14540.1E	4.14540.1E	NF-YB3 AT4G14540.1 Hygromycin-resistant T4 seeds
+TPT_4.14540.1I	4.14540.1I	NF-YB3 AT4G14540.1 Hygromycin-resistant T4 seeds
+TPT_4.14550.1B	4.14550.1B	IAA14_SLR AT4G14550.1 Hygromycin-resistant T4 seeds
+TPT_4.14550.1C	4.14550.1C	IAA14_SLR AT4G14550.1 Hygromycin-resistant T4 seeds
+TPT_4.14550.1J	4.14550.1J	IAA14_SLR AT4G14550.1 Hygromycin-resistant T4 seeds
+TPT_4.15250.1E	4.15250.1E	B-box type zinc finger protein with CC AT4G15250.1 Hygromycin-resistant T4 seeds
+TPT_4.15250.1G	4.15250.1G	B-box type zinc finger protein with CC AT4G15250.1 Hygromycin-resistant T4 seeds
+TPT_4.16420.1A	4.16420.1A	ADA2B/PRZ1 AT4G16420.1 Hygromycin-resistant T4 seeds
+TPT_4.16420.1F	4.16420.1F	ADA2B/PRZ1 AT4G16420.1 Hygromycin-resistant T4 seeds
+TPT_4.16420.1H	4.16420.1H	ADA2B/PRZ1 AT4G16420.1 Hygromycin-resistant T4 seeds
+TPT_4.16420.1I	4.16420.1I	ADA2B/PRZ1 AT4G16420.1 Hygromycin-resistant T4 seeds
+TPT_4.16610.1A	4.16610.1A	C2H2-like zinc finger protein AT4G16610.1 Hygromycin-resistant T4 seeds
+TPT_4.16610.1E	4.16610.1E	C2H2-like zinc finger protein AT4G16610.1 Hygromycin-resistant T4 seeds
+TPT_4.16610.1G	4.16610.1G	C2H2-like zinc finger protein AT4G16610.1 Hygromycin-resistant T4 seeds
+TPT_4.16610.1I	4.16610.1I	C2H2-like zinc finger protein AT4G16610.1 Hygromycin-resistant T4 seeds
+TPT_4.17230.1A	4.17230.1A	SCL13 AT4G17230.1 Hygromycin-resistant T4 seeds
+TPT_4.17230.1C	4.17230.1C	SCL13 AT4G17230.1 Hygromycin-resistant T4 seeds
+TPT_4.17230.1D	4.17230.1D	SCL13 AT4G17230.1 Hygromycin-resistant T4 seeds
+TPT_4.17460.1B	4.17460.1B	HAT1 AT4G17460.1 Hygromycin-resistant T4 seeds
+TPT_4.17460.1C	4.17460.1C	HAT1 AT4G17460.1 Hygromycin-resistant T4 seeds
+TPT_4.17460.1E	4.17460.1E	HAT1 AT4G17460.1 Hygromycin-resistant T4 seeds
+TPT_4.17460.1G	4.17460.1G	HAT1 AT4G17460.1 Hygromycin-resistant T4 seeds
+TPT_4.17490.1A	4.17490.1A	ATERF6 AT4G17490.1 Hygromycin-resistant T4 seeds
+TPT_4.17490.1B	4.17490.1B	ATERF6 AT4G17490.1 Hygromycin-resistant T4 seeds
+TPT_4.17490.1D	4.17490.1D	ATERF6 AT4G17490.1 Hygromycin-resistant T4 seeds
+TPT_4.17490.1E	4.17490.1E	ATERF6 AT4G17490.1 Hygromycin-resistant T4 seeds
+TPT_4.17500.1B	4.17500.1B	ATERF-1 AT4G17500.1 Hygromycin-resistant T4 seeds
+TPT_4.17500.1E	4.17500.1E	ATERF-1 AT4G17500.1 Hygromycin-resistant T4 seeds
+TPT_4.17500.1I	4.17500.1I	ATERF-1 AT4G17500.1 Hygromycin-resistant T4 seeds
+TPT_4.17785.1B	4.17785.1B	ATMYB39 AT4G17785.1 Hygromycin-resistant T4 seeds
+TPT_4.17785.1F	4.17785.1F	ATMYB39 AT4G17785.1 Hygromycin-resistant T4 seeds
+TPT_4.17810.1D	4.17810.1D	C2H2 and C2HC zinc fingers superfam AT4G17810.1 Hygromycin-resistant T4 seeds
+TPT_4.17810.1E	4.17810.1E	C2H2 and C2HC zinc fingers superfam AT4G17810.1 Hygromycin-resistant T4 seeds
+TPT_4.17810.1F	4.17810.1F	C2H2 and C2HC zinc fingers superfam AT4G17810.1 Hygromycin-resistant T4 seeds
+TPT_4.17880.1D	4.17880.1D	MYC4 AT4G17880.1 Hygromycin-resistant T4 seeds
+TPT_4.17880.1E	4.17880.1E	MYC4 AT4G17880.1 Hygromycin-resistant T4 seeds
+TPT_4.17880.1H	4.17880.1H	MYC4 AT4G17880.1 Hygromycin-resistant T4 seeds
+TPT_4.18020.1B	4.18020.1B	APRR2 AT4G18020.1 Hygromycin-resistant T4 seeds
+TPT_4.18020.1F	4.18020.1F	APRR2 AT4G18020.1 Hygromycin-resistant T4 seeds
+TPT_4.18390.1H	4.18390.1H	TCP2 AT4G18390.1 Hygromycin-resistant T4 seeds
+TPT_4.18770.1A	4.18770.1A	AtMYB98 AT4G18770.1 Hygromycin-resistant T4 seeds
+TPT_4.18770.1B	4.18770.1B	AtMYB98 AT4G18770.1 Hygromycin-resistant T4 seeds
+TPT_4.18880.1C	4.18880.1C	AT-HSFA4A AT4G18880.1 Hygromycin-resistant T4 seeds
+TPT_4.18880.1E	4.18880.1E	AT-HSFA4A AT4G18880.1 Hygromycin-resistant T4 seeds
+TPT_4.18880.1F	4.18880.1F	AT-HSFA4A AT4G18880.1 Hygromycin-resistant T4 seeds
+TPT_4.20280.1C	4.20280.1C	TAF11 AT4G20280.1 Hygromycin-resistant T4 seeds
+TPT_4.20280.1D	4.20280.1D	TAF11 AT4G20280.1 Hygromycin-resistant T4 seeds
+TPT_4.20280.1H	4.20280.1H	TAF11 AT4G20280.1 Hygromycin-resistant T4 seeds
+TPT_4.20280.1I	4.20280.1I	TAF11 AT4G20280.1 Hygromycin-resistant T4 seeds
+TPT_4.21050.1C	4.21050.1C	Dof-type zinc finger domain-containin AT4G21050.1 Hygromycin-resistant T4 seeds
+TPT_4.21050.1G	4.21050.1G	Dof-type zinc finger domain-containin AT4G21050.1 Hygromycin-resistant T4 seeds
+TPT_4.22140.1D	4.22140.1D	EARLY BOLTING IN SHORT DAYS (EBS AT4G17880.1 Hygromycin-resistant T4 seeds
+TPT_4.22680.1F	4.22680.1F	AtMYB85 AT4G22680.1 Hygromycin-resistant T4 seeds
+TPT_4.22950.1B	4.22950.1B	AGL19 AT4G22950.1 Hygromycin-resistant T4 seeds
+TPT_4.22950.1E	4.22950.1E	AGL19 AT4G22950.1 Hygromycin-resistant T4 seeds
+TPT_4.23550.1C	4.23550.1C	ATWRKY29 AT4G23550.1 Hygromycin-resistant T4 seeds
+TPT_4.23750.2B	4.23750.2B	CRF2_TMO3 AT4G23750.2 Hygromycin-resistant T4 seeds
+TPT_4.23750.2C	4.23750.2C	CRF2_TMO3 AT4G23750.2 Hygromycin-resistant T4 seeds
+TPT_4.23750.2F	4.23750.2F	CRF2_TMO3 AT4G23750.2 Hygromycin-resistant T4 seeds
+TPT_4.23800.1D	4.23800.1D	3XHIGH MOBILITY GROUP-BOX2 AT2G23800.1 Hygromycin-resistant T4 seeds
+TPT_4.23800.1E	4.23800.1E	3XHIGH MOBILITY GROUP-BOX2 AT4G23800.1 Hygromycin-resistant T4 seeds
+TPT_4.24540.1G	4.24540.1G	AGL24 AT4G24540.1 Hygromycin-resistant T4 seeds
+TPT_4.24540.1I	4.24540.1I	AGL24 AT4G24540.1 Hygromycin-resistant T4 seeds
+TPT_4.25470.1B	4.25470.1B	ATCBF2 AT4G25470.1 Hygromycin-resistant T4 seeds
+TPT_4.25470.1C	4.25470.1C	ATCBF2 AT4G25470.1 Hygromycin-resistant T4 seeds
+TPT_4.25470.1G	4.25470.1G	ATCBF2 AT4G25470.1 Hygromycin-resistant T4 seeds
+TPT_4.25480.1A	4.25480.1A	ATCBF3 AT4G25480.1 Hygromycin-resistant T4 seeds
+TPT_4.25480.1D	4.25480.1D	ATCBF3 AT4G25480.1 Hygromycin-resistant T4 seeds
+TPT_4.25480.1F	4.25480.1F	ATCBF3 AT4G25480.1 Hygromycin-resistant T4 seeds
+TPT_4.25490.1A	4.25490.1A	ATCBF1 AT4G25490.1 Hygromycin-resistant T4 seeds
+TPT_4.25490.1A	4.25490.1A	DRE BINDING PROTEIN 1B (DREB 1B)/AT4G25490.1 Hygromycin-resistant T4 seeds
+TPT_4.25490.1B	4.25490.1B	ATCBF1 AT4G25490.1 Hygromycin-resistant T4 seeds
+TPT_4.25490.1C	4.25490.1C	DRE BINDING PROTEIN 1B (DREB 1B)/AT4G25490.1 Hygromycin-resistant T4 seeds
+TPT_4.25490.1E	4.25490.1E	ATCBF1 AT4G25490.1 Hygromycin-resistant T4 seeds
+TPT_4.26640.2D	4.26640.2D	ATWRKY20 AT4G26640.2 Hygromycin-resistant T4 seeds
+TPT_4.26640.2G	4.26640.2G	ATWRKY20 AT4G26640.2 Hygromycin-resistant T4 seeds
+TPT_4.27410.1C	4.27410.1C	ANAC072_RD26 AT4G27410.1 Hygromycin-resistant T4 seeds
+TPT_4.27410.1D	4.27410.1D	ANAC072_RD26 AT4G27410.1 Hygromycin-resistant T4 seeds
+TPT_4.27950.1E	4.27950.1E	CYTOKININ RESPONSE FACTOR 4 (CR AT4G27950.1 Hygromycin-resistant T4 seeds
+TPT_4.27950.1F	4.27950.1F	CYTOKININ RESPONSE FACTOR 4 (CR AT4G27950.1 Hygromycin-resistant T4 seeds
+TPT_4.27950.1G	4.27950.1G	CYTOKININ RESPONSE FACTOR 4 (CR AT4G27950.1 Hygromycin-resistant T4 seeds
+TPT_4.28270.1B	4.28270.1B	ATRMA2 AT4G28270.1 Hygromycin-resistant T4 seeds
+TPT_4.28270.1C	4.28270.1C	ATRMA2 AT4G28270.1 Hygromycin-resistant T4 seeds
+TPT_4.28270.1E	4.28270.1E	ATRMA2 AT4G28270.1 Hygromycin-resistant T4 seeds
+TPT_4.28270.1F	4.28270.1F	ATRMA2 AT4G28270.1 Hygromycin-resistant T4 seeds
+TPT_4.28610.1C	4.28610.1C	ATPHR1 AT4G28610.1 Hygromycin-resistant T4 seeds
+TPT_4.28610.1D	4.28610.1D	ATPHR1 AT4G28610.1 Hygromycin-resistant T4 seeds
+TPT_4.28610.1E	4.28610.1E	ATPHR1 AT4G28610.1 Hygromycin-resistant T4 seeds
+TPT_4.29080.1B	4.29080.1B	IAA27_PAP2 AT4G29080.1 Hygromycin-resistant T4 seeds
+TPT_4.29080.1I	4.29080.1I	IAA27_PAP2 AT4G29080.1 Hygromycin-resistant T4 seeds
+TPT_4.29190.1F	4.29190.1F	OXIDATION-RELATED ZINC FINGER 2 AT4G29190.1 Hygromycin-resistant T4 seeds
+TPT_4.29190.1H	4.29190.1H	OXIDATION-RELATED ZINC FINGER 2 AT4G29190.1 Hygromycin-resistant T4 seeds
+TPT_4.29190.1I	4.29190.1I	OXIDATION-RELATED ZINC FINGER 2 AT4G29190.1 Hygromycin-resistant T4 seeds
+TPT_4.30080.1A	4.30080.1A	ARF16 AT4G30080.1 Hygromycin-resistant T4 seeds
+TPT_4.30080.1B	4.30080.1B	ARF16 AT4G30080.1 Hygromycin-resistant T4 seeds
+TPT_4.30080.1D	4.30080.1D	ARF16 AT4G30080.1 Hygromycin-resistant T4 seeds
+TPT_4.30180.1E	4.30180.1E	sequence-specific DNA binding transc AT4G30180.1 Hygromycin-resistant T4 seeds
+TPT_4.30410.1A	4.30410.1A	sequence-specific DNA binding transc AT4G30410.1 Hygromycin-resistant T4 seeds
+TPT_4.30410.1B	4.30410.1B	sequence-specific DNA binding transc AT4G30410.1 Hygromycin-resistant T4 seeds
+TPT_4.30410.1F	4.30410.1F	sequence-specific DNA binding transc AT4G30410.1 Hygromycin-resistant T4 seeds
+TPT_4.30410.1F	4.30410.1F	sequence-specific DNA binding transc AT4G30410.1 Hygromycin-resistant T4 seeds
+TPT_4.30860.1C	4.30860.1C	ASH1-RELATED 3 (ASHR3) AT4G30860.1 Hygromycin-resistant T4 seeds
+TPT_4.30860.1E	4.30860.1E	ASH1-RELATED 3 (ASHR3) AT4G30860.1 Hygromycin-resistant T4 seeds
+TPT_4.30860.1I	4.30860.1I	ASH1-RELATED 3 (ASHR3) AT4G30860.1 Hygromycin-resistant T4 seeds
+TPT_4.30935.1H	4.30935.1H	ATWRKY32 AT4G30935.1 Hygromycin-resistant T4 seeds
+TPT_4.30935.1I	4.30935.1I	ATWRKY32 AT4G30935.1 Hygromycin-resistant T4 seeds
+TPT_4.31270.1A	4.31270.1A	sequence-specific DNA binding transc AT4G31270.1 Hygromycin-resistant T4 seeds
+TPT_4.31270.1B	4.31270.1B	sequence-specific DNA binding transc AT4G31270.1 Hygromycin-resistant T4 seeds
+TPT_4.31270.1D	4.31270.1D	sequence-specific DNA binding transc AT4G31270.1 Hygromycin-resistant T4 seeds
+TPT_4.31270.1F	4.31270.1F	sequence-specific DNA binding transc AT4G31270.1 Hygromycin-resistant T4 seeds
+TPT_4.31270.1I	4.31270.1I	sequence-specific DNA binding transc AT4G31270.1 Hygromycin-resistant T4 seeds
+TPT_4.31420.1E	4.31420.1E	Zinc finger protein 622 AT4G31420.1 Hygromycin-resistant T4 seeds
+TPT_4.31420.1G	4.31420.1G	Zinc finger protein 622 AT4G31420.1 Hygromycin-resistant T4 seeds
+TPT_4.31420.1H	4.31420.1H	Zinc finger protein 622 AT4G31420.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1B	4.31610.1B	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1C	4.31610.1C	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1E	4.31610.1E	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1F	4.31610.1F	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1H	4.31610.1H	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31610.1I	4.31610.1I	ATREM1 AT4G31610.1 Hygromycin-resistant T4 seeds
+TPT_4.31620.1B	4.31620.1B	Transcriptional factor B3 family proteAT4G31620.1 Hygromycin-resistant T4 seeds
+TPT_4.31620.1F	4.31620.1F	Transcriptional factor B3 family proteAT4G31620.1 Hygromycin-resistant T4 seeds
+TPT_4.31620.1H	4.31620.1H	Transcriptional factor B3 family proteAT4G31620.1 Hygromycin-resistant T4 seeds
+TPT_4.31720.1B	4.31720.1B	STG1_TAF10_TAFII15 AT4G31720.1 Hygromycin-resistant T4 seeds
+TPT_4.31800.1C	4.31800.1C	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_4.31800.1E	4.31800.1E	ATWRKY18 AT4G31800.1 Hygromycin-resistant T4 seeds
+TPT_4.32040.1F	4.32040.1F	KNAT5 AT4G32040.1 Hygromycin-resistant T4 seeds
+TPT_4.32040.1H	4.32040.1H	KNAT5 AT4G32040.1 Hygromycin-resistant T4 seeds
+TPT_4.32800.1A	4.32800.1A	DREB subfamily A-4 of ERF/AP2 trans AT4G32800.1 Hygromycin-resistant T4 seeds
+TPT_4.32800.1B	4.32800.1B	DREB subfamily A-4 of ERF/AP2 trans AT4G32800.1 Hygromycin-resistant T4 seeds
+TPT_4.32980.1A	4.32980.1A	ATH1 AT4G32980.1 Hygromycin-resistant T4 seeds
+TPT_4.34000.1E	4.34000.1E	ABF3 AT4G34000.1 Hygromycin-resistant T4 seeds
+TPT_4.34000.1G	4.34000.1G	ABF3 AT4G34000.1 Hygromycin-resistant T4 seeds
+TPT_4.34000.1I	4.34000.1I	ABF3 AT4G34000.1 Hygromycin-resistant T4 seeds
+TPT_4.34410.1C	4.34410.1C	RRTF1 AT4G34410.1 Hygromycin-resistant T4 seeds
+TPT_4.34410.1G	4.34410.1G	RRTF1 AT4G34410.1 Hygromycin-resistant T4 seeds
+TPT_4.34410.1H	4.34410.1H	RRTF1 AT4G34410.1 Hygromycin-resistant T4 seeds
+TPT_4.34588.1D	4.34588.1D	ATBZIP11 reassigned to CPUORF2 AT4G34588.1 Hygromycin-resistant T4 seeds
+TPT_4.34610.1B	4.34610.1B	BLH6 AT4G34610.1 Hygromycin-resistant T4 seeds
+TPT_4.34610.1D	4.34610.1D	BLH6 AT4G34610.1 Hygromycin-resistant T4 seeds
+TPT_4.34610.1G	4.34610.1G	BLH6 AT4G34610.1 Hygromycin-resistant T4 seeds
+TPT_4.35280.1A	4.35280.1A	C2H2-like zinc finger protein AT4G35280.1 Hygromycin-resistant T4 seeds
+TPT_4.35280.1C	4.35280.1C	C2H2-like zinc finger protein AT4G35280.1 Hygromycin-resistant T4 seeds
+TPT_4.35280.1D	4.35280.1D	C2H2-like zinc finger protein AT4G35280.1 Hygromycin-resistant T4 seeds
+TPT_4.35280.1F	4.35280.1F	C2H2-like zinc finger protein AT4G35280.1 Hygromycin-resistant T4 seeds
+TPT_4.35280.1H	4.35280.1H	C2H2-like zinc finger protein AT4G35280.1 Hygromycin-resistant T4 seeds
+TPT_4.35570.1B	4.35570.1B	HMGB5 AT4G35570.1 Hygromycin-resistant T4 seeds
+TPT_4.35570.1D	4.35570.1D	HMGB5 AT4G35570.1 Hygromycin-resistant T4 seeds
+TPT_4.35570.1I	4.35570.1I	HMGB5 AT4G35570.1 Hygromycin-resistant T4 seeds
+TPT_4.35610.1A	4.35610.1A	C2H2-type zinc finger family protein AT4G35610.1 Hygromycin-resistant T4 seeds
+TPT_4.35610.1B	4.35610.1B	C2H2-type zinc finger family protein AT4G35610.1 Hygromycin-resistant T4 seeds
+TPT_4.35610.1D	4.35610.1D	C2H2-type zinc finger family protein AT4G35610.1 Hygromycin-resistant T4 seeds
+TPT_4.35610.1F	4.35610.1F	C2H2-type zinc finger family protein AT4G35610.1 Hygromycin-resistant T4 seeds
+TPT_4.36060.1A	4.36060.1A	bHLH11 AT4G36060.1 Hygromycin-resistant T4 seeds
+TPT_4.36060.1C	4.36060.1C	bHLH11 AT4G36060.1 Hygromycin-resistant T4 seeds
+TPT_4.36060.1H	4.36060.1H	bHLH11 AT4G36060.1 Hygromycin-resistant T4 seeds
+TPT_4.36540.1B	4.36540.1B	BEE2 AT4G36540.1 Hygromycin-resistant T4 seeds
+TPT_4.36540.1C	4.36540.1C	BEE2 AT4G36540.1 Hygromycin-resistant T4 seeds
+TPT_4.36540.1E	4.36540.1E	BEE2 AT4G36540.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1B	4.36710.1B	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1C	4.36710.1C	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1D	4.36710.1D	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1G	4.36710.1G	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1H	4.36710.1H	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36710.1I	4.36710.1I	GRAS family transcription factor AT4G36710.1 Hygromycin-resistant T4 seeds
+TPT_4.36730.1D	4.36730.1D	ATGBF1 AT4.36730.1 Hygromycin-resistant T4 seeds
+TPT_4.36730.1F	4.36730.1F	ATGBF1 AT4.36730.1 Hygromycin-resistant T4 seeds
+TPT_4.36740.1C	4.36740.1C	ATHB40 AT4G36740.1 Hygromycin-resistant T4 seeds
+TPT_4.36740.1H	4.36740.1H	ATHB40 AT4G36740.1 Hygromycin-resistant T4 seeds
+TPT_4.36780.1C	4.36780.1C	BEH2 AT4G36780.1 Hygromycin-resistant T4 seeds
+TPT_4.36780.1E	4.36780.1E	BEH2 AT4G36780.1 Hygromycin-resistant T4 seeds
+TPT_4.36780.1F	4.36780.1F	BEH2 AT4G36780.1 Hygromycin-resistant T4 seeds
+TPT_4.36900.1A	4.36900.1A	DEAR4_RAP2.10 AT4G36900.1 Hygromycin-resistant T4 seeds
+TPT_4.36900.1B	4.36900.1B	DEAR4_RAP2.10 AT4G36900.1 Hygromycin-resistant T4 seeds
+TPT_4.36900.1E	4.36900.1E	DEAR4_RAP2.10 AT4G36900.1 Hygromycin-resistant T4 seeds
+TPT_4.36900.1I	4.36900.1I	DEAR4_RAP2.10 AT4G36900.1 Hygromycin-resistant T4 seeds
+TPT_4.36920.1B	4.36920.1B	APETALA 2 (AP2) AT4G36920.1 Hygromycin-resistant T4 seeds
+TPT_4.36920.1G	4.36920.1G	APETALA 2 (AP2) AT4G36920.1 Hygromycin-resistant T4 seeds
+TPT_4.36920.1H	4.36920.1H	APETALA 2 (AP2) AT4G36920.1 Hygromycin-resistant T4 seeds
+TPT_4.36930.1D	4.36930.1D	SPATULA (SPT) AT4G36930.1 Hygromycin-resistant T4 seeds
+TPT_4.36930.1E	4.36930.1E	SPATULA (SPT) AT4G36930.1 Hygromycin-resistant T4 seeds
+TPT_4.36930.1H	4.36930.1H	SPATULA (SPT) AT4G36930.1 Hygromycin-resistant T4 seeds
+TPT_4.36990.1D	4.36990.1D	AT-HSFB1_ATHSF4 AT4G36990.1 Hygromycin-resistant T4 seeds
+TPT_4.37260.1A	4.37260.1A	ATMYB73 AT4G37260.1 Hygromycin-resistant T4 seeds
+TPT_4.37260.1B	4.37260.1B	ATMYB73 AT4G37260.1 Hygromycin-resistant T4 seeds
+TPT_4.37260.1D	4.37260.1D	ATMYB73 AT4G37260.1 Hygromycin-resistant T4 seeds
+TPT_4.37260.1E	4.37260.1E	ATMYB73 AT4G37260.1 Hygromycin-resistant T4 seeds
+TPT_4.37260.1G	4.37260.1G	ATMYB73 AT4G37260.1 Hygromycin-resistant T4 seeds
+TPT_4.37750.1A	4.37750.1A	ANT_CKC1_DRG__Integrase-type DN AT4G37750.1 Hygromycin-resistant T4 seeds
+TPT_4.37750.1E	4.37750.1E	ANT_CKC1_DRG__Integrase-type DN AT4G37750.1 Hygromycin-resistant T4 seeds
+TPT_4.37750.1F	4.37750.1F	ANT_CKC1_DRG__Integrase-type DN AT4G37750.1 Hygromycin-resistant T4 seeds
+TPT_4.38000.1C	4.38000.1C	DOF4.7 AT4G38000.1 Hygromycin-resistant T4 seeds
+TPT_4.38000.1E	4.38000.1E	DOF4.7 AT4G38000.1 Hygromycin-resistant T4 seeds
+TPT_4.38140.1F	4.38140.1F	RING/U-box superfamily protein AT4G38140.1 Hygromycin-resistant T4 seeds
+TPT_4.38960.1A	4.38960.1A	B-box type zinc finger family protein AT4G38960.1 Hygromycin-resistant T4 seeds
+TPT_4.38960.1G	4.38960.1G	B-box type zinc finger family protein AT4G38960.1 Hygromycin-resistant T4 seeds
+TPT_4.39070.1C	4.39070.1C	B-box type zinc finger family protein AT4G39070.1 Hygromycin-resistant T4 seeds
+TPT_4.39070.1E	4.39070.1E	B-box type zinc finger family protein AT4G39070.1 Hygromycin-resistant T4 seeds
+TPT_4.39070.1F	4.39070.1F	B-box type zinc finger family protein AT4G39070.1 Hygromycin-resistant T4 seeds
+TPT_5.01200.1C	5.01200.1C	Duplicated homeodomain-like superf AT5G01200.1 Hygromycin-resistant T4 seeds
+TPT_5.01200.1I	5.01200.1I	Duplicated homeodomain-like superf AT5G01200.1 Hygromycin-resistant T4 seeds
+TPT_5.02460.1D	5.02460.1D	Dof-type zinc finger DNA-binding fam AT5G02460.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1A	5.02470.1A	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1C	5.02470.1C	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1D	5.02470.1D	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1D	5.02470.1D	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1E	5.02470.1E	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02470.1F	5.02470.1F	DPA AT5G02470.1 Hygromycin-resistant T4 seeds
+TPT_5.02840.1G	5.02840.1G	LHY/CCA1-LIKE 1 (LCL1) AT5G02840.1 Hygromycin-resistant T4 seeds
+TPT_5.02840.1H	5.02840.1H	LHY/CCA1-LIKE 1 (LCL1) AT5G02840.1 Hygromycin-resistant T4 seeds
+TPT_5.02840.1I	5.02840.1I	LHY/CCA1-LIKE 1 (LCL1) AT5G02840.1 Hygromycin-resistant T4 seeds
+TPT_5.03510.1B	5.03510.1B	C2H2-type zinc finger family protein AT5G03510.1 Hygromycin-resistant T4 seeds
+TPT_5.03510.1F	5.03510.1F	C2H2-type zinc finger family protein AT5G03510.1 Hygromycin-resistant T4 seeds
+TPT_5.03510.1G	5.03510.1G	C2H2-type zinc finger family protein AT5G03510.1 Hygromycin-resistant T4 seeds
+TPT_5.03790.1E	5.03790.1E	ATHB51 AT5G03790.1 Hygromycin-resistant T4 seeds
+TPT_5.03790.1F	5.03790.1F	ATHB51 AT5G03790.1 Hygromycin-resistant T4 seeds
+TPT_5.04340.1A	5.04340.1A	C2H2_CZF2_ZAT6 AT5G04340.1 Hygromycin-resistant T4 seeds
+TPT_5.04340.1H	5.04340.1H	C2H2_CZF2_ZAT6 AT5G04340.1 Hygromycin-resistant T4 seeds
+TPT_5.04410.1D	5.04410.1D	ANAC078_NAC2 AT5G04410.1 Hygromycin-resistant T4 seeds
+TPT_5.04410.1G	5.04410.1G	ANAC078_NAC2 AT5G04410.1 Hygromycin-resistant T4 seeds
+TPT_5.04640.1A	5.04640.1A	AGL99 AT5G04640.1 Hygromycin-resistant T4 seeds
+TPT_5.04640.1D	5.04640.1D	AGL99 AT5G04640.1 Hygromycin-resistant T4 seeds
+TPT_5.04840.1F	5.04840.1F	bZIP protein; AT5G04840.1 Hygromycin-resistant T4 seeds
+TPT_5.04940.2D	5.04940.2D	SUVH1 AT5G04940.2 Hygromycin-resistant T4 seeds
+TPT_5.04940.2G	5.04940.2G	SUVH1 AT5G04940.2 Hygromycin-resistant T4 seeds
+TPT_5.05410.1C	5.05410.1C	DREB2A AT5G05410.1 Hygromycin-resistant T4 seeds
+TPT_5.05410.1E	5.05410.1E	DREB2A AT5G05410.1 Hygromycin-resistant T4 seeds
+TPT_5.05410.1H	5.05410.1H	DREB2A AT5G05410.1 Hygromycin-resistant T4 seeds
+TPT_5.05410.1I	5.05410.1I	DREB2A AT5G05410.1 Hygromycin-resistant T4 seeds
+TPT_5.05770.1A	5.05770.1A	WOX5A_WOX7 AT5G05770.1 Hygromycin-resistant T4 seeds
+TPT_5.05770.1B	5.05770.1B	WOX5A_WOX7 AT5G05770.1 Hygromycin-resistant T4 seeds
+TPT_5.05770.1E	5.05770.1E	WOX5A_WOX7 AT5G05770.1 Hygromycin-resistant T4 seeds
+TPT_5.05790.1D	5.05790.1D	Duplicated homeodomain-like superf AT5G05790.1 Hygromycin-resistant T4 seeds
+TPT_5.05790.1E	5.05790.1E	Duplicated homeodomain-like superf AT5G05790.1 Hygromycin-resistant T4 seeds
+TPT_5.05790.1I	5.05790.1I	Duplicated homeodomain-like superf AT5G05790.1 Hygromycin-resistant T4 seeds
+TPT_5.06500.1B	5.06500.1B	AGL96 AT5G06500.1 Hygromycin-resistant T4 seeds
+TPT_5.06500.1G	5.06500.1G	AGL96 AT5G06500.1 Hygromycin-resistant T4 seeds
+TPT_5.06800.1E	5.06800.1E	myb-like HTH transcriptional regulato AT5G06800.1 Hygromycin-resistant T4 seeds
+TPT_5.06800.1G	5.06800.1G	myb-like HTH transcriptional regulato AT5G06800.1 Hygromycin-resistant T4 seeds
+TPT_5.06839.1C	5.06839.1C	bZIP65_TGA10 AT5G06839.1 Hygromycin-resistant T4 seeds
+TPT_5.06839.1H	5.06839.1H	bZIP65_TGA10 AT5G06839.1 Hygromycin-resistant T4 seeds
+TPT_5.06950.1C	5.06950.1C	AHBP-1B_TGA2 AT5G06950.1 Hygromycin-resistant T4 seeds
+TPT_5.06950.1D	5.06950.1D	AHBP-1B_TGA2 AT5G06950.1 Hygromycin-resistant T4 seeds
+TPT_5.06950.1I	5.06950.1I	AHBP-1B_TGA2 AT5G06950.1 Hygromycin-resistant T4 seeds
+TPT_5.08070.1B	5.08070.1B	TCP17 AT5G08070.1 Hygromycin-resistant T4 seeds
+TPT_5.08070.1D	5.08070.1D	TCP17 AT5G08070.1 Hygromycin-resistant T4 seeds
+TPT_5.08330.1E	5.08330.1E	ATTCP11 AT5G08330.1 Hygromycin-resistant T4 seeds
+TPT_5.08790.1B	5.08790.1B	ANAC081 AT5G08790.1 Hygromycin-resistant T4 seeds
+TPT_5.08790.1H	5.08790.1H	ANAC081 AT5G08790.1 Hygromycin-resistant T4 seeds
+TPT_5.09740.2D	5.09740.2D	HAM2 AT5G09740.2 Hygromycin-resistant T4 seeds
+TPT_5.09740.2I	5.09740.2I	HAM2 AT5G09740.2 Hygromycin-resistant T4 seeds
+TPT_5.10140.1B	5.10140.1B	AGL25_FLC_FLF AT5G10140.1 Hygromycin-resistant T4 seeds
+TPT_5.10140.1D	5.10140.1D	AGL25_FLC_FLF AT5G10140.1 Hygromycin-resistant T4 seeds
+TPT_5.10140.1E	5.10140.1E	AGL25_FLC_FLF AT5G10140.1 Hygromycin-resistant T4 seeds
+TPT_5.10280.1G	5.10280.1G	ATMYB64 AT5G10280.1 Hygromycin-resistant T4 seeds
+TPT_5.10280.1H	5.10280.1H	ATMYB64 AT5G10280.1 Hygromycin-resistant T4 seeds
+TPT_5.10380.1B	5.10380.1B	ATRING1 AT5G10380.1 Hygromycin-resistant T4 seeds
+TPT_5.10380.1C	5.10380.1C	ATRING1 AT5G10380.1 Hygromycin-resistant T4 seeds
+TPT_5.10380.1I	5.10380.1I	ATRING1 AT5G10380.1 Hygromycin-resistant T4 seeds
+TPT_5.11050.1D	5.11050.1D	AtMYB64 AT5G11050.1 Hygromycin-resistant T4 seeds
+TPT_5.11060.1B	5.11060.1B	KNAT4 AT5G11060.1 Hygromycin-resistant T4 seeds
+TPT_5.11060.1B	5.11060.1B	KNAT4 (KNOTTED1-LIKE HOMEOB AT5G11060.1 Hygromycin-resistant T4 seeds
+TPT_5.11060.1D	5.11060.1D	KNAT4 AT5G11060.1 Hygromycin-resistant T4 seeds
+TPT_5.11060.1D	5.11060.1D	KNAT4 (KNOTTED1-LIKE HOMEOB AT5G11060.1 Hygromycin-resistant T4 seeds
+TPT_5.11060.1G	5.11060.1G	KNAT4 AT5G11060.1 Hygromycin-resistant T4 seeds
+TPT_5.11270.1A	5.11270.1A	OVEREXPRESSOR OF CATIONIC PERO AT5G11270.1 Hygromycin-resistant T4 seeds
+TPT_5.11270.1C	5.11270.1C	OVEREXPRESSOR OF CATIONIC PERO AT5G11270.1 Hygromycin-resistant T4 seeds
+TPT_5.11270.1E	5.11270.1E	OVEREXPRESSOR OF CATIONIC PERO AT5G11270.1 Hygromycin-resistant T4 seeds
+TPT_5.11270.1F	5.11270.1F	OVEREXPRESSOR OF CATIONIC PERO AT5G11270.1 Hygromycin-resistant T4 seeds
+TPT_5.12840.1E	5.12840.1E	ATHAP2A/NF-YA1 AT5G12840.1 Hygromycin-resistant T4 seeds
+TPT_5.12840.1H	5.12840.1H	ATHAP2A/NF-YA1 AT5G12840.1 Hygromycin-resistant T4 seeds
+TPT_5.12870.1D	5.12870.1D	ATMYB46 AT5G12870.1 Hygromycin-resistant T4 seeds
+TPT_5.12870.1E	5.12870.1E	ATMYB46 AT5G12870.1 Hygromycin-resistant T4 seeds
+TPT_5.12870.1I	5.12870.1I	ATMYB46 AT5G12870.1 Hygromycin-resistant T4 seeds
+TPT_5.13080.1G	5.13080.1G	ATWRKY75 AT5G13080.1 Hygromycin-resistant T4 seeds
+TPT_5.13080.1H	5.13080.1H	ATWRKY75 AT5G13080.1 Hygromycin-resistant T4 seeds
+TPT_5.13330.1D	5.13330.1D	Rap2.6L AT5G13330.1 Hygromycin-resistant T4 seeds
+TPT_5.13330.1G	5.13330.1G	Rap2.6L AT5G13330.1 Hygromycin-resistant T4 seeds
+TPT_5.13330.1I	5.13330.1I	Rap2.6L AT5G13330.1 Hygromycin-resistant T4 seeds
+TPT_5.13790.1D	5.13790.1D	AGL15 AT5G13790.1 Hygromycin-resistant T4 seeds
+TPT_5.13790.1F	5.13790.1F	AGL15 AT5G13790.1 Hygromycin-resistant T4 seeds
+TPT_5.13790.1G	5.13790.1G	AGL15 AT5G13790.1 Hygromycin-resistant T4 seeds
+TPT_5.13910.1A	5.13910.1A	LEAFY PETIOLE (LEP) AT5G13910.1 Hygromycin-resistant T4 seeds
+TPT_5.14340.1A	5.14340.1A	AtMYB40 AT5G14340.1 Hygromycin-resistant T4 seeds
+TPT_5.14340.1F	5.14340.1F	AtMYB40 AT5G14340.1 Hygromycin-resistant T4 seeds
+TPT_5.15150.1H	5.15150.1H	ATHB3_HAT7 AT5G15150.1 Hygromycin-resistant T4 seeds
+TPT_5.15150.1I	5.15150.1I	ATHB3_HAT7 AT5G15150.1 Hygromycin-resistant T4 seeds
+TPT_5.15160.1F	5.15160.1F	BHLH134_BNQ2 AT5G15160.1 Hygromycin-resistant T4 seeds
+TPT_5.15160.1I	5.15160.1I	BHLH134_BNQ2 AT5G15160.1 Hygromycin-resistant T4 seeds
+TPT_5.15830.1B	5.15830.1B	AtbZIP3 AT5G15830.1 Hygromycin-resistant T4 seeds
+TPT_5.15830.1C	5.15830.1C	AtbZIP3 AT5G15830.1 Hygromycin-resistant T4 seeds
+TPT_5.15830.1G	5.15830.1G	AtbZIP3 AT5G15830.1 Hygromycin-resistant T4 seeds
+TPT_5.15840.1C	5.15840.1C	CO AT5G15840.1 Hygromycin-resistant T4 seeds
+TPT_5.15840.1F	5.15840.1F	CO AT5G15840.1 Hygromycin-resistant T4 seeds
+TPT_5.15840.1I	5.15840.1I	CO AT5G15840.1 Hygromycin-resistant T4 seeds
+TPT_5.16560.1D	5.16560.1D	KANADI 1 (KAN1) AT5G16560.1 Hygromycin-resistant T4 seeds
+TPT_5.16560.1G	5.16560.1G	KANADI 1 (KAN1) AT5G16560.1 Hygromycin-resistant T4 seeds
+TPT_5.16560.1H	5.16560.1H	KANADI 1 (KAN1) AT5G16560.1 Hygromycin-resistant T4 seeds
+TPT_5.16600.1F	5.16600.1F	AtMYB43 AT5G16600.1 Hygromycin-resistant T4 seeds
+TPT_5.17300.1A	5.17300.1A	RVE1 AT5G17300.1 Hygromycin-resistant T4 seeds
+TPT_5.17300.1B	5.17300.1B	RVE1 AT5G17300.1 Hygromycin-resistant T4 seeds
+TPT_5.17300.1I	5.17300.1I	RVE1 AT5G17300.1 Hygromycin-resistant T4 seeds
+TPT_5.17490.1C	5.17490.1C	RGL3 AT5G17490.1 Hygromycin-resistant T4 seeds
+TPT_5.17490.1E	5.17490.1E	RGL3 AT5G17490.1 Hygromycin-resistant T4 seeds
+TPT_5.17490.1F	5.17490.1F	RGL3 AT5G17490.1 Hygromycin-resistant T4 seeds
+TPT_5.17690.1A	5.17690.1A	TERMINAL FLOWER 2 (TFL2)/ATLHP1 AT5G17690.1 Hygromycin-resistant T4 seeds
+TPT_5.18240.1B	5.18240.1B	ATMYR1 AT5G18240.1 Hygromycin-resistant T4 seeds
+TPT_5.18240.1I	5.18240.1I	ATMYR1 AT5G18240.1 Hygromycin-resistant T4 seeds
+TPT_5.18270.1A	5.18270.1A	ANAC087 AT5G18270.1 Hygromycin-resistant T4 seeds
+TPT_5.18270.1B	5.18270.1B	ANAC087 AT5G18270.1 Hygromycin-resistant T4 seeds
+TPT_5.18270.1C	5.18270.1C	ANAC087 AT5G18270.1 Hygromycin-resistant T4 seeds
+TPT_5.18450.1B	5.18450.1B	Integrase-type DNA-binding superfam AT5G18450.1 Hygromycin-resistant T4 seeds
+TPT_5.18560.1C	5.18560.1C	PUCHI AT5G18560.1 Hygromycin-resistant T4 seeds
+TPT_5.18560.1H	5.18560.1H	PUCHI AT5G18560.1 Hygromycin-resistant T4 seeds
+TPT_5.19790.1D	5.19790.1D	RAP2.11 AT5G19790.1 Hygromycin-resistant T4 seeds
+TPT_5.19790.1E	5.19790.1E	RAP2.11 AT5G19790.1 Hygromycin-resistant T4 seeds
+TPT_5.19790.1G	5.19790.1G	RAP2.11 AT5G19790.1 Hygromycin-resistant T4 seeds
+TPT_5.20240.1A	5.20240.1A	PI__K-box region and MADS-box tran AT5G20240.1 Hygromycin-resistant T4 seeds
+TPT_5.20240.1B	5.20240.1B	PI__K-box region and MADS-box tran AT5G20240.1 Hygromycin-resistant T4 seeds
+TPT_5.20240.1F	5.20240.1F	PI__K-box region and MADS-box tran AT5G20240.1 Hygromycin-resistant T4 seeds
+TPT_5.22220.1D	5.22220.1D	ATE2FB AT5G22220.1 Hygromycin-resistant T4 seeds
+TPT_5.22220.1E	5.22220.1E	ATE2FB AT5G22220.1 Hygromycin-resistant T4 seeds
+TPT_5.22220.1I	5.22220.1I	ATE2FB AT5G22220.1 Hygromycin-resistant T4 seeds
+TPT_5.23090.1D	5.23090.1D	NF-YB13 AT5G23090.1 Hygromycin-resistant T4 seeds
+TPT_5.23090.1F	5.23090.1F	NF-YB13 AT5G23090.1 Hygromycin-resistant T4 seeds
+TPT_5.23090.1G	5.23090.1G	NF-YB13 AT5G23090.1 Hygromycin-resistant T4 seeds
+TPT_5.23260.1E	5.23260.1E	ABS_AGL32_TT16 AT5G23260.1 Hygromycin-resistant T4 seeds
+TPT_5.23260.1F	5.23260.1F	ABS_AGL32_TT16 AT5G23260.1 Hygromycin-resistant T4 seeds
+TPT_5.23260.1I	5.23260.1I	ABS_AGL32_TT16 AT5G23260.1 Hygromycin-resistant T4 seeds
+TPT_5.23650.1A	5.23650.1A	Homeodomain-like transcriptional re AT5G23650.1 Hygromycin-resistant T4 seeds
+TPT_5.24110.1B	5.24110.1B	ATWRKY30 AT5G24110.1 Hygromycin-resistant T4 seeds
+TPT_5.24110.1D	5.24110.1D	ATWRKY30 AT5G24110.1 Hygromycin-resistant T4 seeds
+TPT_5.24110.1E	5.24110.1E	ATWRKY30 AT5G24110.1 Hygromycin-resistant T4 seeds
+TPT_5.24110.1F	5.24110.1F	ATWRKY30 AT5G24110.1 Hygromycin-resistant T4 seeds
+TPT_5.24110.1I	5.24110.1I	ATWRKY30 AT5G24110.1 Hygromycin-resistant T4 seeds
+TPT_5.24520.1H	5.24520.1H	ATTTG1 AT5G24520.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1A	5.25220.1A	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1B	5.25220.1B	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1C	5.25220.1C	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1E	5.25220.1E	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1G	5.25220.1G	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25220.1H	5.25220.1H	KNAT3 AT5G25220.1 Hygromycin-resistant T4 seeds
+TPT_5.25390.1B	5.25390.1B	SHINE3 (SHN3) AT5G25390.1 Hygromycin-resistant T4 seeds
+TPT_5.25390.1C	5.25390.1C	SHINE3 (SHN3) AT5G25390.1 Hygromycin-resistant T4 seeds
+TPT_5.25390.1F	5.25390.1F	SHINE3 (SHN3) AT5G25390.1 Hygromycin-resistant T4 seeds
+TPT_5.25810.1B	5.25810.1B	tny__Integrase-type DNA-binding sup AT5G25810.1 Hygromycin-resistant T4 seeds
+TPT_5.25810.1C	5.25810.1C	tny__Integrase-type DNA-binding sup AT5G25810.1 Hygromycin-resistant T4 seeds
+TPT_5.25810.1H	5.25810.1H	tny__Integrase-type DNA-binding sup AT5G25810.1 Hygromycin-resistant T4 seeds
+TPT_5.25890.1F	5.25890.1F	IAA28_IAR2 AT5G25890.1 Hygromycin-resistant T4 seeds
+TPT_5.26170.1B	5.26170.1B	ATWRKY50 AT5G26170.1 Hygromycin-resistant T4 seeds
+TPT_5.26170.1D	5.26170.1D	ATWRKY50 AT5G26170.1 Hygromycin-resistant T4 seeds
+TPT_5.26170.1G	5.26170.1G	ATWRKY50 AT5G26170.1 Hygromycin-resistant T4 seeds
+TPT_5.26580.1C	5.26580.1C	AGL34 AT5G26580.1 Hygromycin-resistant T4 seeds
+TPT_5.26580.1D	5.26580.1D	AGL34 AT5G26580.1 Hygromycin-resistant T4 seeds
+TPT_5.26580.1G	5.26580.1G	AGL34 AT5G26580.1 Hygromycin-resistant T4 seeds
+TPT_5.26580.1H	5.26580.1H	AGL34 AT5G26580.1 Hygromycin-resistant T4 seeds
+TPT_5.26660.1F	5.26660.1F	ATMYB86 AT5G26660.1 Hygromycin-resistant T4 seeds
+TPT_5.26870.1I	5.26870.1I	AGL26 AT5G26870.1 Hygromycin-resistant T4 seeds
+TPT_5.26990.1C	5.26990.1C	Drought-responsive family protein AT5G26990.1 Hygromycin-resistant T4 seeds
+TPT_5.26990.1E	5.26990.1E	Drought-responsive family protein AT5G26990.1 Hygromycin-resistant T4 seeds
+TPT_5.27910.1D	5.27910.1D	NF-YC8 AT5G27910.1 Hygromycin-resistant T4 seeds
+TPT_5.27910.1G	5.27910.1G	NF-YC8 AT5G27910.1 Hygromycin-resistant T4 seeds
+TPT_5.28770.1C	5.28770.1C	AtbZIP63_BZO2H3 AT5G28770.1 Hygromycin-resistant T4 seeds
+TPT_5.28770.1H	5.28770.1H	AtbZIP63_BZO2H3 AT5G28770.1 Hygromycin-resistant T4 seeds
+TPT_5.28770.1I	5.28770.1I	AtbZIP63_BZO2H3 AT5G28770.1 Hygromycin-resistant T4 seeds
+TPT_5.29000.1C	5.29000.1C	Homeodomain-like superfamily proteAT5G29000.1 Hygromycin-resistant T4 seeds
+TPT_5.29000.1D	5.29000.1D	Homeodomain-like superfamily proteAT5G29000.1 Hygromycin-resistant T4 seeds
+TPT_5.29000.1G	5.29000.1G	Homeodomain-like superfamily proteAT5G29000.1 Hygromycin-resistant T4 seeds
+TPT_5.35550.1A	5.35550.1A	ATMYB123 AT5G35550.1 Hygromycin-resistant T4 seeds
+TPT_5.35550.1C	5.35550.1C	ATMYB123 AT5G35550.1 Hygromycin-resistant T4 seeds
+TPT_5.38110.1A	5.38110.1A	ANTI- SILENCING FUNCTION 1B AT5G38110.1 Hygromycin-resistant T4 seeds
+TPT_5.38110.1B	5.38110.1B	ANTI- SILENCING FUNCTION 1B AT5G38110.1 Hygromycin-resistant T4 seeds
+TPT_5.38110.1E	5.38110.1E	ANTI- SILENCING FUNCTION 1B AT5G38110.1 Hygromycin-resistant T4 seeds
+TPT_5.38110.1G	5.38110.1G	ANTI- SILENCING FUNCTION 1B AT5G38110.1 Hygromycin-resistant T4 seeds
+TPT_5.38140.1A	5.38140.1A	NF-YC12 AT5G38140.1 Hygromycin-resistant T4 seeds
+TPT_5.38140.1D	5.38140.1D	NF-YC12 AT5G38140.1 Hygromycin-resistant T4 seeds
+TPT_5.38140.1F	5.38140.1F	NF-YC12 AT5G38140.1 Hygromycin-resistant T4 seeds
+TPT_5.40360.1D	5.40360.1D	ATMYB115 AT5G40360.1 Hygromycin-resistant T4 seeds
+TPT_5.40360.1G	5.40360.1G	ATMYB115 AT5G40360.1 Hygromycin-resistant T4 seeds
+TPT_5.41030.1B	5.41030.1B	TCP family transcription factor AT5G41030.1 Hygromycin-resistant T4 seeds
+TPT_5.41030.1E	5.41030.1E	TCP family transcription factor AT5G41030.1 Hygromycin-resistant T4 seeds
+TPT_5.41030.1G	5.41030.1G	TCP family transcription factor AT5G41030.1 Hygromycin-resistant T4 seeds
+TPT_5.41370.1D	5.41370.1D	ATXPB1 AT5G41370.1 Hygromycin-resistant T4 seeds
+TPT_5.41370.1E	5.41370.1E	ATXPB1 AT5G41370.1 Hygromycin-resistant T4 seeds
+TPT_5.41370.1G	5.41370.1G	ATXPB1 AT5G41370.1 Hygromycin-resistant T4 seeds
+TPT_5.41570.1B	5.41570.1B	ATWRKY24 AT5G41570.1 Hygromycin-resistant T4 seeds
+TPT_5.41570.1F	5.41570.1F	ATWRKY24 AT5G41570.1 Hygromycin-resistant T4 seeds
+TPT_5.42910.1D	5.42910.1D	Basic-leucine zipper (bZIP) transcripti AT5G42910.1 Hygromycin-resistant T4 seeds
+TPT_5.42910.1G	5.42910.1G	Basic-leucine zipper (bZIP) transcripti AT5G42910.1 Hygromycin-resistant T4 seeds
+TPT_5.42910.1H	5.42910.1H	Basic-leucine zipper (bZIP) transcripti AT5G42910.1 Hygromycin-resistant T4 seeds
+TPT_5.43170.1D	5.43170.1D	AZF3 AT5G43170.1 Hygromycin-resistant T4 seeds
+TPT_5.43170.1I	5.43170.1I	AZF3 AT5G43170.1 Hygromycin-resistant T4 seeds
+TPT_5.43290.1A	5.43290.1A	ATWRKY49 AT5G43290.1 Hygromycin-resistant T4 seeds
+TPT_5.43290.1D	5.43290.1D	ATWRKY49 AT5G43290.1 Hygromycin-resistant T4 seeds
+TPT_5.43410.1B	5.43410.1B	ERF (ethylene response factor) subfa AT5G43410.1 Hygromycin-resistant T4 seeds
+TPT_5.43650.1B	5.43650.1B	BHLH92 AT5G43650.1 Hygromycin-resistant T4 seeds
+TPT_5.43650.1C	5.43650.1C	BHLH92 AT5G43650.1 Hygromycin-resistant T4 seeds
+TPT_5.43700.1B	5.43700.1B	IAA4 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.43700.1E	5.43700.1E	IAA4 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.44080.1A	5.44080.1A	Basic-leucine zipper (bZIP) transcripti AT5G44080.1 Hygromycin-resistant T4 seeds
+TPT_5.44080.1D	5.44080.1D	Basic-leucine zipper (bZIP) transcripti AT5G44080.1 Hygromycin-resistant T4 seeds
+TPT_5.44160.1A	5.44160.1A	NUTCRACKER (NUC)/ATIDD8 AT5G44160.1 Hygromycin-resistant T4 seeds
+TPT_5.44160.1F	5.44160.1F	NUTCRACKER (NUC)/ATIDD8 AT5G44160.1 Hygromycin-resistant T4 seeds
+TPT_5.44210.1G	5.44210.1G	ATERF-9 AT5G44210.1 Hygromycin-resistant T4 seeds
+TPT_5.45580.1B	5.45580.1B	Homeodomain-like superfamily proteAT5G45580.1 Hygromycin-resistant T4 seeds
+TPT_5.45580.1C	5.45580.1C	Homeodomain-like superfamily proteAT5G45580.1 Hygromycin-resistant T4 seeds
+TPT_5.45580.1G	5.45580.1G	Homeodomain-like superfamily proteAT5G45580.1 Hygromycin-resistant T4 seeds
+TPT_5.46350.1A	5.46350.1A	ATWRKY8 AT5G46350.1 Hygromycin-resistant T4 seeds
+TPT_5.46590.1D	5.46590.1D	ANAC096 AT5G46590.1 Hygromycin-resistant T4 seeds
+TPT_5.46590.1G	5.46590.1G	ANAC096 AT5G46590.1 Hygromycin-resistant T4 seeds
+TPT_5.46590.1I	5.46590.1I	ANAC096 AT5G46590.1 Hygromycin-resistant T4 seeds
+TPT_5.47140.1A	5.47140.1A	GATA27 AT5G47140.1 Hygromycin-resistant T4 seeds
+TPT_5.47140.1C	5.47140.1C	GATA27 AT5G47140.1 Hygromycin-resistant T4 seeds
+TPT_5.47140.1F	5.47140.1F	GATA27 AT5G47140.1 Hygromycin-resistant T4 seeds
+TPT_5.47140.1I	5.47140.1I	GATA27 AT5G47140.1 Hygromycin-resistant T4 seeds
+TPT_5.47220.1A	5.47220.1A	ATERF-2 AT5G47220.1 Hygromycin-resistant T4 seeds
+TPT_5.47220.1G	5.47220.1G	ATERF-2 AT5G47220.1 Hygromycin-resistant T4 seeds
+TPT_5.47230.1B	5.47230.1B	ATERF5 AT5G47230.1 Hygromycin-resistant T4 seeds
+TPT_5.47230.1C	5.47230.1C	ATERF5 AT5G47230.1 Hygromycin-resistant T4 seeds
+TPT_5.47230.1E	5.47230.1E	ATERF5 AT5G47230.1 Hygromycin-resistant T4 seeds
+TPT_5.47230.1G	5.47230.1G	ATERF5 AT5G47230.1 Hygromycin-resistant T4 seeds
+TPT_5.47390.1B	5.47390.1B	myb-like transcription factor family p AT5G47390.1 Hygromycin-resistant T4 seeds
+TPT_5.47390.1H	5.47390.1H	myb-like transcription factor family p AT5G47390.1 Hygromycin-resistant T4 seeds
+TPT_5.48150.1A	5.48150.1A	PAT1__GRAS family transcription factAT5G48150.1 Hygromycin-resistant T4 seeds
+TPT_5.48150.1G	5.48150.1G	PAT1__GRAS family transcription factAT5G48150.1 Hygromycin-resistant T4 seeds
+TPT_5.48150.1H	5.48150.1H	PAT1__GRAS family transcription factAT5G48150.1 Hygromycin-resistant T4 seeds
+TPT_5.48250.1B	5.48250.1B	B-box type zinc finger protein with CC AT5G48250.1 Hygromycin-resistant T4 seeds
+TPT_5.48250.1C	5.48250.1C	B-box type zinc finger protein with CC AT5G48250.1 Hygromycin-resistant T4 seeds
+TPT_5.48250.1G	5.48250.1G	B-box type zinc finger protein with CC AT5G48250.1 Hygromycin-resistant T4 seeds
+TPT_5.48560.1E	5.48560.1E	basic helix-loop-helix (bHLH) DNA-bin AT5G48560.1 Hygromycin-resistant T4 seeds
+TPT_5.49230.1B	5.49230.1B	HYPERSENSITIVE TO RED AND BLUE ( AT5G49230.1 Hygromycin-resistant T4 seeds
+TPT_5.49230.1C	5.49230.1C	HYPERSENSITIVE TO RED AND BLUE ( AT5G49230.1 Hygromycin-resistant T4 seeds
+TPT_5.49230.1F	5.49230.1F	HYPERSENSITIVE TO RED AND BLUE ( AT5G49230.1 Hygromycin-resistant T4 seeds
+TPT_5.49330.1C	5.49330.1C	ATMYB111 AT5G49330.1 Hygromycin-resistant T4 seeds
+TPT_5.49330.1D	5.49330.1D	ATMYB111 AT5G49330.1 Hygromycin-resistant T4 seeds
+TPT_5.49330.1E	5.49330.1E	ATMYB111 AT5G49330.1 Hygromycin-resistant T4 seeds
+TPT_5.49420.1A	5.49420.1A	MADS-box transcription factor family AT5G49420.1 Hygromycin-resistant T4 seeds
+TPT_5.49420.1B	5.49420.1B	MADS-box transcription factor family AT5G49420.1 Hygromycin-resistant T4 seeds
+TPT_5.49420.1H	5.49420.1H	MADS-box transcription factor family AT5G49420.1 Hygromycin-resistant T4 seeds
+TPT_5.49450.1C	5.49450.1C	AtbZIP1 AT5G49450.1 Hygromycin-resistant T4 seeds
+TPT_5.49450.1D	5.49450.1D	AtbZIP1 AT5G49450.1 Hygromycin-resistant T4 seeds
+TPT_5.49520.1A	5.49520.1A	ATWRKY48 AT5G49520.1 Hygromycin-resistant T4 seeds
+TPT_5.49520.1B	5.49520.1B	ATWRKY48 AT5G49520.1 Hygromycin-resistant T4 seeds
+TPT_5.49520.1C	5.49520.1C	ATWRKY48 AT5G49520.1 Hygromycin-resistant T4 seeds
+TPT_5.50470.1A	5.50470.1A	NF-YC7 AT5G50470.1 Hygromycin-resistant T4 seeds
+TPT_5.50470.1B	5.50470.1B	NF-YC7 AT5G50470.1 Hygromycin-resistant T4 seeds
+TPT_5.50470.1D	5.50470.1D	NF-YC7 AT5G50470.1 Hygromycin-resistant T4 seeds
+TPT_5.50470.1E	5.50470.1E	NF-YC7 AT5G50470.1 Hygromycin-resistant T4 seeds
+TPT_5.50480.1E	5.50480.1E	NF-YC6 AT5G50480.1 Hygromycin-resistant T4 seeds
+TPT_5.50490.1B	5.50490.1B	NF-YC5 AT5G50490.1 Hygromycin-resistant T4 seeds
+TPT_5.50490.1F	5.50490.1F	NF-YC5 AT5G50490.1 Hygromycin-resistant T4 seeds
+TPT_5.50490.1H	5.50490.1H	NF-YC5 AT5G50490.1 Hygromycin-resistant T4 seeds
+TPT_5.51870.1D	5.51870.1D	AGL71 AT5G51870.1 Hygromycin-resistant T4 seeds
+TPT_5.51870.1E	5.51870.1E	AGL71 AT5G51870.1 Hygromycin-resistant T4 seeds
+TPT_5.51870.1F	5.51870.1F	AGL71 AT5G51870.1 Hygromycin-resistant T4 seeds
+TPT_5.51910.1B	5.51910.1B	TCP family transcription factor AT5G51910.1 Hygromycin-resistant T4 seeds
+TPT_5.51910.1D	5.51910.1D	TCP family transcription factor AT5G51910.1 Hygromycin-resistant T4 seeds
+TPT_5.51910.1G	5.51910.1G	TCP family transcription factor AT5G51910.1 Hygromycin-resistant T4 seeds
+TPT_5.51910.1H	5.51910.1H	TCP family transcription factor AT5G51910.1 Hygromycin-resistant T4 seeds
+TPT_5.52510.1B	5.52510.1B	SCL8 AT5G52510.1 Hygromycin-resistant T4 seeds
+TPT_5.52510.1E	5.52510.1E	SCL8 AT5G52510.1 Hygromycin-resistant T4 seeds
+TPT_5.52510.1H	5.52510.1H	SCL8 AT5G52510.1 Hygromycin-resistant T4 seeds
+TPT_5.52830.1A	5.52830.1A	ATWRKY27 AT5G52830.1 Hygromycin-resistant T4 seeds
+TPT_5.52830.1C	5.52830.1C	ATWRKY27 AT5G52830.1 Hygromycin-resistant T4 seeds
+TPT_5.52830.1H	5.52830.1H	ATWRKY27 AT5G52830.1 Hygromycin-resistant T4 seeds
+TPT_5.53420.1F	5.53420.1F	CCT motif family protein AT5G53420.1 Hygromycin-resistant T4 seeds
+TPT_5.53420.1G	5.53420.1G	CCT motif family protein AT5G53420.1 Hygromycin-resistant T4 seeds
+TPT_5.53420.1I	5.53420.1I	CCT motif family protein AT5G53420.1 Hygromycin-resistant T4 seeds
+TPT_5.53980.1E	5.53980.1E	ATHB52 AT5G53980.1 Hygromycin-resistant T4 seeds
+TPT_5.53980.1F	5.53980.1F	ATHB52 AT5G53980.1 Hygromycin-resistant T4 seeds
+TPT_5.53980.1G	5.53980.1G	ATHB52 AT5G53980.1 Hygromycin-resistant T4 seeds
+TPT_5.54230.1B	5.54230.1B	ATMYB49 AT5G54230.1 Hygromycin-resistant T4 seeds
+TPT_5.54230.1C	5.54230.1C	ATMYB49 AT5G54230.1 Hygromycin-resistant T4 seeds
+TPT_5.54630.1E	5.54630.1E	zinc finger protein-related AT5G54630.1 Hygromycin-resistant T4 seeds
+TPT_5.54680.1E	5.54680.1E	BHLH105/ILR3 AT5G54680.1 Hygromycin-resistant T4 seeds
+TPT_5.54680.1H	5.54680.1H	BHLH105/ILR3 AT5G54680.1 Hygromycin-resistant T4 seeds
+TPT_5.54680.1I	5.54680.1I	BHLH105/ILR3 AT5G54680.1 Hygromycin-resistant T4 seeds
+TPT_5.55690.1A	5.55690.1A	MADS-box transcription factor AT5G55690.1 Hygromycin-resistant T4 seeds
+TPT_5.55690.1C	5.55690.1C	MADS-box transcription factor AT5G55690.1 Hygromycin-resistant T4 seeds
+TPT_5.55690.1G	5.55690.1G	MADS-box transcription factor AT5G55690.1 Hygromycin-resistant T4 seeds
+TPT_5.56270.1A	5.56270.1A	ATWRKY2 AT5G56270.1 Hygromycin-resistant T4 seeds
+TPT_5.56840.1B	5.56840.1B	myb-like transcription factor family p AT5G56840.1 Hygromycin-resistant T4 seeds
+TPT_5.57620.1C	5.57620.1C	AtMYB36 AT5G57620.1 Hygromycin-resistant T4 seeds
+TPT_5.57620.1F	5.57620.1F	AtMYB36 AT5G57620.1 Hygromycin-resistant T4 seeds
+TPT_5.57660.1A	5.57660.1A	ATCOL5 AT5G57660.1 Hygromycin-resistant T4 seeds
+TPT_5.57660.1B	5.57660.1B	ATCOL5 AT5G57660.1 Hygromycin-resistant T4 seeds
+TPT_5.57660.1H	5.57660.1H	ATCOL5 AT5G57660.1 Hygromycin-resistant T4 seeds
+TPT_5.58890.1A	5.58890.1A	AGL82 AT5G58890.1 Hygromycin-resistant T4 seeds
+TPT_5.58890.1D	5.58890.1D	AGL82 AT5G58890.1 Hygromycin-resistant T4 seeds
+TPT_5.58890.1F	5.58890.1F	AGL82 AT5G58890.1 Hygromycin-resistant T4 seeds
+TPT_5.59780.1B	5.59780.1B	ATMYB59 AT5G59780.1 Hygromycin-resistant T4 seeds
+TPT_5.59780.1D	5.59780.1D	ATMYB59 AT5G59780.1 Hygromycin-resistant T4 seeds
+TPT_5.59780.1G	5.59780.1G	ATMYB59 AT5G59780.1 Hygromycin-resistant T4 seeds
+TPT_5.59820.1D	5.59820.1D	RHL41_ZAT12 AT5G59820.1 Hygromycin-resistant T4 seeds
+TPT_5.60140.1B	5.60140.1B	AP2/B3-like transcriptional factor fam AT5G60140.1 Hygromycin-resistant T4 seeds
+TPT_5.60140.1D	5.60140.1D	AP2/B3-like transcriptional factor fam AT5G60140.1 Hygromycin-resistant T4 seeds
+TPT_5.60140.1I	5.60140.1I	AP2/B3-like transcriptional factor fam AT5G60140.1 Hygromycin-resistant T4 seeds
+TPT_5.60200.1A	5.60200.1A	TMO6 AT5G60200.1 Hygromycin-resistant T4 seeds
+TPT_5.60200.1E	5.60200.1E	TMO6 AT5G60200.1 Hygromycin-resistant T4 seeds
+TPT_5.60200.1G	5.60200.1G	TMO6 AT5G60200.1 Hygromycin-resistant T4 seeds
+TPT_5.60250.1D	5.60250.1D	zinc finger (C3HC4-type RING finger) AT5G60250.1 Hygromycin-resistant T4 seeds
+TPT_5.60250.1F	5.60250.1F	zinc finger (C3HC4-type RING finger) AT5G60250.1 Hygromycin-resistant T4 seeds
+TPT_5.60850.1B	5.60850.1B	OBP4 AT5G60850.1 Hygromycin-resistant T4 seeds
+TPT_5.60850.1C	5.60850.1C	OBP4 AT5G60850.1 Hygromycin-resistant T4 seeds
+TPT_5.60850.1G	5.60850.1G	OBP4 AT5G60850.1 Hygromycin-resistant T4 seeds
+TPT_5.60890.1C	5.60890.1C	ATMYB34 AT5G60890.1 Hygromycin-resistant T4 seeds
+TPT_5.60890.1D	5.60890.1D	ATMYB34 AT5G60890.1 Hygromycin-resistant T4 seeds
+TPT_5.60890.1H	5.60890.1H	ATMYB34 AT5G60890.1 Hygromycin-resistant T4 seeds
+TPT_5.60910.1B	5.60910.1B	FRUITFULL (FUL)/AGL8 AT5G60910.1 Hygromycin-resistant T4 seeds
+TPT_5.60970.1C	5.60970.1C	TCP5 AT5G60970.1 Hygromycin-resistant T4 seeds
+TPT_5.60970.1F	5.60970.1F	TCP5 AT5G60970.1 Hygromycin-resistant T4 seeds
+TPT_5.60970.1G	5.60970.1G	TCP5 AT5G60970.1 Hygromycin-resistant T4 seeds
+TPT_5.61420.1C	5.61420.1C	ATMYB28/HAG1 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.61420.1D	5.61420.1D	ATMYB28/HAG1 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.61420.1E	5.61420.1E	ATMYB28/HAG1 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.61420.1H	5.61420.1H	ATMYB28/HAG1 AT5G61420.1 Hygromycin-resistant T4 seeds
+TPT_5.61600.1C	5.61600.1C	ERF104 AT5G61600.1 Hygromycin-resistant T4 seeds
+TPT_5.61600.1D	5.61600.1D	ERF104 AT5G61600.1 Hygromycin-resistant T4 seeds
+TPT_5.61850.1A	5.61850.1A	LFY3 AT5G61850.1 Hygromycin-resistant T4 seeds
+TPT_5.61850.1D	5.61850.1D	LFY3 AT5G61850.1 Hygromycin-resistant T4 seeds
+TPT_5.62020.1B	5.62020.1B	AT-HSFB2A AT5G62020.1 Hygromycin-resistant T4 seeds
+TPT_5.62020.1F	5.62020.1F	AT-HSFB2A AT5G62020.1 Hygromycin-resistant T4 seeds
+TPT_5.62020.1I	5.62020.1I	AT-HSFB2A AT5G62020.1 Hygromycin-resistant T4 seeds
+TPT_5.62320.1B	5.62320.1B	ATMYB99 AT5G62320.1 Hygromycin-resistant T4 seeds
+TPT_5.62320.1C	5.62320.1C	ATMYB99 AT5G62320.1 Hygromycin-resistant T4 seeds
+TPT_5.62320.1G	5.62320.1G	ATMYB99 AT5G62320.1 Hygromycin-resistant T4 seeds
+TPT_5.62380.1D	5.62380.1D	ANAC101 AT5G62380.1 Hygromycin-resistant T4 seeds
+TPT_5.62380.1F	5.62380.1F	ANAC101 AT5G62380.1 Hygromycin-resistant T4 seeds
+TPT_5.62380.1G	5.62380.1G	ANAC101 AT5G62380.1 Hygromycin-resistant T4 seeds
+TPT_5.63470.1A	5.63470.1A	NF-YC4 AT5G63470.1 Hygromycin-resistant T4 seeds
+TPT_5.63470.1B	5.63470.1B	NF-YC4 AT5G63470.1 Hygromycin-resistant T4 seeds
+TPT_5.63470.1F	5.63470.1F	NF-YC4 AT5G63470.1 Hygromycin-resistant T4 seeds
+TPT_5.64060.1E	5.64060.1E	NAC103 AT5G64060.1 Hygromycin-resistant T4 seeds
+TPT_5.64060.1G	5.64060.1G	NAC103 AT5G64060.1 Hygromycin-resistant T4 seeds
+TPT_5.64060.1H	5.64060.1H	NAC103 AT5G64060.1 Hygromycin-resistant T4 seeds
+TPT_5.64060.1I	5.64060.1I	NAC103 AT5G64060.1 Hygromycin-resistant T4 seeds
+TPT_5.64340.1B	5.64340.1B	SAC51 (SUPPRESSOR OF ACAULIS AT5G64340.1 Hygromycin-resistant T4 seeds
+TPT_5.64340.1F	5.64340.1F	SAC51 (SUPPRESSOR OF ACAULIS AT5G64340.1 Hygromycin-resistant T4 seeds
+TPT_5.64810.1F	5.64810.1F	ATWRKY51 AT5G64810.1 Hygromycin-resistant T4 seeds
+TPT_5.64810.1G	5.64810.1G	ATWRKY51 AT5G64810.1 Hygromycin-resistant T4 seeds
+TPT_5.64810.1H	5.64810.1H	ATWRKY51 AT5G64810.1 Hygromycin-resistant T4 seeds
+TPT_5.65050.1A	5.65050.1A	AGL31_MAF2 AT5G65050.1 Hygromycin-resistant T4 seeds
+TPT_5.65050.1C	5.65050.1C	AGL31_MAF2 AT5G65050.1 Hygromycin-resistant T4 seeds
+TPT_5.65050.1E	5.65050.1E	AGL31_MAF2 AT5G65050.1 Hygromycin-resistant T4 seeds
+TPT_5.65060.1D	5.65060.1D	MAF3/AGL70 AT5G06560.1 Hygromycin-resistant T4 seeds
+TPT_5.65060.1E	5.65060.1E	MAF3/AGL70 AT5G06560.1 Hygromycin-resistant T4 seeds
+TPT_5.65130.1A	5.65130.1A	Integrase-type DNA-binding superfam AT5G65130.1 Hygromycin-resistant T4 seeds
+TPT_5.65230.1I	5.65230.1I	AtMYB53 AT5G65230.1 Hygromycin-resistant T4 seeds
+TPT_5.65320.1D	5.65320.1D	basic helix-loop-helix (bHLH) DNA-bin AT5G65320.1 Hygromycin-resistant T4 seeds
+TPT_5.65320.1I	5.65320.1I	basic helix-loop-helix (bHLH) DNA-bin AT5G65320.1 Hygromycin-resistant T4 seeds
+TPT_5.65410.1A	5.65410.1A	ATHB22 AT5G65410.1 Hygromycin-resistant T4 seeds
+TPT_5.65410.1C	5.65410.1C	ATHB22 AT5G65410.1 Hygromycin-resistant T4 seeds
+TPT_5.65410.1F	5.65410.1F	ATHB22 AT5G65410.1 Hygromycin-resistant T4 seeds
+TPT_5.65410.1I	5.65410.1I	ATHB22 AT5G65410.1 Hygromycin-resistant T4 seeds
+TPT_5.65510.1A	5.65510.1A	PLETHORA 7 (PLT7)/AINTEGUMENTA AT5G65510.1 Hygromycin-resistant T4 seeds
+TPT_5.65510.1B	5.65510.1B	PLETHORA 7 (PLT7)/AINTEGUMENTA AT5G65510.1 Hygromycin-resistant T4 seeds
+TPT_5.65510.1F	5.65510.1F	PLETHORA 7 (PLT7)/AINTEGUMENTA AT5G65510.1 Hygromycin-resistant T4 seeds
+TPT_5.65590.1F	5.65590.1F	Dof-type zinc finger DNA-binding fam AT5G65590.1 Hygromycin-resistant T4 seeds
+TPT_5.65590.1I	5.65590.1I	Dof-type zinc finger DNA-binding fam AT5G65590.1 Hygromycin-resistant T4 seeds
+TPT_5.66160.1D	5.66160.1D	ATRMR1 AT5G66160.1 Hygromycin-resistant T4 seeds
+TPT_5.66160.1G	5.66160.1G	ATRMR1 AT5G66160.1 Hygromycin-resistant T4 seeds
+TPT_5.66700.1E	5.66700.1E	ATHB53 AT5G66700.1 Hygromycin-resistant T4 seeds
+TPT_5.66700.1G	5.66700.1G	ATHB53 AT5G66700.1 Hygromycin-resistant T4 seeds
+TPT_5.66700.1H	5.66700.1H	ATHB53 AT5G66700.1 Hygromycin-resistant T4 seeds
+TPT_5.66940.1D	5.66940.1D	Dof-type zinc finger DNA-binding fam AT5G66940.1 Hygromycin-resistant T4 seeds
+TPT_5.66940.1H	5.66940.1H	Dof-type zinc finger DNA-binding fam AT5G66940.1 Hygromycin-resistant T4 seeds
+TPT_5.67060.1A	5.67060.1A	HEC1__(bHLH) DNA-binding superfam AT5G67060.1 Hygromycin-resistant T4 seeds
+TPT_5.67060.1B	5.67060.1B	HEC1__(bHLH) DNA-binding superfam AT5G67060.1 Hygromycin-resistant T4 seeds
+TPT_5.67060.1F	5.67060.1F	HEC1__(bHLH) DNA-binding superfam AT5G67060.1 Hygromycin-resistant T4 seeds
+TPT_5.67190.1C	5.67190.1C	DEAR2 AT5G67190.1 Hygromycin-resistant T4 seeds
+TPT_5.67190.1F	5.67190.1F	DEAR2 AT5G67190.1 Hygromycin-resistant T4 seeds
+TPT_5.67190.1G	5.67190.1G	DEAR2 AT5G67190.1 Hygromycin-resistant T4 seeds
