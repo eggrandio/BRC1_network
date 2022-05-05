@@ -53,6 +53,7 @@ library(ggsankey)
 library(ggupset)
 library(ggVennDiagram)
 library(igraph)
+library(RCy3) # Install Cytoscape and open it to send igraph networks to Cytoscape
 
 # Load custom functions
 invisible(sapply(list.files(path = "./R/", pattern = "\\.R$", ignore.case = TRUE, full.names = TRUE), source, .GlobalEnv))
@@ -1028,21 +1029,22 @@ ggplot(all_genes_rpkm_cv, aes(x = group, y = cv)) +
             vjust = -0.5)
 ```
 
-Integration of results into the BRC1-network
+### Integration of results into the BRC1-network
+```{r Find availabe data and tools to study ABA GRN}
+# In the future, we might want to include available ChIP/DAP-seq data for other TFs and use inducible lines to generate RNA-seq data
 
-```{r}
-### Find availabe data and tools to study ABA GRN
 # Import BRC1-dependent ABA_GRN from Gonzalez-Grandio et al., 2017 - https://doi.org/10.1073/pnas.1613199114
 ABA_GRN_CORE = fread("./input/BRC1-dep_ABA-GRN_CORE_PNAS2017.txt") %>% 
   add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE)
 
-# Retrieve GO information about Transcription factors
+# We will focus on DNA-binding transcription factors (GO:0003700).
+# Retrieve description of transcriptional regulation related GOs (although for now we will only use GO:0003700)
 tx_factor_gos = AnnotationDbi::select(GO.db, 
                                       keys=c("GO:0003700","GO:0140110","GO:0006355","GO:0010468"),
                                       columns=c("GOID","TERM","DEFINITION"),
                                       keytype="GOID")
 
-# Retrieve GO annotation for ABA_GRN genes (we will focus on DNA-binding transcription factors - GO:0003700)
+# Retrieve GO annotation for ABA_GRN genes and filter DNA-binding transcription factors
 ABA_GRN_CORE_TFs = AnnotationDbi::select(org.At.tair.db, 
                                          keys = ABA_GRN_CORE$gene_id,
                                          columns = c("TAIR", "GOALL"),
@@ -1051,7 +1053,7 @@ ABA_GRN_CORE_TFs = AnnotationDbi::select(org.At.tair.db,
   rename("gene_id" = TAIR) %>% add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE) %>% 
   dplyr::select(c("gene_id", "gene_symbol", "short_description"))
 
-# Check availability in TRANSPLANTA and DAPseq/Chip-seq:
+# Check DAPseq/Chip-seq data availability of selected TFs and if there are vectors/lines from TRANSPLANTA consotrium
 # Import available ChIP-seq experiments from Song et al., 2016 - https://doi.org/10.1126/science.aag1550
 Ecker_ChIPseq_symbols = fread("./input/aag1550_table_s3.txt", skip = 1) %>% 
   pull(`#transgene`) %>% 
@@ -1073,11 +1075,12 @@ Ecker_DAPseq = fread("./input/OMalley_S1D.txt") %>%
   dplyr::select(c("AT_ID", "Protein")) %>% 
   rename("gene_id" = AT_ID)
 
-# Import TRANSPLANTA lines (Table S2 - TFs cloned in pER8GW vector) from Coego et al., 2014 - https://doi.org/10.1111/tpj.12443
-transplanta_TFs = fread("./input/TRANSPLANTA_S2.txt", skip = 1) %>% 
+# Import TRANSPLANTA vectors (Table S2 - TFs cloned in pER8GW vector) from Coego et al., 2014 - https://doi.org/10.1111/tpj.12443
+transplanta_vectors = fread("./input/TRANSPLANTA_S2.txt", skip = 1) %>% 
   mutate(gene_id = gsub("\\..*","",`AGI code`) , 
          .before = `AGI code`)
 
+# Import TRANSPANTA inducible lines from Coego et al., 2014 - https://doi.org/10.1111/tpj.12443
 transplanta_lines = fread("./input/TRANSPLANTA_S3.txt") %>% 
   mutate(gene_id = paste0("AT",
                           str_split(agi_code, "\\.", simplify = TRUE)[,1],
@@ -1085,34 +1088,42 @@ transplanta_lines = fread("./input/TRANSPLANTA_S3.txt") %>%
                           str_split(agi_code, "\\.", simplify = TRUE)[,2])) %>% 
   dplyr::count(gene_id)
 
-#
-test5 = ABA_GRN_CORE_TFs %>% 
+# Create data.frame to summarize available data/tools
+ABA_GRN_TFs_available_data = ABA_GRN_CORE_TFs %>% 
   mutate(ChIPseq = ifelse((gene_id %in% Ecker_ChIPseq$gene_id), 1, 0),
          DAPseq = ifelse((gene_id %in% Ecker_DAPseq$gene_id), 1, 0),
-         TRANSPLANTA_TFs = ifelse((gene_id %in% transplanta_TFs$gene_id), 1, 0)) %>% 
-  left_join(transplanta_lines, by = "gene_id") %>% rename("TRANSPLANTA_lines" = n) %>% 
+         TRANSPLANTA_vectors = ifelse((gene_id %in% transplanta_vectors$gene_id), 1, 0)) %>% 
+  left_join(transplanta_lines, by = "gene_id") %>% dplyr::rename("TRANSPLANTA_lines" = n) %>% 
   mutate(TRANSPLANTA_lines = ifelse(is.na(TRANSPLANTA_lines), 0, TRANSPLANTA_lines))
 
-####
-
-test6 = AnnotationDbi::select(org.At.tair.db, 
-                              keys = BRC1_dependent_FR$gene_id,
-                              columns = c("TAIR", "GOALL"),
-                              keytype = "TAIR") %>% 
+# As we still don't know which BRC1-dep GRN to use (or if we will use them all for the network analysis),
+# Retrieve available data for all the BRC1-dep_in_FR TFs:
+BRC1_dep_FR_TFs = AnnotationDbi::select(org.At.tair.db, 
+                                        keys = BRC1_dependent_FR$gene_id,
+                                        columns = c("TAIR", "GOALL"),
+                                        keytype = "TAIR") %>% 
   filter(GOALL %in% c("GO:0003700")) %>% dplyr::select(c("TAIR","GOALL")) %>% unique %>% 
-  rename("gene_id" = TAIR) %>% add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE) %>% 
+  dplyr::rename("gene_id" = TAIR) %>% add_gene_annotation(gene_id_column = "gene_id", tidy_output = FALSE) %>% 
   dplyr::select(c("gene_id", "gene_symbol", "short_description"))
 
-test7 = test6 %>% filter(gene_id %in% BRC1_direct_targets$gene_id |
-                           gene_id %in% HB21_direct_targets$gene_id | 
-                           gene_id %in% HB40_direct_targets$gene_id | 
-                           gene_id %in% HB53_direct_targets$gene_id)
-  
+BRC1_dep_FR_TFs_available_data = BRC1_dep_FR_TFs %>% 
+  mutate(ChIPseq = ifelse((gene_id %in% Ecker_ChIPseq$gene_id), 1, 0),
+         DAPseq = ifelse((gene_id %in% Ecker_DAPseq$gene_id), 1, 0),
+         TRANSPLANTA_vectors = ifelse((gene_id %in% transplanta_vectors$gene_id), 1, 0)) %>% 
+  left_join(transplanta_lines, by = "gene_id") %>% dplyr::rename("TRANSPLANTA_lines" = n) %>% 
+  mutate(TRANSPLANTA_lines = ifelse(is.na(TRANSPLANTA_lines), 0, TRANSPLANTA_lines))
+
+# We will prioritize BRC1-dep_in_FR TFs that are BRC1/HBs direct targets (to check them first)
+BRC1_dep_FR_TFs_HBdt = BRC1_dep_FR_TFs_available_data %>% filter(gene_id %in% BRC1_direct_targets$gene_id |
+                                                                   gene_id %in% HB21_direct_targets$gene_id | 
+                                                                   gene_id %in% HB40_direct_targets$gene_id | 
+                                                                   gene_id %in% HB53_direct_targets$gene_id)
 ```
 
-
-```{r}
-##### Generate target_region to define target genes:
+```{r Draw BRC1-network}
+# Define genes that are BRC1/HB direct targets and genes that are differentially expressed by BRC1/HB induction ####
+# Define direct targets as genes that have a binding peak 3kb upstream and 1kb downstream of TSS (target_region)
+# Generate target_region to define target genes
 ath_gtf = read_gff("./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz")
 ath_genes = ath_gtf %>% filter(type == "gene")
 tss = ath_genes %>% resize(width = 1, fix = 'start') %>% select(gene_id) %>% `names<-`(.$gene_id) %>% sort
@@ -1122,7 +1133,7 @@ ext3 = 1000
 ath_3kup_1kdown = ath_genes %>% anchor_5p %>% mutate(width = 1) %>% stretch(ext5*2 - 1) %>%
   anchor_5p %>% stretch(ext3-ext5) %>% `mcols<-`(value = list("gene_id" = .$gene_id))
 
-##### Generate peak files for BRC1 and HBs:
+# Generate peak files for BRC1 and HBs
 # BRC1 peaks (ChIP-seq) "consensus peaks" (peaks that partially overlap in at least two replicates)
 qval_filter = -log10(0.05)
 peak_max_width = Inf # For now, do not filter peaks by size (waiting on JC Oliveros' MACS2 settings)
@@ -1138,7 +1149,7 @@ filtered_peak_list = peak_list %>%
 
 BRC1_peaks = filtered_peak_list %>% get_consensus_peaks_GRangesList()
 
-# HB peaks (DAP-seq)
+# HB peaks (reanalyzed DAP-seq data from O'Malley et al., 2016)
 peak_files = list.files(path = "./input/", pattern = "^DAP_ATHB\\d{2}_q1_es200_peaks.narrowPeak$", all.files = TRUE, full.names = TRUE)
 peak_file_names = str_match(peak_files, "DAP_ATHB\\d{2}") %>% as.vector
 peak_list = lapply(peak_files, read_narrowpeaks) %>% GRangesList() %>% `names<-`(peak_file_names)
@@ -1149,16 +1160,11 @@ filtered_peak_list = peak_list %>%
 
 HB_peaks = filtered_peak_list %>% endoapply(function(x) plyranges::mutate(x, peak_name = paste0("peak_", rep(1:length(x)))))
 
-##### Generate lists of genes and tidy data.frames:
-# BRC1-related gene lists:
-BRC1_dependent_FR = fread("./input/BRC1dep_PC2013.txt") %>% 
-  rename("gene_id" = Geneid) %>% 
-  mutate(gene_id = toupper(gene_id)) %>% 
-  mutate(direction = ifelse(logFC > 0, "up", "down"))
-
+# Generate lists of direct target and differentially expressed genes
+# BRC1-related gene lists
 BRC1ind_diffexp = brc1ind_results$filtered_tests %>% 
   dplyr::select(c(Geneid, logFC_GFP_BRC1ind_vs_brc1)) %>% 
-  rename("gene_id" = Geneid, "logFC" = logFC_GFP_BRC1ind_vs_brc1) %>% 
+  dplyr::rename("gene_id" = Geneid, "logFC" = logFC_GFP_BRC1ind_vs_brc1) %>% 
   mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
   data.table()
 
@@ -1168,29 +1174,22 @@ BRC1_direct_targets = get_direct_targets(peak_file = BRC1_peaks,
                                          gene_id_column_in_de_file = "gene_id",
                                          output = "filtered")
 
-brc1_diffexp = aba_results$list_by_contrast$brc1_ctr_vs_wt_ctr %>% 
-  dplyr::select(c(Geneid, logFC_brc1_ctr_vs_wt_ctr)) %>% 
-  rename("gene_id" = Geneid, "logFC" = logFC_brc1_ctr_vs_wt_ctr) %>% 
-  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
-  data.table()
-# Maybe use brc1_diff_exp without FC threshold?
-
-# HB-related gene lists:
+# HB-related gene lists
 HB21ind_diffexp = hbind_results$list_by_contrast$hb21i_vs_gus %>% 
   dplyr::select(c(Geneid, logFC_hb21i_vs_gus)) %>% 
-  rename("gene_id" = Geneid, "logFC" = logFC_hb21i_vs_gus) %>% 
+  dplyr::rename("gene_id" = Geneid, "logFC" = logFC_hb21i_vs_gus) %>% 
   mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
   data.table()
 
 HB40ind_diffexp = hbind_results$list_by_contrast$hb40i_vs_gus %>% 
   dplyr::select(c(Geneid, logFC_hb40i_vs_gus)) %>% 
-  rename("gene_id" = Geneid, "logFC" = logFC_hb40i_vs_gus) %>% 
+  dplyr::rename("gene_id" = Geneid, "logFC" = logFC_hb40i_vs_gus) %>% 
   mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
   data.table()
 
 HB53ind_diffexp = hbind_results$list_by_contrast$hb53i_vs_gus %>% 
   dplyr::select(c(Geneid, logFC_hb53i_vs_gus)) %>% 
-  rename("gene_id" = Geneid, "logFC" = logFC_hb53i_vs_gus) %>% 
+  dplyr::rename("gene_id" = Geneid, "logFC" = logFC_hb53i_vs_gus) %>% 
   mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
   data.table()
 
@@ -1212,14 +1211,30 @@ HB53_direct_targets = get_direct_targets(peak_file = hb_peaks$DAP_ATHB53,
                                          gene_id_column_in_de_file = "gene_id",
                                          output = "filtered")
 
-# ABA-related gene lists:
-# ABA-responding genes from Nemhauser et al., 2006 - doi: 10.1016/j.cell.2006.05.050
+# Additional gene lists we might use in the analysis
+# BRC1-dependent genes that respond to low R:FR in axillary buds from González-Grandío et al., 2013 - doi.org/10.1105/tpc.112.108480
+BRC1_dependent_FR = fread("./input/BRC1dep_PC2013.txt") %>% 
+  rename("gene_id" = Geneid) %>% 
+  mutate(gene_id = toupper(gene_id)) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down"))
+
+# Genes that are missregulated in brc1 axillary buds (our new data)
+brc1_diffexp = aba_results$list_by_contrast$brc1_ctr_vs_wt_ctr %>% 
+  dplyr::select(c(Geneid, logFC_brc1_ctr_vs_wt_ctr)) %>% 
+  rename("gene_id" = Geneid, "logFC" = logFC_brc1_ctr_vs_wt_ctr) %>% 
+  mutate(direction = ifelse(logFC > 0, "up", "down")) %>% 
+  data.table()
+# Maybe use brc1_diff_exp without FC threshold?
+
+# ABA-related gene lists
+# ABA-responding genes from Nemhauser et al., 2006 - doi.org/10.1016/j.cell.2006.05.050
 ABA_genes_nemhauser = fread("./input/ABA-responding_genes_Nemhauser2006.txt") %>% mutate(gene_id = toupper(gene_id))
 
-# BRC1-dep ABA-responding genes from Gonzalez-Grandio et al., 2017 - oi.org/10.1073/pnas.1613199114
+# BRC1-dep ABA-responding genes from Gonzalez-Grandio et al., 2017 - doi.org/10.1073/pnas.1613199114
 BRC1_dep_ABA_GRN = fread("./input/BRC1-dep_ABA-GRN_PNAS2017.txt") %>% mutate(gene_id = toupper(gene_id))
 BRC1_dep_ABA_GRN_CORE = fread("./input/BRC1-dep_ABA-GRN_CORE_PNAS2017.txt")
 
+# BRC1-dep ABA-responding genes in axillary buds (our new data - (wt_aba vs wt_ctr - brc1_aba vs brc1_ctr))
 BRC1_dep_ABA_responding = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>% 
   dplyr::select(c(Geneid, logFC_wt_aba_vs_wt_ctr)) %>% 
   rename("gene_id" = Geneid, "logFC" = logFC_wt_aba_vs_wt_ctr) %>% 
@@ -1228,37 +1243,100 @@ BRC1_dep_ABA_responding = aba_results$list_by_contrast$wt_aba_vs_wt_ctr %>%
   data.table()
 # Maybe use BRC1_dep_ABA_responding without FC threshold?
 
-### TO DO: Check igraph tutorial (https://kateto.net/networks-r-igraph) and build "test" network
-# Use 26 ABA core + BRC1, and add direct target info
-expand_matrix = function(m){
-  un1 = unique(sort(c(colnames(m), rownames(m))))
-  m2 = matrix(0, length(un1), length(un1), dimnames = list(un1, un1))
-  m2[row.names(m), colnames(m)] = m
-  m2
-}
 
-adjm = BRC1_dep_ABA_GRN_CORE %>% bind_rows(setNames("AT3G18550", "gene_id")) %>% 
+# Check if HB_DTs are enriched in specific BRC1 GRNs ####
+# Import GRNs defined in van Es et al., 2020
+BRC1_grns = fread("./input/BRC1_GRNs_vanEs2020.txt")
+grns = BRC1_grns %>% pull(cluster) %>% unique
+# make lists of genes for each GRN
+genes_by_grn = sapply(grns, 
+                      function(x,y) dplyr::filter(y, cluster == x & relevance == "core") %>% pull(gene_id), 
+                      y = BRC1_grns,
+                      simplify = FALSE, 
+                      USE.NAMES = TRUE)
+
+# Generate data for Chi-square test of HB_DTs enrichment
+# We want to test if a gene being in a GRN (variable 1) is independent of it being HB direct target (variable 2)
+# Generate list of total genes
+gtf = "./input/Arabidopsis_thaliana.TAIR10.52.gtf.gz"
+total_genes = plyranges::read_gff(gtf) %>% filter(type == "gene") %>% 
+  as.data.frame() %>% pull(gene_id) %>% str_subset("AT\\d")
+
+# Generate list of HB direct target (direct target of ANY HB)
+HB_dt_up = Reduce(union, list(HB21_direct_targets %>% filter(direction == "up") %>% pull(gene_id),
+                              HB40_direct_targets %>% filter(direction == "up") %>% pull(gene_id),
+                              HB53_direct_targets %>% filter(direction == "up") %>% pull(gene_id)))
+
+HB_dt = Reduce(union, list(HB21_direct_targets %>% pull(gene_id),
+                           HB40_direct_targets %>% pull(gene_id),
+                           HB53_direct_targets %>% pull(gene_id)))
+
+# Data for variable 2 (chance of a gene being a HB direct target)
+# Create it as a factor to assign level order to make sure chi-square generated tables are in the same order 
+# (important to extract expected and observed values for final output)
+chi_input_2 = factor(ifelse(total_genes %in% HB_dt_up, "dt", "not_dt"), levels = c("dt", "not_dt"))
+
+# Data for variable 1 (chance of a gene being in a GRN)
+chi_input_1 = sapply(genes_by_grn, 
+                     function(x,y) factor(ifelse(y %in% x, "in_cluster", "not_in"), levels = c("in_cluster", "not_in")),
+                     y = total_genes,
+                     simplify = FALSE, 
+                     USE.NAMES = TRUE)
+
+# Create table for each GRN for chi-square test
+table_list = lapply(chi_input_1, function(x) table(chi_input_2, x))
+
+# Make chi-square test for each GRN
+test_list = lapply(table_list, chisq.test)
+
+# Generate a "nice" output from the chi-square test list
+# extract relevant values from the list
+expected = sapply(test_list, function(x) x$expected[1,1])
+observed = sapply(test_list, function(x) x$observed[1,1])
+p_value = sapply(test_list, function(x) x$p.value)
+significance = symnum(p_value, 
+                      corr = FALSE, 
+                      na = FALSE, 
+                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
+                      symbols = c("***", "**", "*", ".", " ")) %>% as.vector()
+# Create final output
+test_result = data.frame(id = names(test_list),
+                         expected = round(expected,0),
+                         observed,
+                         p_value, 
+                         significance,
+                         row.names = NULL) %>% 
+  dplyr::mutate(direction = case_when(observed > expected ~ "enriched",
+                                      observed < expected ~ "depleted",
+                                      observed == expected ~ "same"),
+                .after = observed) %>% 
+  dplyr::mutate(fold_over_expected = round(observed/expected, 2),
+                .after = observed)
+
+test_result
+
+# Do it also using BRC1_dep_FR genes as "total" (it will be less significant compared to total genes, but cluster 6 is still the most enriched)
+total_genes = BRC1_dependent_FR$gene_id
+
+# Build BRC1-network ####
+# Check igraph tutorial (https://kateto.net/networks-r-igraph)
+# Use 48 genes from Cluster UP6 (+BRC1) from van Es et al., 2020
+# Create adjacency matrices to generate graph using igraph
+adjm = c(genes_by_grn$UP_C6, "AT3G18550") %>% data.frame(gene_id = .) %>% 
   mutate(AT3G18550 = ifelse((gene_id %in% BRC1_direct_targets$gene_id), 1, 0),
          AT2G18550 = ifelse((gene_id %in% HB21_direct_targets$gene_id), 1, 0),
          AT4G36740 = ifelse((gene_id %in% HB40_direct_targets$gene_id), 1, 0),
          AT5G66700 = ifelse((gene_id %in% HB53_direct_targets$gene_id), 1, 0)) %>% 
   column_to_rownames("gene_id") %>% as.matrix()
 
+# Adjacency matrix has to be square. Also, we transpose it so igraph interprets directionality of interactions in the correct direction
 adjm2 = expand_matrix(adjm) %>% t()
 
+# Make graph from adjacency matrix so it stores node and edge information (node = genes, edge = interactions)
 g1 = graph_from_adjacency_matrix(adjm2)
 
-# To rearrange network nodes manually and save coordinates:
-tkid = tkplot(g1, edge.arrow.size=.4) # plot with tk and save the plot ID number (tkid) to retrieve coordinates
-
-l = tkplot.getcoords(tkid) # grab the coordinates from tkplot
-
-tk_close(tkid, window.close = T) # close tkplot window
-
-plot(g1, layout=l) # re-plot network with tk coordinates
-
-###
-adjm3 = BRC1_dep_ABA_GRN_CORE %>% bind_rows(setNames("AT3G18550", "gene_id")) %>% 
+# Create adjacency matrix for differential expression the same way
+adjm3 = c(genes_by_grn$UP_C6, "AT3G18550") %>% data.frame(gene_id = .) %>%  
   mutate(AT3G18550 = ifelse((gene_id %in% BRC1ind_diffexp$gene_id), 1, 0),
          AT2G18550 = ifelse((gene_id %in% HB21ind_diffexp$gene_id), 1, 0),
          AT4G36740 = ifelse((gene_id %in% HB40ind_diffexp$gene_id), 1, 0),
@@ -1269,24 +1347,146 @@ adjm4 = expand_matrix(adjm3) %>% t()
 
 g2 = graph_from_adjacency_matrix(adjm4)
 
-plot(g2)
-tkplot(g2)
-
-plot(g2,edge.arrow.size=.4)
-
+# We remove loops as we are using inducible lines, so BRC1/HBs will be differentially expressed
 g2b = simplify(g2, 
-               #remove.multiple = F, 
                remove.loops = T) 
 
-plot(g2b,edge.arrow.size=.4)#colnames(adjm) are node names
+# Merge two adjacency matrices to have both types of interactions (direct and differentially expressed)
+# Probably there is a more elegant way of joining both interactions, but this works for now...
+# Assign edge type to each graph
+E(g1)$type = "direct_target"
+E(g2)$type = "diff_exp"
+#edge_attr(g1)
+#vertex_attr(g1)
 
-### TO DO: check how to have two different type of edges and assign attributes
-### Generate adj matrix with direct and indirect targets
-### Change node names to gene symbol
-### Color edges/nodes with up- down- regulation?
-### Add node annotation for ABA-responsive ones? Or maybe add ABA as a node?
+# Merge two graphs and make a new edge type merging both edge types
+g3 = igraph::union(g1, g2)
+
+t1 = edge_attr(g3)$type_1
+t2 = edge_attr(g3)$type_2
+t1[is.na(t1)] <- t2[which(is.na(t1))]
+
+E(g3)$type_3 = t1
+#edge_attr(g3)
+
+# Simplify graph
+g3b = simplify(g3, 
+               remove.multiple = F, 
+               remove.loops = T) 
+
+
+####
+# TO DO: 
+# tidy retrieval of best gene symbol
+# read ATTED-II mRNAseq coexpression data and check if there is data for BRC1 and HB21 (there is no data for them in the Ath-U ATTED database)
+# finish polishing network code
+# create network attributes from R using RCy3 (or change them manually with cytoscape)
+
+
+
+# Change node lable from agi id to gene symbol (it is tricky to select the best gene symbol name...)
+# BiomaRt seems to return 
+agi_ids = V(g3b)$name
+gene_symbols = mapIds(org.At.tair.db, keys = agi_ids, column = "SYMBOL", keytype = "TAIR")
+gene_symbols[which(is.na(gene_symbols))] <- names(gene_symbols)[which(is.na(gene_symbols))]
+
+test2 = AnnotationDbi::select(org.At.tair.db,
+                              keys = agi_ids,
+                              columns = c("TAIR", "SYMBOL"),
+                              keytype = "TAIR")
+
+test2b = getBM(attributes = c('tair_locus', 'tair_symbol'),
+               filters = 'tair_locus',
+               values = agi_ids,
+               mart = ensembl)
+test2b
+
+#TO DO: Select the "best" gene names (e.g., BRC1 instead of AtBRC1)
+test3 = test2 %>% mutate(SYMBOL = coalesce(SYMBOL,TAIR)) %>% group_by(TAIR) %>% 
+  dplyr::mutate(name_n = paste0("name_", 1:n())) %>% 
+  pivot_wider(id_cols = TAIR, values_from = SYMBOL, names_from = name_n)
+
+test_y = c(1,2,3,1,1,1,1,1,3,1,1,1,1,1,2,1,2,1,3,1,1,1,2,1,3,1,3) + 1
+
+i = 1
+best_gene_names = character()
+for(j in test_y) {
+  #print(as.character(test3[i,j]))
+  best_gene_names[[i]] = as.character(test3[i,j])
+  i = i + 1
+}
+
+V(g3b)$label = best_gene_names
+
+# To calculate hierarcy of GRN, use in-degree and out-degree (from: https://doi.org/10.1038/nature11245)
+#deg_total = igraph::degree(graph_input)
+graph_input = g3b
+deg_out = igraph::degree(graph_input, mode = "out")
+deg_in = igraph::degree(graph_input, mode = "in")
+
+hierarchy = ((deg_out - deg_in)/(deg_out + deg_in)) 
+
+hierarchy %>% sort(decreasing = TRUE)%>% plot()
+
+degree_distribution(g1, cumulative = TRUE) %>% plot()
+degree_distribution(g2, cumulative = TRUE) %>% plot()
+degree_distribution(g3b, cumulative = TRUE) %>% plot()
+
+# Add hierarchy information to nodes (not relevant right now, but might be useful when we incorporate additional DAPseq/RNAseq data)
+V(g3b)$hierarchy = hierarchy
+
+# Send network to Cytoscape to edit "manually"
+library(RCy3)
+createNetworkFromIgraph(g3b)
+# edge_attr(g3b)
+# style.name = "dataStyle"
+# createVisualStyle(style.name)
+setVisualStyle("Ripple")
+
+setNodeLabelMapping(table.column = "label",
+                    style.name = "Ripple")
+
+setEdgeColorMapping(table.column = "type_3",
+                    table.column.values = c("diff_exp","direct_target"), 
+                    colors = c("#666666", "#D63E3E"), 
+                    style.name = "Ripple", 
+                    mapping.type = "d")
+
+#getLayoutNames()
+layoutNetwork(layout.name="hierarchical") 
+
 ```
 
+```{r In progress: check clustering by coregulation with ATTED-II data}
+
+# For LS
+d <- read.delim("./input/BRC1_dep_UP_loclocLS.txt") %>% column_to_rownames("X")
+N <- 18957
+d.dist <- as.dist(log2(N) - d)
+d.hc <- hclust(d.dist, method="complete")
+#plot (d.hc, hang=-1)
+
+
+cluster_number = 6
+div_pal = distinctColorPalette(cluster_number)
+
+clusters = cutree(d.hc, cluster_number,order_clusters_as_data=T) %>% 
+  as.factor() %>% fct_inorder() %>% fct_rev()
+
+dd = d.hc %>% as.dendrogram(hang = -1) %>%
+  set("labels_cex", 0.6) %>% 
+  set("branches_k_color", k=cluster_number, value = div_pal) %>% 
+  set("labels_col", k=cluster_number, value = div_pal)
+
+#labels(dd) = GO_data$Description[match(labels(dd), GO_data$ID)]
+
+par(mar = c(1, 1, 1, 20),
+    xpd = NA,
+    bg = "gray50") 
+plot(dd, horiz = T)
+
+
+```
 
 
 GFP:BRC1 ChIP
