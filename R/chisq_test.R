@@ -26,11 +26,8 @@ chisq_test = function(de_file,
   # obtain number of total genes if not provided
   if (is.null(total_genes)) {
     total_genes = plyranges::read_gff(gtf) %>% filter(type == "gene") %>% 
-      as.data.frame() %>% pull(gene_id)
-  }
-  
-  if (only_nuclear == TRUE) {
-    total_genes = total_genes %>% str_subset("AT\\d")
+      as.data.frame() %>% pull(gene_id) %>% 
+      {if (only_nuclear) str_subset("AT\\d")}
   }
 
   # calculate which genes are bound (have a peak in their target_region)
