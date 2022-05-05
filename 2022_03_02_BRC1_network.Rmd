@@ -1274,7 +1274,7 @@ HB_dt = Reduce(union, list(HB21_direct_targets %>% pull(gene_id),
 # Data for variable 2 (chance of a gene being a HB direct target)
 # Create it as a factor to assign level order to make sure chi-square generated tables are in the same order 
 # (important to extract expected and observed values for final output)
-chi_input_2 = factor(ifelse(total_genes %in% HB_dt_up, "dt", "not_dt"), levels = c("dt", "not_dt"))
+chi_input_2 = factor(ifelse(total_genes %in% HB_dt, "dt", "not_dt"), levels = c("dt", "not_dt"))
 
 # Data for variable 1 (chance of a gene being in a GRN)
 chi_input_1 = sapply(genes_by_grn, 
