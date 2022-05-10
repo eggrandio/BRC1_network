@@ -45,7 +45,7 @@ get_coex_data = function(gene_ids,
   
   if(!all(entrez_ids$ENTREZID %in% data_files)) {
     missing_data = gene_ids[!(entrez_ids$ENTREZID %in% data_files)]
-    cat("There is no coexpression data for", length(missing_data), "gene(s):\n", missing_data,"\n")
+    cat("There is no coexpression data for", length(missing_data), "gene(s):\n", paste0(missing_data,"\n"))
   }
   
   # Read files with coexpression data info and merge them into a data.frame
@@ -69,7 +69,7 @@ get_coex_data = function(gene_ids,
     `colnames<-`(agi_ids[colnames(.)]) %>% 
     setcolorder(., c("gene_id", sort(colnames(.)[-1]))) %>% 
     setkey(., NULL) %>% setkey(., gene_id) %>% # if data.table key is not reassigned, gene_id column is not sorted (?)
-    {if(as_matrix) column_to_rownames(., "gene_id") %>% as.matrix else .}
+    {if(as_matrix) column_to_rownames(., "gene_id") %>% as.matrix %>% `diag<-`(0) else .}
   
   return(coex_data)
   
